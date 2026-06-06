@@ -1,0 +1,39 @@
+// **************************************************************************
+// MetaGenerator
+// **************************************************************************
+
+enum PersonField {
+  name('String', false),
+  age('int', false),
+  email('String', true),
+  tags('List<String>', false);
+
+  final String typeName;
+  final bool isNullable;
+
+  const PersonField(this.typeName, this.isNullable);
+}
+
+enum PersonMethod {
+  greeting,
+  isAdult,
+  withName;
+}
+
+class PersonMeta {
+  static const List<PersonField> fields = PersonField.values;
+  static const List<PersonMethod> methods = PersonMethod.values;
+
+  static String typeName(PersonField field) => field.typeName;
+
+  static bool isNullable(PersonField field) => field.isNullable;
+
+  static PersonField? fieldByName(String name) {
+    for (final f in PersonField.values) {
+      if (f.name == name) return f;
+    }
+    return null;
+  }
+
+  const PersonMeta._();
+}

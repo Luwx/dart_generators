@@ -1,0 +1,12 @@
+builders:
+  meta_generator:
+    import: "package:meta_generator/builder.dart"
+    builder_factories: ["metaBuilder"]
+    build_extensions: {".dart": [".meta_generator.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    # Union case types (`Action.command = CommandAction`) are redirected-factory
+    # targets that freezed emits into `*.freezed.dart`; require those inputs so
+    # this builder runs after freezed and can resolve the case type names.
+    required_inputs: [".freezed.dart"]
+    applies_builders: ["source_gen|combining_builder"]
