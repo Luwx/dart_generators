@@ -106,6 +106,10 @@ final class _SourceSchemaEmitter {
               '${selector.caseExpression('value')} as ${selector.caseType},',
             )
             ..writeln(
+              '  canGet: (value) => '
+              '${selector.caseExpression('value')} is ${selector.caseType},',
+            )
+            ..writeln(
               '  set: (value, next) => '
               '${selector.replaceCaseExpression('value', 'next')},',
             )

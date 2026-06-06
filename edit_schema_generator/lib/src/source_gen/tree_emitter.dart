@@ -830,6 +830,7 @@ final class _TreeSchemaEmitter {
     buffer
       ..writeln('final $name = LensPart<$ownerType, $caseType>(')
       ..writeln('  get: (value) => value as $caseType,')
+      ..writeln('  canGet: (value) => value is $caseType,')
       ..writeln('  set: (value, next) => next,')
       ..writeln("  name: '$caseType',")
       ..writeln(');')
