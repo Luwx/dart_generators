@@ -1,0 +1,19 @@
+targets:
+  $default:
+    builders:
+      edit_schema_generator|edit_schema:
+        enabled: true
+
+builders:
+  edit_schema:
+    import: "package:edit_schema_generator/src/builder.dart"
+    builder_factories: ["editSchemaBuilder"]
+    build_extensions: {".dart": [".edit_schema.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    # Resolves field/case types off the model classes, which for freezed live on
+    # the generated `*.freezed.dart` parts (mixins and redirected-factory
+    # subclasses). Require those inputs so this builder runs after freezed;
+    # otherwise the model types resolve to InvalidType.
+    required_inputs: [".freezed.dart"]
+    applies_builders: ["source_gen|combining_builder"]

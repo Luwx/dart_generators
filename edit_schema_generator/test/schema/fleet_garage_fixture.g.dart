@@ -1,0 +1,600 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'fleet_garage_fixture.dart';
+
+// **************************************************************************
+// EditSchemaSourceGenerator
+// **************************************************************************
+
+// Generated code. Do not modify by hand.
+// ignore_for_file: dead_code, prefer_null_aware_operators, lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, unnecessary_parenthesis, unreachable_switch_case, unused_element, invalid_null_aware_operator, unused_local_variable, avoid_equals_and_hash_code_on_mutable_classes
+
+Lens<Fleet> _garageRootLens() => Lens<Fleet>(
+  get: (root) => root as Fleet,
+  set: (root, next) => next,
+  name: 'garage',
+);
+
+enum GarageDirtyField {
+  garageVehicleRegistrationPlate,
+  garageVehicleRegistrationRegion,
+  carColor,
+  carYear,
+  carSedanTrimLevel,
+  carCoupeTopSpeed,
+  carConvertibleRoofOpen,
+  truckAxleCount,
+  truckBoxBoxVolume,
+  truckTankerCapacity,
+  bikeElectric,
+  bikeRoadGears,
+  bikeCargoBaskets,
+}
+
+Lens<Vehicle> garageVehicleLens(GarageLocation location) => Lens<Vehicle>(
+  get: (root) {
+    final container = root as Fleet;
+    return switch (location.kind) {
+      VehicleCategory.car => container.cars[location.slot],
+      VehicleCategory.truck => container.trucks[location.slot],
+      VehicleCategory.bike => container.bikes[location.slot],
+    };
+  },
+  set: (root, nextValue) {
+    final container = root as Fleet;
+    return switch (location.kind) {
+      VehicleCategory.car => () {
+        final next = List<Car>.of(container.cars);
+        next[location.slot] = nextValue as Car;
+        return container.copyWith(cars: next);
+      }(),
+      VehicleCategory.truck => () {
+        final next = List<Truck>.of(container.trucks);
+        next[location.slot] = nextValue as Truck;
+        return container.copyWith(trucks: next);
+      }(),
+      VehicleCategory.bike => () {
+        final next = List<Bike>.of(container.bikes);
+        next[location.slot] = nextValue as Bike;
+        return container.copyWith(bikes: next);
+      }(),
+    };
+  },
+  name: 'garageVehicle[${location.kind}/${location.slot}]',
+);
+
+final _garageGarageVehicleRegistrationPart = LensPart<Vehicle, Registration>(
+  get: (value) => value.registration,
+  set: (value, next) => value.copyWithRegistration(next),
+  name: 'registration',
+);
+
+final _garageGarageVehicleregistrationPlatePart =
+    LensPart<Registration, String?>(
+      get: (value) => value.plate,
+      set: (value, next) => value.copyWith(plate: next),
+      name: 'plate',
+    );
+
+final _garageGarageVehicleregistrationRegionPart =
+    LensPart<Registration, String?>(
+      get: (value) => value.region,
+      set: (value, next) => value.copyWith(region: next),
+      name: 'region',
+    );
+
+final _garageCarCastPart = LensPart<Vehicle, Car>(
+  get: (value) => value as Car,
+  set: (value, next) => next,
+  name: 'Car',
+);
+
+final _garageCarColorPart = LensPart<Car, String>(
+  get: (value) => value.color,
+  set: (value, next) => value.copyWith(color: next),
+  name: 'color',
+);
+
+final _garageCarYearPart = LensPart<Car, int?>(
+  get: (value) => value.year,
+  set: (value, next) => value.copyWith(year: next),
+  name: 'year',
+);
+
+final _garageAsSedanPart = LensPart<Car, Sedan>(
+  get: (value) => value as Sedan,
+  set: (value, next) => next,
+  name: 'Sedan',
+);
+
+final _garageCarsedanTrimPart = LensPart<Sedan, Trim>(
+  get: (value) => value.trim,
+  set: (value, next) => value.copyWith(trim: next),
+  name: 'trim',
+);
+
+final _garageCarsedantrimLevelPart = LensPart<Trim, String?>(
+  get: (value) => value.level,
+  set: (value, next) => value.copyWith(level: next),
+  name: 'level',
+);
+
+final _garageAsCoupePart = LensPart<Car, Coupe>(
+  get: (value) => value as Coupe,
+  set: (value, next) => next,
+  name: 'Coupe',
+);
+
+final _garageCarcoupeTopSpeedPart = LensPart<Coupe, int?>(
+  get: (value) => value.topSpeed,
+  set: (value, next) => value.copyWith(topSpeed: next),
+  name: 'topSpeed',
+);
+
+final _garageAsConvertiblePart = LensPart<Car, Convertible>(
+  get: (value) => value as Convertible,
+  set: (value, next) => next,
+  name: 'Convertible',
+);
+
+final _garageCarconvertibleRoofOpenPart = LensPart<Convertible, bool?>(
+  get: (value) => value.roofOpen,
+  set: (value, next) => value.copyWith(roofOpen: next),
+  name: 'roofOpen',
+);
+
+final _garageTruckCastPart = LensPart<Vehicle, Truck>(
+  get: (value) => value as Truck,
+  set: (value, next) => next,
+  name: 'Truck',
+);
+
+final _garageTruckAxleCountPart = LensPart<Truck, int?>(
+  get: (value) => value.axleCount,
+  set: (value, next) => value.copyWith(axleCount: next),
+  name: 'axleCount',
+);
+
+final _garageAsBoxTruckPart = LensPart<Truck, BoxTruck>(
+  get: (value) => value as BoxTruck,
+  set: (value, next) => next,
+  name: 'BoxTruck',
+);
+
+final _garageTruckboxBoxVolumePart = LensPart<BoxTruck, double?>(
+  get: (value) => value.boxVolume,
+  set: (value, next) => value.copyWith(boxVolume: next),
+  name: 'boxVolume',
+);
+
+final _garageAsTankerPart = LensPart<Truck, Tanker>(
+  get: (value) => value as Tanker,
+  set: (value, next) => next,
+  name: 'Tanker',
+);
+
+final _garageTrucktankerCapacityPart = LensPart<Tanker, double?>(
+  get: (value) => value.capacity,
+  set: (value, next) => value.copyWith(capacity: next),
+  name: 'capacity',
+);
+
+final _garageBikeCastPart = LensPart<Vehicle, Bike>(
+  get: (value) => value as Bike,
+  set: (value, next) => next,
+  name: 'Bike',
+);
+
+final _garageBikeElectricPart = LensPart<Bike, bool?>(
+  get: (value) => value.electric,
+  set: (value, next) => value.copyWith(electric: next),
+  name: 'electric',
+);
+
+final _garageAsRoadBikePart = LensPart<Bike, RoadBike>(
+  get: (value) => value as RoadBike,
+  set: (value, next) => next,
+  name: 'RoadBike',
+);
+
+final _garageBikeroadGearsPart = LensPart<RoadBike, int?>(
+  get: (value) => value.gears,
+  set: (value, next) => value.copyWith(gears: next),
+  name: 'gears',
+);
+
+final _garageAsCargoBikePart = LensPart<Bike, CargoBike>(
+  get: (value) => value as CargoBike,
+  set: (value, next) => next,
+  name: 'CargoBike',
+);
+
+final _garageBikecargoBasketsPart = LensPart<CargoBike, int?>(
+  get: (value) => value.baskets,
+  set: (value, next) => value.copyWith(baskets: next),
+  name: 'baskets',
+);
+
+Lens<String?> garageVehicleRegistrationPlateLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageGarageVehicleRegistrationPart)
+        .then(_garageGarageVehicleregistrationPlatePart);
+
+Lens<String?> garageVehicleRegistrationRegionLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageGarageVehicleRegistrationPart)
+        .then(_garageGarageVehicleregistrationRegionPart);
+
+Lens<String> carColorLens(GarageLocation location) => garageVehicleLens(
+  location,
+).then(_garageCarCastPart).then(_garageCarColorPart);
+
+Lens<int?> carYearLens(GarageLocation location) => garageVehicleLens(
+  location,
+).then(_garageCarCastPart).then(_garageCarYearPart);
+
+Lens<String?> carSedanTrimLevelLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageCarCastPart)
+        .then(_garageAsSedanPart)
+        .then(_garageCarsedanTrimPart)
+        .then(_garageCarsedantrimLevelPart);
+
+Lens<int?> carCoupeTopSpeedLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageCarCastPart)
+        .then(_garageAsCoupePart)
+        .then(_garageCarcoupeTopSpeedPart);
+
+Lens<bool?> carConvertibleRoofOpenLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageCarCastPart)
+        .then(_garageAsConvertiblePart)
+        .then(_garageCarconvertibleRoofOpenPart);
+
+Lens<int?> truckAxleCountLens(GarageLocation location) => garageVehicleLens(
+  location,
+).then(_garageTruckCastPart).then(_garageTruckAxleCountPart);
+
+Lens<double?> truckBoxBoxVolumeLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageTruckCastPart)
+        .then(_garageAsBoxTruckPart)
+        .then(_garageTruckboxBoxVolumePart);
+
+Lens<double?> truckTankerCapacityLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageTruckCastPart)
+        .then(_garageAsTankerPart)
+        .then(_garageTrucktankerCapacityPart);
+
+Lens<bool?> bikeElectricLens(GarageLocation location) => garageVehicleLens(
+  location,
+).then(_garageBikeCastPart).then(_garageBikeElectricPart);
+
+Lens<int?> bikeRoadGearsLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageBikeCastPart)
+        .then(_garageAsRoadBikePart)
+        .then(_garageBikeroadGearsPart);
+
+Lens<int?> bikeCargoBasketsLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageBikeCastPart)
+        .then(_garageAsCargoBikePart)
+        .then(_garageBikecargoBasketsPart);
+
+bool garageVehicleRegistrationPlateHasSavedBacking(
+  Fleet? saved,
+  GarageLocation location,
+) {
+  if (saved == null) return false;
+  try {
+    garageVehicleRegistrationPlateLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final garageVehicleRegistrationPlateField =
+    GeneratedEditField<Fleet, GarageLocation, String?, Lens<String?>>(
+      id: 'garageVehicleRegistrationPlate',
+      dirtyField: GarageDirtyField.garageVehicleRegistrationPlate,
+      lens: garageVehicleRegistrationPlateLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<String?>.identity(),
+    );
+
+bool garageVehicleRegistrationRegionHasSavedBacking(
+  Fleet? saved,
+  GarageLocation location,
+) {
+  if (saved == null) return false;
+  try {
+    garageVehicleRegistrationRegionLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final garageVehicleRegistrationRegionField =
+    GeneratedEditField<Fleet, GarageLocation, String?, Lens<String?>>(
+      id: 'garageVehicleRegistrationRegion',
+      dirtyField: GarageDirtyField.garageVehicleRegistrationRegion,
+      lens: garageVehicleRegistrationRegionLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<String?>.identity(),
+    );
+
+bool carColorHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    carColorLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final carColorField =
+    GeneratedEditField<Fleet, GarageLocation, String, Lens<String>>(
+      id: 'carColor',
+      dirtyField: GarageDirtyField.carColor,
+      lens: carColorLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<String>.identity(),
+    );
+
+bool carYearHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    carYearLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final carYearField =
+    GeneratedEditField<Fleet, GarageLocation, int?, Lens<int?>>(
+      id: 'carYear',
+      dirtyField: GarageDirtyField.carYear,
+      lens: carYearLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<int?>.identity(),
+    );
+
+bool carSedanTrimLevelHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    carSedanTrimLevelLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final carSedanTrimLevelField =
+    GeneratedEditField<Fleet, GarageLocation, String?, Lens<String?>>(
+      id: 'carSedanTrimLevel',
+      dirtyField: GarageDirtyField.carSedanTrimLevel,
+      lens: carSedanTrimLevelLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<String?>.identity(),
+    );
+
+bool carCoupeTopSpeedHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    carCoupeTopSpeedLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final carCoupeTopSpeedField =
+    GeneratedEditField<Fleet, GarageLocation, int?, Lens<int?>>(
+      id: 'carCoupeTopSpeed',
+      dirtyField: GarageDirtyField.carCoupeTopSpeed,
+      lens: carCoupeTopSpeedLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<int?>.identity(),
+    );
+
+bool carConvertibleRoofOpenHasSavedBacking(
+  Fleet? saved,
+  GarageLocation location,
+) {
+  if (saved == null) return false;
+  try {
+    carConvertibleRoofOpenLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final carConvertibleRoofOpenField =
+    GeneratedEditField<Fleet, GarageLocation, bool?, Lens<bool?>>(
+      id: 'carConvertibleRoofOpen',
+      dirtyField: GarageDirtyField.carConvertibleRoofOpen,
+      lens: carConvertibleRoofOpenLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<bool?>.identity(),
+    );
+
+bool truckAxleCountHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    truckAxleCountLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final truckAxleCountField =
+    GeneratedEditField<Fleet, GarageLocation, int?, Lens<int?>>(
+      id: 'truckAxleCount',
+      dirtyField: GarageDirtyField.truckAxleCount,
+      lens: truckAxleCountLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<int?>.identity(),
+    );
+
+bool truckBoxBoxVolumeHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    truckBoxBoxVolumeLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final truckBoxBoxVolumeField =
+    GeneratedEditField<Fleet, GarageLocation, double?, Lens<double?>>(
+      id: 'truckBoxBoxVolume',
+      dirtyField: GarageDirtyField.truckBoxBoxVolume,
+      lens: truckBoxBoxVolumeLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<double?>.identity(),
+    );
+
+bool truckTankerCapacityHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    truckTankerCapacityLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final truckTankerCapacityField =
+    GeneratedEditField<Fleet, GarageLocation, double?, Lens<double?>>(
+      id: 'truckTankerCapacity',
+      dirtyField: GarageDirtyField.truckTankerCapacity,
+      lens: truckTankerCapacityLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<double?>.identity(),
+    );
+
+bool bikeElectricHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    bikeElectricLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final bikeElectricField =
+    GeneratedEditField<Fleet, GarageLocation, bool?, Lens<bool?>>(
+      id: 'bikeElectric',
+      dirtyField: GarageDirtyField.bikeElectric,
+      lens: bikeElectricLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<bool?>.identity(),
+    );
+
+bool bikeRoadGearsHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    bikeRoadGearsLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final bikeRoadGearsField =
+    GeneratedEditField<Fleet, GarageLocation, int?, Lens<int?>>(
+      id: 'bikeRoadGears',
+      dirtyField: GarageDirtyField.bikeRoadGears,
+      lens: bikeRoadGearsLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<int?>.identity(),
+    );
+
+bool bikeCargoBasketsHasSavedBacking(Fleet? saved, GarageLocation location) {
+  if (saved == null) return false;
+  try {
+    bikeCargoBasketsLens(location).get(saved);
+    return true;
+  } on Object catch (_) {
+    return false;
+  }
+}
+
+final bikeCargoBasketsField =
+    GeneratedEditField<Fleet, GarageLocation, int?, Lens<int?>>(
+      id: 'bikeCargoBaskets',
+      dirtyField: GarageDirtyField.bikeCargoBaskets,
+      lens: bikeCargoBasketsLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<int?>.identity(),
+    );
+
+Object? comparableGarageFieldValue(Fleet? value, GarageDirtyField field) =>
+    switch (field) {
+      GarageDirtyField.garageVehicleRegistrationPlate => null,
+      GarageDirtyField.garageVehicleRegistrationRegion => null,
+      GarageDirtyField.carColor => null,
+      GarageDirtyField.carYear => null,
+      GarageDirtyField.carSedanTrimLevel => null,
+      GarageDirtyField.carCoupeTopSpeed => null,
+      GarageDirtyField.carConvertibleRoofOpen => null,
+      GarageDirtyField.truckAxleCount => null,
+      GarageDirtyField.truckBoxBoxVolume => null,
+      GarageDirtyField.truckTankerCapacity => null,
+      GarageDirtyField.bikeElectric => null,
+      GarageDirtyField.bikeRoadGears => null,
+      GarageDirtyField.bikeCargoBaskets => null,
+    };
+
+Object? comparableRegistrationValue(Registration? value) => [
+  value?.plate,
+  value?.region,
+];
+
+Object? comparableCarValue(Car? value) => switch (value) {
+  Sedan() && final v => [
+    v.color,
+    v.year,
+    'sedan',
+    comparableTrimValue(v?.trim),
+  ],
+  Coupe() && final v => [v.color, v.year, 'coupe', v.topSpeed],
+  Convertible() && final v => [
+    v.color,
+    v.year,
+    'convertible',
+    v.roofOpen ?? false,
+  ],
+  _ => null,
+};
+
+Object? comparableTrimValue(Trim? value) => [value?.level];
+
+Object? comparableTruckValue(Truck? value) => switch (value) {
+  BoxTruck() && final v => [v.axleCount, 'box', v.boxVolume],
+  Tanker() && final v => [v.axleCount, 'tanker', v.capacity],
+  _ => null,
+};
+
+Object? comparableBikeValue(Bike? value) => switch (value) {
+  RoadBike() && final v => [v.electric, 'road', v.gears],
+  CargoBike() && final v => [v.electric, 'cargo', v.baskets],
+  _ => null,
+};
+
+Object? comparableFleetValue(Fleet? value) => [
+  (value?.cars ?? const <Car>[]).map(comparableCarValue).toList(),
+  (value?.trucks ?? const <Truck>[]).map(comparableTruckValue).toList(),
+  (value?.bikes ?? const <Bike>[]).map(comparableBikeValue).toList(),
+];
