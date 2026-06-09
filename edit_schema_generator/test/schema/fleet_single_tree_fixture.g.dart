@@ -570,6 +570,7 @@ final _fleetCarregistrationpermitDetailRevokedPart =
 final _fleetCarregistrationpermitAsParkingPermitPart =
     LensPart<PermitDetail, ParkingPermit>(
       get: (value) => value as ParkingPermit,
+      canGet: (value) => value is ParkingPermit,
       set: (value, next) => next,
       name: 'ParkingPermit',
     );
@@ -591,6 +592,7 @@ final _fleetCarregistrationpermitdetailparkingHoursPart =
 final _fleetCarregistrationpermitAsTollPermitPart =
     LensPart<PermitDetail, TollPermit>(
       get: (value) => value as TollPermit,
+      canGet: (value) => value is TollPermit,
       set: (value, next) => next,
       name: 'TollPermit',
     );
@@ -612,6 +614,7 @@ final _fleetCarregistrationpermitdetailtollBalancePart =
 final _fleetCarregistrationpermitAsAccessPermitPart =
     LensPart<PermitDetail, AccessPermit>(
       get: (value) => value as AccessPermit,
+      canGet: (value) => value is AccessPermit,
       set: (value, next) => next,
       name: 'AccessPermit',
     );
@@ -693,6 +696,7 @@ final _fleetCarregistrationpermitdetailaccessgateIdPart =
 final _fleetCarregistrationpermitdetailaccessgateAsManualGatePart =
     LensPart<Gate, ManualGate>(
       get: (value) => value as ManualGate,
+      canGet: (value) => value is ManualGate,
       set: (value, next) => next,
       name: 'ManualGate',
     );
@@ -707,6 +711,7 @@ final _fleetCarregistrationpermitdetailaccessgatemanualKeyPart =
 final _fleetCarregistrationpermitdetailaccessgateAsAutoGatePart =
     LensPart<Gate, AutoGate>(
       get: (value) => value as AutoGate,
+      canGet: (value) => value is AutoGate,
       set: (value, next) => next,
       name: 'AutoGate',
     );
@@ -763,6 +768,7 @@ final _fleetCarYearPart = LensPart<Car, int?>(
 
 final _fleetCarAsSedanPart = LensPart<Car, Sedan>(
   get: (value) => value as Sedan,
+  canGet: (value) => value is Sedan,
   set: (value, next) => next,
   name: 'Sedan',
 );
@@ -817,6 +823,7 @@ final _fleetCarsedantrimupholsteryRowsPart = LensPart<Upholstery, List<int>>(
 
 final _fleetCarAsCoupePart = LensPart<Car, Coupe>(
   get: (value) => value as Coupe,
+  canGet: (value) => value is Coupe,
   set: (value, next) => next,
   name: 'Coupe',
 );
@@ -884,6 +891,7 @@ final _fleetCarcoupedrivetrainLabelPart = LensPart<Drivetrain, String?>(
 final _fleetCarcoupedrivetrainAsFixedDrivePart =
     LensPart<Drivetrain, FixedDrive>(
       get: (value) => value as FixedDrive,
+      canGet: (value) => value is FixedDrive,
       set: (value, next) => next,
       name: 'FixedDrive',
     );
@@ -897,6 +905,7 @@ final _fleetCarcoupedrivetrainfixedAxlePart = LensPart<FixedDrive, String>(
 final _fleetCarcoupedrivetrainAsRangeDrivePart =
     LensPart<Drivetrain, RangeDrive>(
       get: (value) => value as RangeDrive,
+      canGet: (value) => value is RangeDrive,
       set: (value, next) => next,
       name: 'RangeDrive',
     );
@@ -927,6 +936,7 @@ final _fleetCarcoupeTopSpeedPart = LensPart<Coupe, int?>(
 
 final _fleetCarAsConvertiblePart = LensPart<Car, Convertible>(
   get: (value) => value as Convertible,
+  canGet: (value) => value is Convertible,
   set: (value, next) => next,
   name: 'Convertible',
 );
@@ -1127,6 +1137,7 @@ final _fleetTruckregistrationpermitDetailRevokedPart =
 final _fleetTruckregistrationpermitAsParkingPermitPart =
     LensPart<PermitDetail, ParkingPermit>(
       get: (value) => value as ParkingPermit,
+      canGet: (value) => value is ParkingPermit,
       set: (value, next) => next,
       name: 'ParkingPermit',
     );
@@ -1148,6 +1159,7 @@ final _fleetTruckregistrationpermitdetailparkingHoursPart =
 final _fleetTruckregistrationpermitAsTollPermitPart =
     LensPart<PermitDetail, TollPermit>(
       get: (value) => value as TollPermit,
+      canGet: (value) => value is TollPermit,
       set: (value, next) => next,
       name: 'TollPermit',
     );
@@ -1169,6 +1181,7 @@ final _fleetTruckregistrationpermitdetailtollBalancePart =
 final _fleetTruckregistrationpermitAsAccessPermitPart =
     LensPart<PermitDetail, AccessPermit>(
       get: (value) => value as AccessPermit,
+      canGet: (value) => value is AccessPermit,
       set: (value, next) => next,
       name: 'AccessPermit',
     );
@@ -1195,6 +1208,7 @@ final _fleetTruckregistrationpermitdetailaccessgateIdPart =
 final _fleetTruckregistrationpermitdetailaccessgateAsManualGatePart =
     LensPart<Gate, ManualGate>(
       get: (value) => value as ManualGate,
+      canGet: (value) => value is ManualGate,
       set: (value, next) => next,
       name: 'ManualGate',
     );
@@ -1209,6 +1223,7 @@ final _fleetTruckregistrationpermitdetailaccessgatemanualKeyPart =
 final _fleetTruckregistrationpermitdetailaccessgateAsAutoGatePart =
     LensPart<Gate, AutoGate>(
       get: (value) => value as AutoGate,
+      canGet: (value) => value is AutoGate,
       set: (value, next) => next,
       name: 'AutoGate',
     );
@@ -1259,6 +1274,7 @@ final _fleetTruckAxleCountPart = LensPart<Truck, int?>(
 
 final _fleetTruckAsBoxTruckPart = LensPart<Truck, BoxTruck>(
   get: (value) => value as BoxTruck,
+  canGet: (value) => value is BoxTruck,
   set: (value, next) => next,
   name: 'BoxTruck',
 );
@@ -1319,6 +1335,7 @@ final _fleetTruckboxBoxVolumePart = LensPart<BoxTruck, double?>(
 
 final _fleetTruckAsTankerPart = LensPart<Truck, Tanker>(
   get: (value) => value as Tanker,
+  canGet: (value) => value is Tanker,
   set: (value, next) => next,
   name: 'Tanker',
 );
@@ -1473,6 +1490,7 @@ final _fleetBikeregistrationpermitDetailRevokedPart =
 final _fleetBikeregistrationpermitAsParkingPermitPart =
     LensPart<PermitDetail, ParkingPermit>(
       get: (value) => value as ParkingPermit,
+      canGet: (value) => value is ParkingPermit,
       set: (value, next) => next,
       name: 'ParkingPermit',
     );
@@ -1494,6 +1512,7 @@ final _fleetBikeregistrationpermitdetailparkingHoursPart =
 final _fleetBikeregistrationpermitAsTollPermitPart =
     LensPart<PermitDetail, TollPermit>(
       get: (value) => value as TollPermit,
+      canGet: (value) => value is TollPermit,
       set: (value, next) => next,
       name: 'TollPermit',
     );
@@ -1515,6 +1534,7 @@ final _fleetBikeregistrationpermitdetailtollBalancePart =
 final _fleetBikeregistrationpermitAsAccessPermitPart =
     LensPart<PermitDetail, AccessPermit>(
       get: (value) => value as AccessPermit,
+      canGet: (value) => value is AccessPermit,
       set: (value, next) => next,
       name: 'AccessPermit',
     );
@@ -1541,6 +1561,7 @@ final _fleetBikeregistrationpermitdetailaccessgateIdPart =
 final _fleetBikeregistrationpermitdetailaccessgateAsManualGatePart =
     LensPart<Gate, ManualGate>(
       get: (value) => value as ManualGate,
+      canGet: (value) => value is ManualGate,
       set: (value, next) => next,
       name: 'ManualGate',
     );
@@ -1555,6 +1576,7 @@ final _fleetBikeregistrationpermitdetailaccessgatemanualKeyPart =
 final _fleetBikeregistrationpermitdetailaccessgateAsAutoGatePart =
     LensPart<Gate, AutoGate>(
       get: (value) => value as AutoGate,
+      canGet: (value) => value is AutoGate,
       set: (value, next) => next,
       name: 'AutoGate',
     );
@@ -1605,6 +1627,7 @@ final _fleetBikeElectricPart = LensPart<Bike, bool?>(
 
 final _fleetBikeAsRoadBikePart = LensPart<Bike, RoadBike>(
   get: (value) => value as RoadBike,
+  canGet: (value) => value is RoadBike,
   set: (value, next) => next,
   name: 'RoadBike',
 );
@@ -1617,6 +1640,7 @@ final _fleetBikeroadGearsPart = LensPart<RoadBike, int?>(
 
 final _fleetBikeAsCargoBikePart = LensPart<Bike, CargoBike>(
   get: (value) => value as CargoBike,
+  canGet: (value) => value is CargoBike,
   set: (value, next) => next,
   name: 'CargoBike',
 );

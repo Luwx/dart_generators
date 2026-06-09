@@ -15,6 +15,7 @@ enum FixtureNodeDirtyGroup { modeAndFlag }
 
 final _fixtureNodeAsTextVariantPart = LensPart<FixtureNode, TextVariant>(
   get: (value) => value.variant as TextVariant,
+  canGet: (value) => value.variant is TextVariant,
   set: (value, next) => value.copyWith(variant: next),
   name: 'TextVariant',
 );
@@ -41,6 +42,7 @@ Lens<bool?> fixtureNodeFlagLens(FixtureLocation location) => fixtureNodeLens(
 
 final _fixtureNodeAsListVariantPart = LensPart<FixtureNode, ListVariant>(
   get: (value) => value.variant as ListVariant,
+  canGet: (value) => value.variant is ListVariant,
   set: (value, next) => value.copyWith(variant: next),
   name: 'ListVariant',
 );

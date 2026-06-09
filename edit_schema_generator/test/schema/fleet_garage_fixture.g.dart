@@ -60,6 +60,14 @@ Lens<Vehicle> garageVehicleLens(GarageLocation location) => Lens<Vehicle>(
       }(),
     };
   },
+  canGet: (root) {
+    final container = root as Fleet;
+    return switch (location.kind) {
+      VehicleCategory.car => location.slot < container.cars.length,
+      VehicleCategory.truck => location.slot < container.trucks.length,
+      VehicleCategory.bike => location.slot < container.bikes.length,
+    };
+  },
   name: 'garageVehicle[${location.kind}/${location.slot}]',
 );
 
@@ -85,6 +93,7 @@ final _garageGarageVehicleregistrationRegionPart =
 
 final _garageCarCastPart = LensPart<Vehicle, Car>(
   get: (value) => value as Car,
+  canGet: (value) => value is Car,
   set: (value, next) => next,
   name: 'Car',
 );
@@ -103,6 +112,7 @@ final _garageCarYearPart = LensPart<Car, int?>(
 
 final _garageAsSedanPart = LensPart<Car, Sedan>(
   get: (value) => value as Sedan,
+  canGet: (value) => value is Sedan,
   set: (value, next) => next,
   name: 'Sedan',
 );
@@ -121,6 +131,7 @@ final _garageCarsedantrimLevelPart = LensPart<Trim, String?>(
 
 final _garageAsCoupePart = LensPart<Car, Coupe>(
   get: (value) => value as Coupe,
+  canGet: (value) => value is Coupe,
   set: (value, next) => next,
   name: 'Coupe',
 );
@@ -133,6 +144,7 @@ final _garageCarcoupeTopSpeedPart = LensPart<Coupe, int?>(
 
 final _garageAsConvertiblePart = LensPart<Car, Convertible>(
   get: (value) => value as Convertible,
+  canGet: (value) => value is Convertible,
   set: (value, next) => next,
   name: 'Convertible',
 );
@@ -145,6 +157,7 @@ final _garageCarconvertibleRoofOpenPart = LensPart<Convertible, bool?>(
 
 final _garageTruckCastPart = LensPart<Vehicle, Truck>(
   get: (value) => value as Truck,
+  canGet: (value) => value is Truck,
   set: (value, next) => next,
   name: 'Truck',
 );
@@ -157,6 +170,7 @@ final _garageTruckAxleCountPart = LensPart<Truck, int?>(
 
 final _garageAsBoxTruckPart = LensPart<Truck, BoxTruck>(
   get: (value) => value as BoxTruck,
+  canGet: (value) => value is BoxTruck,
   set: (value, next) => next,
   name: 'BoxTruck',
 );
@@ -169,6 +183,7 @@ final _garageTruckboxBoxVolumePart = LensPart<BoxTruck, double?>(
 
 final _garageAsTankerPart = LensPart<Truck, Tanker>(
   get: (value) => value as Tanker,
+  canGet: (value) => value is Tanker,
   set: (value, next) => next,
   name: 'Tanker',
 );
@@ -181,6 +196,7 @@ final _garageTrucktankerCapacityPart = LensPart<Tanker, double?>(
 
 final _garageBikeCastPart = LensPart<Vehicle, Bike>(
   get: (value) => value as Bike,
+  canGet: (value) => value is Bike,
   set: (value, next) => next,
   name: 'Bike',
 );
@@ -193,6 +209,7 @@ final _garageBikeElectricPart = LensPart<Bike, bool?>(
 
 final _garageAsRoadBikePart = LensPart<Bike, RoadBike>(
   get: (value) => value as RoadBike,
+  canGet: (value) => value is RoadBike,
   set: (value, next) => next,
   name: 'RoadBike',
 );
@@ -205,6 +222,7 @@ final _garageBikeroadGearsPart = LensPart<RoadBike, int?>(
 
 final _garageAsCargoBikePart = LensPart<Bike, CargoBike>(
   get: (value) => value as CargoBike,
+  canGet: (value) => value is CargoBike,
   set: (value, next) => next,
   name: 'CargoBike',
 );

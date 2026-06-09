@@ -884,6 +884,18 @@ final class _TreeSchemaEmitter {
     buffer
       ..writeln('    };')
       ..writeln('  },')
+      ..writeln('  canGet: (root) {')
+      ..writeln('    final container = root as $rootType;')
+      ..writeln('    return switch (location.$disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '      ${entry.enumSource} => '
+        'location.$idx < container.${entry.property}.length,',
+      );
+    }
+    buffer
+      ..writeln('    };')
+      ..writeln('  },')
       ..writeln(
         "  name: '${source.baseName}[\${location.$disc}/\${location.$idx}]',",
       )

@@ -81,6 +81,7 @@ Lens<List<String>> carTagsLens(CarLocation location) =>
 
 final _carAsGasEnginePart = LensPart<Car, GasEngine>(
   get: (value) => value.engine as GasEngine,
+  canGet: (value) => value.engine is GasEngine,
   set: (value, next) => value.copyWith(engine: next),
   name: 'GasEngine',
 );
@@ -105,6 +106,7 @@ Lens<int> carHorsepowerLens(CarLocation location) =>
 
 final _carAsElectricEnginePart = LensPart<Car, ElectricEngine>(
   get: (value) => value.engine as ElectricEngine,
+  canGet: (value) => value.engine is ElectricEngine,
   set: (value, next) => value.copyWith(engine: next),
   name: 'ElectricEngine',
 );

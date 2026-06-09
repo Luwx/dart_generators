@@ -13,6 +13,7 @@ enum VariantDirtyField { text, items }
 
 final _variantAsTextVariantPart = LensPart<FixtureVariant, TextVariant>(
   get: (value) => value as TextVariant,
+  canGet: (value) => value is TextVariant,
   set: (value, next) => next,
   name: 'TextVariant',
 );
@@ -29,6 +30,7 @@ Lens<String> variantTextLens(FixtureLocation location) => fixtureVariantLens(
 
 final _variantAsListVariantPart = LensPart<FixtureVariant, ListVariant>(
   get: (value) => value as ListVariant,
+  canGet: (value) => value is ListVariant,
   set: (value, next) => next,
   name: 'ListVariant',
 );

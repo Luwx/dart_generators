@@ -89,5 +89,86 @@ void main() {
       expect(ref.dirtyField, garage.GarageDirtyField.garageVehicleRegistrationPlate);
       expect(ref.lens(loc).get(fleet), 'CAR-1');
     });
+
+    // Regression: taggedLists dispatcher must emit a canGet bounds guard so that
+    // callers (e.g. Riverpod selectors) can safely skip `get` after an item is
+    // removed. Without the guard, `canGet` returns true for any slot and `get`
+    // throws a RangeError on the now-shorter list.
+    group('canGet bounds guard', () {
+      test('returns true when slot is within range for each category', () {
+        expect(
+          garage
+              .garageVehicleLens(
+                const GarageLocation(kind: VehicleCategory.car, slot: 1),
+              )
+              .canGet(fleet),
+          isTrue,
+        );
+        expect(
+          garage
+              .garageVehicleLens(
+                const GarageLocation(kind: VehicleCategory.truck, slot: 0),
+              )
+              .canGet(fleet),
+          isTrue,
+        );
+        expect(
+          garage
+              .garageVehicleLens(
+                const GarageLocation(kind: VehicleCategory.bike, slot: 0),
+              )
+              .canGet(fleet),
+          isTrue,
+        );
+      });
+
+      test('returns false when slot is at or beyond list length', () {
+        // fleet has 2 cars, 1 truck, 1 bike — slot == length is already out of range.
+        expect(
+          garage
+              .garageVehicleLens(
+                const GarageLocation(kind: VehicleCategory.car, slot: 2),
+              )
+              .canGet(fleet),
+          isFalse,
+        );
+        expect(
+          garage
+              .garageVehicleLens(
+                const GarageLocation(kind: VehicleCategory.truck, slot: 1),
+              )
+              .canGet(fleet),
+          isFalse,
+        );
+        expect(
+          garage
+              .garageVehicleLens(
+                const GarageLocation(kind: VehicleCategory.bike, slot: 1),
+              )
+              .canGet(fleet),
+          isFalse,
+        );
+      });
+
+      test('get throws RangeError for out-of-bounds slot (canGet prevents this path)', () {
+        // Proves why the guard matters: the raw `get` throws if called without
+        // checking canGet first.
+        const loc = GarageLocation(kind: VehicleCategory.car, slot: 9);
+        expect(
+          () => garage.garageVehicleLens(loc).get(fleet),
+          throwsRangeError,
+        );
+      });
+
+      test('composed lenses propagate canGet=false from the base dispatcher', () {
+        // A selector watching a registration-plate lens for a removed vehicle
+        // must not call get — canGet on the composed lens must also be false.
+        const loc = GarageLocation(kind: VehicleCategory.car, slot: 9);
+        expect(
+          garage.garageVehicleRegistrationPlateLens(loc).canGet(fleet),
+          isFalse,
+        );
+      });
+    });
   });
 }
