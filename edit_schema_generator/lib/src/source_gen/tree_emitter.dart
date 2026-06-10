@@ -132,9 +132,13 @@ final class _TreeSchemaEmitter {
       if (field is! _TreeTaggedListsSource || !field.generateLocation) {
         continue;
       }
+      final key = field.key;
       _writeLocationClass(buffer, field.locationType, [
         _TreeParam(type: field.categoryType, name: field.discriminator),
-        _TreeParam(type: 'int', name: field.indexField),
+        if (key != null)
+          _TreeParam(type: key.type, name: key.field)
+        else
+          _TreeParam(type: 'int', name: field.indexField),
       ]);
     }
   }
@@ -843,6 +847,10 @@ final class _TreeSchemaEmitter {
     String rootType,
     _TreeTaggedListsSource source,
   ) {
+    if (source.key != null) {
+      _writeKeyedTaggedLens(buffer, rootId, rootType, source);
+      return;
+    }
     final element = source.elementType;
     final lensName = source.lensName;
     final disc = source.discriminator;
@@ -898,6 +906,91 @@ final class _TreeSchemaEmitter {
       ..writeln('  },')
       ..writeln(
         "  name: '${source.baseName}[\${location.$disc}/\${location.$idx}]',",
+      )
+      ..writeln(');')
+      ..writeln();
+  }
+
+  /// Emits the identity-keyed variant of the tagged dispatcher: the location
+  /// carries the element key, and get/set/canGet resolve it to an index per
+  /// read through a shared `_{lens}IndexOf` scan. A key miss behaves like an
+  /// out-of-range index (get throws, canGet is false, set is a no-op), so the
+  /// saved-backing try/catch contract is unchanged.
+  void _writeKeyedTaggedLens(
+    StringBuffer buffer,
+    String rootId,
+    String rootType,
+    _TreeTaggedListsSource source,
+  ) {
+    final element = source.elementType;
+    final lensName = source.lensName;
+    final disc = source.discriminator;
+    final key = source.key!;
+    final keyField = key.field;
+    if (buffer.toString().contains('Lens<$element> $lensName(')) return;
+
+    final indexOf = '_${lensName}IndexOf';
+    buffer
+      ..writeln('int $indexOf(List<$element> list, ${key.type} key) {')
+      ..writeln('  for (var i = 0; i < list.length; i++) {')
+      ..writeln('    if (${key.getter('list[i]')} == key) return i;')
+      ..writeln('  }')
+      ..writeln('  return -1;')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+        'Lens<$element> $lensName(${source.locationType} location) => '
+        'Lens<$element>(',
+      )
+      ..writeln('  get: (root) {')
+      ..writeln('    final container = root as $rootType;')
+      ..writeln('    return switch (location.$disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '      ${entry.enumSource} => container.${entry.property}'
+        '[$indexOf(container.${entry.property}, location.$keyField)],',
+      );
+    }
+    buffer
+      ..writeln('    };')
+      ..writeln('  },')
+      ..writeln('  set: (root, nextValue) {')
+      ..writeln('    final container = root as $rootType;')
+      ..writeln('    return switch (location.$disc) {');
+    for (final entry in source.entries) {
+      buffer
+        ..writeln('      ${entry.enumSource} => () {')
+        ..writeln(
+          '        final index = '
+          '$indexOf(container.${entry.property}, location.$keyField);',
+        )
+        ..writeln('        if (index < 0) return container;')
+        ..writeln(
+          '        final next = '
+          'List<${entry.elementType}>.of(container.${entry.property});',
+        )
+        ..writeln('        next[index] = nextValue as ${entry.elementType};')
+        ..writeln('        return container.copyWith(${entry.property}: next);')
+        ..writeln('      }(),');
+    }
+    buffer
+      ..writeln('    };')
+      ..writeln('  },')
+      ..writeln('  canGet: (root) {')
+      ..writeln('    final container = root as $rootType;')
+      ..writeln('    return switch (location.$disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '      ${entry.enumSource} => '
+        '$indexOf(container.${entry.property}, location.$keyField) >= 0,',
+      );
+    }
+    buffer
+      ..writeln('    };')
+      ..writeln('  },')
+      ..writeln(
+        "  name: '${source.baseName}"
+        "[\${location.$disc}/#\${location.$keyField}]',",
       )
       ..writeln(');')
       ..writeln();

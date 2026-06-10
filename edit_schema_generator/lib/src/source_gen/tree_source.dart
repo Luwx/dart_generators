@@ -476,6 +476,7 @@ final class _TreeTaggedListsSource extends _TreeFieldSource {
     required this.sharedOwner,
     required this.entries,
     required this.generateLocation,
+    this.key,
   }) : super(id: baseName, name: baseName);
 
   factory _TreeTaggedListsSource.parse(
@@ -491,6 +492,23 @@ final class _TreeTaggedListsSource extends _TreeFieldSource {
     final lensName = _stringArgument(node, 'lens');
     final baseName =
         _optionalStringArgument(node, 'name') ?? _lowerFirst(elementType);
+
+    final keyArg = _namedArgument(node, 'key')?.expression;
+    _TaggedListKeySource? key;
+    if (keyArg != null) {
+      if (_optionalStringArgument(node, 'index') != null) {
+        throw _unsupported(
+          node,
+          'taggedLists key: and index: are mutually exclusive.',
+        );
+      }
+      final keyNode = _asInvocation(keyArg, 'listKey');
+      key = _TaggedListKeySource(
+        field: _stringArgument(keyNode, 'field'),
+        type: _typeArguments(keyNode, count: 2)[1],
+        getSource: _closureArgSource(keyNode, 'get', const [r'$element']),
+      );
+    }
 
     final map = _requiredArgument(node, 'lists');
     if (map is! SetOrMapLiteral || !map.isMap) {
@@ -529,6 +547,7 @@ final class _TreeTaggedListsSource extends _TreeFieldSource {
       sharedOwner: elementElement,
       entries: entries,
       generateLocation: _boolArgument(node, 'generateLocation', orElse: false),
+      key: key,
     );
   }
 
@@ -550,6 +569,31 @@ final class _TreeTaggedListsSource extends _TreeFieldSource {
   final List<_TreeFieldSource> shared;
   final InterfaceElement sharedOwner;
   final List<_TaggedListEntry> entries;
+
+  /// When set, the coordinate is identity-keyed: the location carries the
+  /// element key named [_TaggedListKeySource.field] instead of [indexField],
+  /// and lenses resolve elements by key lookup at read time.
+  final _TaggedListKeySource? key;
+}
+
+final class _TaggedListKeySource {
+  const _TaggedListKeySource({
+    required this.field,
+    required this.type,
+    required this.getSource,
+  });
+
+  /// The location field carrying the key (e.g. `editId`).
+  final String field;
+
+  /// The key's (non-nullable) source type (e.g. `int`).
+  final String type;
+
+  /// Key extraction source with the element rewritten to `$element`
+  /// (e.g. `$element.common.editId`).
+  final String getSource;
+
+  String getter(String receiver) => getSource.replaceAll(r'$element', receiver);
 }
 
 final class _TaggedListEntry {

@@ -341,17 +341,44 @@ TreeField sealed(
 /// - [lists]: maps each [TCategory] value to `(listProperty, perEntrySubtree)`.
 /// - [name]: base name for the [shared] lens family (default: lowered [TElement]).
 /// [generateLocation]: emit the [TLocation] value class (lead field
-/// [discriminator] of type [TCategory] + int [index] field) instead of treating
-/// it as an externally-defined type.
+/// [discriminator] of type [TCategory] + int [index] field, or the [key] field
+/// when one is declared) instead of treating it as an externally-defined type.
+/// [key]: a [listKey] switching the coordinate from positional to identity:
+/// the location carries the element's key instead of a list index, and every
+/// generated lens resolves the element by key at read time — so the same
+/// location addresses the same logical element in any snapshot of the root,
+/// regardless of list order. Mutually exclusive with [index].
 TreeField taggedLists<TLocation, TElement, TCategory>({
   required String lens,
   required String discriminator,
   required Map<TCategory, (String, TreeNode<dynamic>)> lists,
   String index = 'index',
+  ListKey? key,
   List<TreeField> shared = const [],
   String? name,
   bool generateLocation = false,
 }) => const _TreeTaggedListsField._();
+
+/// Codegen-only description of identity-keyed element resolution for
+/// [taggedLists]. Construct it with [listKey].
+final class ListKey {
+  const ListKey._();
+}
+
+/// Declares key-based element resolution: the generated location carries
+/// [field] (of type [TKey]) and lenses resolve the element whose [get] value
+/// equals it, scanning the discriminated list at read time.
+///
+/// - [get] may return null for elements that have no key assigned yet; such
+///   elements are simply unaddressable through the keyed coordinate ([TKey]
+///   itself is non-nullable, so a location always names a concrete key).
+/// - A `get` miss reads as out-of-range: `canGet` is false, `get` throws, and
+///   `set` leaves the root unchanged — the same contract as a stale index in
+///   positional mode.
+ListKey listKey<TElement, TKey extends Object>({
+  required String field,
+  required TKey? Function(TElement element) get,
+}) => const ListKey._();
 
 /// Cross-cutting singleton dispatcher: one shared [node] shape stored under
 /// several sibling properties of [TRoot], selected at runtime by a [TCategory]
