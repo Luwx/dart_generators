@@ -4,6 +4,7 @@ final class _EditRootSource {
   const _EditRootSource({
     required this.id,
     required this.rootType,
+    required this.lensRootType,
     required this.locationType,
     required this.rootLens,
     required this.savedBacking,
@@ -25,6 +26,8 @@ final class _EditRootSource {
     return _EditRootSource(
       id: _stringArgument(node, 'id'),
       rootType: _optionalStringArgument(node, 'rootType') ?? typeArguments[0],
+      lensRootType:
+          _optionalStringArgument(node, 'lensRootType') ?? typeArguments[0],
       locationType:
           _optionalStringArgument(node, 'locationType') ?? typeArguments[1],
       rootLens: _stringArgument(node, 'rootLens'),
@@ -80,6 +83,7 @@ final class _EditRootSource {
     return _EditRootSource(
       id: id,
       rootType: rootType,
+      lensRootType: _inferRootLensRootType(node, rootLens) ?? rootType,
       locationType: locationType,
       rootLens: rootLens,
       savedBacking: const _SavedBackingSource(source: 'saved != null'),
@@ -90,11 +94,43 @@ final class _EditRootSource {
 
   final String id;
   final String rootType;
+  final String lensRootType;
   final String locationType;
   final String rootLens;
   final _SavedBackingSource savedBacking;
   final List<_EditFieldSource> fields;
   final List<_EditGroupSource> groups;
+}
+
+String? _inferRootLensRootType(MethodInvocation node, String rootLens) {
+  final unit = node.thisOrAncestorOfType<CompilationUnit>();
+  if (unit == null) return null;
+  for (final declaration in unit.declarations) {
+    if (declaration is! FunctionDeclaration) continue;
+    if (declaration.name.lexeme != rootLens) continue;
+    return _firstLensTypeArgument(declaration.returnType?.toSource());
+  }
+  return null;
+}
+
+String? _firstLensTypeArgument(String? returnType) {
+  if (returnType == null) return null;
+  const prefix = 'Lens<';
+  final source = returnType.trim();
+  if (!source.startsWith(prefix) || !source.endsWith('>')) return null;
+  var depth = 0;
+  final body = source.substring(prefix.length, source.length - 1);
+  for (var i = 0; i < body.length; i++) {
+    final char = body[i];
+    if (char == '<') {
+      depth++;
+    } else if (char == '>') {
+      depth--;
+    } else if (char == ',' && depth == 0) {
+      return body.substring(0, i).trim();
+    }
+  }
+  return null;
 }
 
 final class _EditFieldSource {

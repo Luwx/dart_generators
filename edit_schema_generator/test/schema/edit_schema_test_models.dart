@@ -52,6 +52,16 @@ final class FixtureNode {
   }
 }
 
+final class FixtureDocument {
+  const FixtureDocument({this.nodes = const []});
+
+  final List<FixtureNode> nodes;
+
+  FixtureDocument copyWith({List<FixtureNode>? nodes}) {
+    return FixtureDocument(nodes: nodes ?? this.nodes);
+  }
+}
+
 final class FixtureLocation {
   const FixtureLocation(this.index);
 

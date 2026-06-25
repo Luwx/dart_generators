@@ -52,26 +52,27 @@ final class _SourceSchemaEmitter {
       final name = '${root.id}${_pascal(field.id)}Field';
       buffer
         ..writeln(
-          'final $name = GeneratedEditField<${root.rootType}, '
-          '${root.locationType}, ${field.type}, Lens<${root.rootType}, ${field.type}>>(',
+          'final $name = GeneratedEditField<${root.lensRootType}, '
+          '${root.locationType}, ${field.type}, Lens<${root.lensRootType}, ${field.type}>>(',
         )
         ..writeln("  id: '${field.id}',")
         ..writeln('  dirtyField: $fieldEnum.${field.id},')
         ..writeln('  lens: ${root.id}${_pascal(field.id)}Lens,')
-        ..writeln('  fallback: ${_fallbackExpression(field)},')
+        ..writeln('  fallback: ${_fallbackExpression(root, field)},')
         ..writeln('  adapter: ${field.adapter.expression(field.type)},')
         ..writeln(');')
         ..writeln();
     }
   }
 
-  String _fallbackExpression(_EditFieldSource field) {
+  String _fallbackExpression(_EditRootSource root, _EditFieldSource field) {
     switch (field.fallback.kind) {
       case _FallbackKind.none:
         return 'null';
       case _FallbackKind.custom:
         return '(value) => ${field.fallback.source}';
       case _FallbackKind.fromSelect:
+        if (root.lensRootType != root.rootType) return 'null';
         final selector = field.selector;
         if (selector is _LeafSource) {
           return '(value) => ${selector.getterExpression('value')}';
@@ -131,7 +132,7 @@ final class _SourceSchemaEmitter {
           ..writeln(');')
           ..writeln()
           ..writeln(
-            'Lens<${root.rootType}, ${field.type}> ${root.id}${_pascal(field.id)}Lens('
+            'Lens<${root.lensRootType}, ${field.type}> ${root.id}${_pascal(field.id)}Lens('
             '${root.locationType} location) =>',
           )
           ..writeln('    ${root.rootLens}(location)')
@@ -153,7 +154,7 @@ final class _SourceSchemaEmitter {
           ..writeln(');')
           ..writeln()
           ..writeln(
-            'Lens<${root.rootType}, ${field.type}> ${root.id}${_pascal(field.id)}Lens('
+            'Lens<${root.lensRootType}, ${field.type}> ${root.id}${_pascal(field.id)}Lens('
             '${root.locationType} location) =>',
           )
           ..writeln('    ${root.rootLens}(location).then($partName);')

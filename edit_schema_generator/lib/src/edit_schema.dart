@@ -19,11 +19,13 @@ EditRoot<TRoot, TLocation> editRoot<TRoot, TLocation>({
   required SavedBackingSpec<TRoot> savedBacking,
   required List<EditField<TRoot, Object?>> fields,
   String? rootType,
+  String? lensRootType,
   String? locationType,
   List<EditGroup> groups = const [],
 }) => EditRoot<TRoot, TLocation>(
   id: id,
   rootType: rootType ?? _typeName<TRoot>(),
+  lensRootType: lensRootType ?? rootType ?? _typeName<TRoot>(),
   locationType: locationType ?? _typeName<TLocation>(),
   rootLens: rootLens,
   savedBacking: savedBacking,
@@ -684,6 +686,7 @@ final class EditRoot<TRoot, TLocation> {
   const EditRoot({
     required this.id,
     required this.rootType,
+    required this.lensRootType,
     required this.locationType,
     required this.rootLens,
     required this.savedBacking,
@@ -693,6 +696,7 @@ final class EditRoot<TRoot, TLocation> {
 
   final String id;
   final String rootType;
+  final String lensRootType;
   final String locationType;
   final String rootLens;
   final SavedBackingSpec<TRoot> savedBacking;

@@ -220,3 +220,49 @@ FixtureNode restoreFixtureNodeField({
 };
 
 bool fixtureNodeHasSavedBacking(FixtureNode? saved) => saved != null;
+
+// Generated code. Do not modify by hand.
+// ignore_for_file: dead_code, prefer_null_aware_operators, lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, unnecessary_parenthesis, unreachable_switch_case, unused_element, invalid_null_aware_operator
+
+enum ProjectedNodeDirtyField { mode }
+
+final _projectedNodeModePart = LensPart<FixtureNode, String?>(
+  get: (value) => value.mode,
+  set: (value, next) => value.copyWith(mode: next),
+  name: 'mode',
+);
+
+Lens<FixtureDocument, String?> projectedNodeModeLens(
+  FixtureLocation location,
+) => projectedFixtureNodeLens(location).then(_projectedNodeModePart);
+
+final projectedNodeModeField =
+    GeneratedEditField<
+      FixtureDocument,
+      FixtureLocation,
+      String?,
+      Lens<FixtureDocument, String?>
+    >(
+      id: 'mode',
+      dirtyField: ProjectedNodeDirtyField.mode,
+      lens: projectedNodeModeLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<String?>.identity(),
+    );
+
+Object? comparableProjectedNodeFieldValue(
+  FixtureNode? value,
+  ProjectedNodeDirtyField field,
+) => switch (field) {
+  ProjectedNodeDirtyField.mode => value == null ? null : value.mode,
+};
+
+FixtureNode restoreProjectedNodeField({
+  required FixtureNode current,
+  required FixtureNode saved,
+  required ProjectedNodeDirtyField field,
+}) => switch (field) {
+  ProjectedNodeDirtyField.mode => current.copyWith(mode: saved.mode),
+};
+
+bool projectedNodeHasSavedBacking(FixtureNode? saved) => saved != null;

@@ -8,6 +8,18 @@ Lens<FixtureNode, FixtureNode> fixtureNodeLens(FixtureLocation location) {
   throw UnimplementedError('Only generated helper signatures use this lens.');
 }
 
+Lens<FixtureDocument, FixtureNode> projectedFixtureNodeLens(
+  FixtureLocation location,
+) => Lens<FixtureDocument, FixtureNode>(
+  get: (root) => root.nodes[location.index],
+  set: (root, next) {
+    final nodes = List<FixtureNode>.of(root.nodes);
+    nodes[location.index] = next;
+    return root.copyWith(nodes: nodes);
+  },
+  name: 'projectedFixtureNode[${location.index}]',
+);
+
 @GenerateEditSchema()
 final EditSchema<FixtureNode, FixtureLocation> fixtureNodeGeneratedSchema =
     editSchema<FixtureNode, FixtureLocation>(
@@ -32,5 +44,15 @@ final EditSchema<FixtureNode, FixtureLocation> fixtureNodeGeneratedSchema =
       ],
       groups: [
         editGroup(id: 'modeAndFlag', members: ['mode', 'flag']),
+      ],
+    );
+
+@GenerateEditSchema()
+final EditSchema<FixtureNode, FixtureLocation> projectedNodeGeneratedSchema =
+    editSchema<FixtureNode, FixtureLocation>(
+      id: 'projectedNode',
+      rootLens: 'projectedFixtureNodeLens',
+      fields: [
+        prop('mode'),
       ],
     );

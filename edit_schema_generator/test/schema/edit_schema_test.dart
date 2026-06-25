@@ -99,6 +99,32 @@ void main() {
         ),
       );
     });
+
+    test('custom root lens preserves the lens root type', () {
+      const location = FixtureLocation(0);
+      const document = FixtureDocument(
+        nodes: [
+          FixtureNode(
+            variant: TextVariant(text: 'source-text'),
+            mode: 'source-mode',
+          ),
+        ],
+      );
+
+      final Lens<FixtureDocument, String?> lens =
+          generated.projectedNodeModeLens(location);
+      final GeneratedEditField<
+        FixtureDocument,
+        FixtureLocation,
+        String?,
+        Lens<FixtureDocument, String?>
+      >
+      field = generated.projectedNodeModeField;
+
+      expect(field.id, 'mode');
+      expect(lens.get(document), 'source-mode');
+      expect(lens.set(document, 'next-mode').nodes.single.mode, 'next-mode');
+    });
   });
 
   group('self-union and tear-off authoring', () {
