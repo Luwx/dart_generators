@@ -380,6 +380,28 @@ void main() {
       );
     });
 
+    test('out-of-range positional index reads as absent instead of throwing', () {
+      final fleet = _fleetForTree();
+
+      // In range, the located field is readable as usual.
+      final inRange =
+          tree.carRegistrationPlateLens(const tree.CarLocation(carIndex: 0));
+      expect(inRange.canGet(fleet), isTrue);
+      expect(inRange.get(fleet), 'CAR-1');
+
+      // Out of range, canGet guards the list bounds so readers never index past
+      // the end. Regression: a stale selector for a just-removed row used to
+      // RangeError here (the item LensPart had no canGet bounds guard).
+      final outOfRange =
+          tree.carRegistrationPlateLens(const tree.CarLocation(carIndex: 99));
+      expect(outOfRange.canGet(fleet), isFalse);
+
+      // The same guard covers plain (non-cross-cutting) positional lists.
+      final policy =
+          tree.policyConditionsLens(const tree.PolicyLocation(policyIndex: 99));
+      expect(policy.canGet(fleet), isFalse);
+    });
+
     test(
       'shared registration subtree is generated once, reached from each list',
       () {

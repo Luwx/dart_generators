@@ -740,11 +740,17 @@ final class _TreeSchemaEmitter {
       ..writeln('      get: (value) => value.${field.property}[index],')
       ..writeln('      set: (value, nextValue) {')
       ..writeln(
+        '        if (index < 0 || index >= value.${field.property}.length) return value;',
+      )
+      ..writeln(
         '        final next = List<${field.elementType}>.of(value.${field.property});',
       )
       ..writeln('        next[index] = nextValue;')
       ..writeln('        return value.copyWith(${field.property}: next);')
       ..writeln('      },')
+      ..writeln(
+        '      canGet: (value) => index >= 0 && index < value.${field.property}.length,',
+      )
       ..writeln("      name: '${field.name}[\$index]',")
       ..writeln('    );')
       ..writeln();

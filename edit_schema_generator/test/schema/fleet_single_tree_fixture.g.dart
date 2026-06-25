@@ -380,10 +380,12 @@ final _fleetSettingsnotificationsWebhookUrlPart =
 LensPart<Fleet, Car> _fleetCarItemPart(int index) => LensPart<Fleet, Car>(
   get: (value) => value.cars[index],
   set: (value, nextValue) {
+    if (index < 0 || index >= value.cars.length) return value;
     final next = List<Car>.of(value.cars);
     next[index] = nextValue;
     return value.copyWith(cars: next);
   },
+  canGet: (value) => index >= 0 && index < value.cars.length,
   name: 'car[$index]',
 );
 
@@ -485,10 +487,12 @@ LensPart<Registration, Permit> _fleetCarregistrationPermitsItemPart(
 ) => LensPart<Registration, Permit>(
   get: (value) => value.permits[index],
   set: (value, nextValue) {
+    if (index < 0 || index >= value.permits.length) return value;
     final next = List<Permit>.of(value.permits);
     next[index] = nextValue;
     return value.copyWith(permits: next);
   },
+  canGet: (value) => index >= 0 && index < value.permits.length,
   name: 'permits[$index]',
 );
 
@@ -624,10 +628,12 @@ _fleetCarregistrationpermitdetailaccessGatesItemPart(int index) =>
     LensPart<AccessPermit, Gate>(
       get: (value) => value.gates[index],
       set: (value, nextValue) {
+        if (index < 0 || index >= value.gates.length) return value;
         final next = List<Gate>.of(value.gates);
         next[index] = nextValue;
         return value.copyWith(gates: next);
       },
+      canGet: (value) => index >= 0 && index < value.gates.length,
       name: 'gates[$index]',
     );
 
@@ -1002,10 +1008,12 @@ final _fleetCarconvertibleRoofOpenPart = LensPart<Convertible, bool?>(
 LensPart<Fleet, Truck> _fleetTruckItemPart(int index) => LensPart<Fleet, Truck>(
   get: (value) => value.trucks[index],
   set: (value, nextValue) {
+    if (index < 0 || index >= value.trucks.length) return value;
     final next = List<Truck>.of(value.trucks);
     next[index] = nextValue;
     return value.copyWith(trucks: next);
   },
+  canGet: (value) => index >= 0 && index < value.trucks.length,
   name: 'truck[$index]',
 );
 
@@ -1107,10 +1115,12 @@ LensPart<Registration, Permit> _fleetTruckregistrationPermitsItemPart(
 ) => LensPart<Registration, Permit>(
   get: (value) => value.permits[index],
   set: (value, nextValue) {
+    if (index < 0 || index >= value.permits.length) return value;
     final next = List<Permit>.of(value.permits);
     next[index] = nextValue;
     return value.copyWith(permits: next);
   },
+  canGet: (value) => index >= 0 && index < value.permits.length,
   name: 'permits[$index]',
 );
 
@@ -1191,10 +1201,12 @@ _fleetTruckregistrationpermitdetailaccessGatesItemPart(int index) =>
     LensPart<AccessPermit, Gate>(
       get: (value) => value.gates[index],
       set: (value, nextValue) {
+        if (index < 0 || index >= value.gates.length) return value;
         final next = List<Gate>.of(value.gates);
         next[index] = nextValue;
         return value.copyWith(gates: next);
       },
+      canGet: (value) => index >= 0 && index < value.gates.length,
       name: 'gates[$index]',
     );
 
@@ -1355,10 +1367,12 @@ final _fleetTrucktankerHazmatPart = LensPart<Tanker, bool?>(
 LensPart<Fleet, Bike> _fleetBikeItemPart(int index) => LensPart<Fleet, Bike>(
   get: (value) => value.bikes[index],
   set: (value, nextValue) {
+    if (index < 0 || index >= value.bikes.length) return value;
     final next = List<Bike>.of(value.bikes);
     next[index] = nextValue;
     return value.copyWith(bikes: next);
   },
+  canGet: (value) => index >= 0 && index < value.bikes.length,
   name: 'bike[$index]',
 );
 
@@ -1460,10 +1474,12 @@ LensPart<Registration, Permit> _fleetBikeregistrationPermitsItemPart(
 ) => LensPart<Registration, Permit>(
   get: (value) => value.permits[index],
   set: (value, nextValue) {
+    if (index < 0 || index >= value.permits.length) return value;
     final next = List<Permit>.of(value.permits);
     next[index] = nextValue;
     return value.copyWith(permits: next);
   },
+  canGet: (value) => index >= 0 && index < value.permits.length,
   name: 'permits[$index]',
 );
 
@@ -1544,10 +1560,12 @@ _fleetBikeregistrationpermitdetailaccessGatesItemPart(int index) =>
     LensPart<AccessPermit, Gate>(
       get: (value) => value.gates[index],
       set: (value, nextValue) {
+        if (index < 0 || index >= value.gates.length) return value;
         final next = List<Gate>.of(value.gates);
         next[index] = nextValue;
         return value.copyWith(gates: next);
       },
+      canGet: (value) => index >= 0 && index < value.gates.length,
       name: 'gates[$index]',
     );
 
@@ -1661,10 +1679,12 @@ LensPart<Fleet, Policy> _fleetPoliciesItemPart(int index) =>
     LensPart<Fleet, Policy>(
       get: (value) => value.policies[index],
       set: (value, nextValue) {
+        if (index < 0 || index >= value.policies.length) return value;
         final next = List<Policy>.of(value.policies);
         next[index] = nextValue;
         return value.copyWith(policies: next);
       },
+      canGet: (value) => index >= 0 && index < value.policies.length,
       name: 'policies[$index]',
     );
 
