@@ -1946,21 +1946,6 @@ List<Car>? carAt(Fleet? root) {
   }
 }
 
-Lens<Registration> carRegistrationLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarRegistrationPart);
-
-Registration? carRegistrationAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carRegistrationLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
 Lens<List<Permit>> carRegistrationPermitsLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
@@ -2045,146 +2030,11 @@ Gate? carRegistrationPermitDetailAccessGateAt(
   }
 }
 
-Lens<Trim> carSedanTrimLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarAsSedanPart)
-    .then(_fleetCarsedanTrimPart);
-
-Trim? carSedanTrimAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carSedanTrimLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Upholstery> carSedanTrimUpholsteryLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsSedanPart)
-        .then(_fleetCarsedanTrimPart)
-        .then(_fleetCarsedantrimUpholsteryPart);
-
-Upholstery? carSedanTrimUpholsteryAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carSedanTrimUpholsteryLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Trim> carCoupeTrimLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarAsCoupePart)
-    .then(_fleetCarcoupeTrimPart);
-
-Trim? carCoupeTrimAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carCoupeTrimLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Upholstery> carCoupeTrimUpholsteryLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsCoupePart)
-        .then(_fleetCarcoupeTrimPart)
-        .then(_fleetCarcoupetrimUpholsteryPart);
-
-Upholstery? carCoupeTrimUpholsteryAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carCoupeTrimUpholsteryLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Drivetrain> carCoupeDrivetrainLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsCoupePart)
-        .then(_fleetCarcoupeDrivetrainPart);
-
-Drivetrain? carCoupeDrivetrainAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carCoupeDrivetrainLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Trim> carConvertibleTrimLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarAsConvertiblePart)
-    .then(_fleetCarconvertibleTrimPart);
-
-Trim? carConvertibleTrimAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carConvertibleTrimLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Upholstery> carConvertibleTrimUpholsteryLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsConvertiblePart)
-        .then(_fleetCarconvertibleTrimPart)
-        .then(_fleetCarconvertibletrimUpholsteryPart);
-
-Upholstery? carConvertibleTrimUpholsteryAt(Fleet? root, CarLocation location) {
-  if (root == null) return null;
-  final lens = carConvertibleTrimUpholsteryLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
 Lens<List<Truck>> truckLens() => _fleetRootLens().then(_fleetTruckPart);
 
 List<Truck>? truckAt(Fleet? root) {
   if (root == null) return null;
   final lens = truckLens();
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Registration> truckRegistrationLens(TruckLocation location) =>
-    _fleetRootLens()
-        .then(_fleetTruckItemPart(location.truckIndex))
-        .then(_fleetTruckRegistrationPart);
-
-Registration? truckRegistrationAt(Fleet? root, TruckLocation location) {
-  if (root == null) return null;
-  final lens = truckRegistrationLens(location);
   try {
     if (!lens.canGet(root)) return null;
     return lens.get(root);
@@ -2279,61 +2129,11 @@ Gate? truckRegistrationPermitDetailAccessGateAt(
   }
 }
 
-Lens<Trim> truckBoxTrimLens(TruckLocation location) => _fleetRootLens()
-    .then(_fleetTruckItemPart(location.truckIndex))
-    .then(_fleetTruckAsBoxTruckPart)
-    .then(_fleetTruckboxTrimPart);
-
-Trim? truckBoxTrimAt(Fleet? root, TruckLocation location) {
-  if (root == null) return null;
-  final lens = truckBoxTrimLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Upholstery> truckBoxTrimUpholsteryLens(TruckLocation location) =>
-    _fleetRootLens()
-        .then(_fleetTruckItemPart(location.truckIndex))
-        .then(_fleetTruckAsBoxTruckPart)
-        .then(_fleetTruckboxTrimPart)
-        .then(_fleetTruckboxtrimUpholsteryPart);
-
-Upholstery? truckBoxTrimUpholsteryAt(Fleet? root, TruckLocation location) {
-  if (root == null) return null;
-  final lens = truckBoxTrimUpholsteryLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
 Lens<List<Bike>> bikeLens() => _fleetRootLens().then(_fleetBikePart);
 
 List<Bike>? bikeAt(Fleet? root) {
   if (root == null) return null;
   final lens = bikeLens();
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Registration> bikeRegistrationLens(BikeLocation location) =>
-    _fleetRootLens()
-        .then(_fleetBikeItemPart(location.bikeIndex))
-        .then(_fleetBikeRegistrationPart);
-
-Registration? bikeRegistrationAt(Fleet? root, BikeLocation location) {
-  if (root == null) return null;
-  final lens = bikeRegistrationLens(location);
   try {
     if (!lens.canGet(root)) return null;
     return lens.get(root);
@@ -2445,21 +2245,6 @@ Lens<Policy> policyLens(PolicyLocation location) =>
 Policy? policyAt(Fleet? root, PolicyLocation location) {
   if (root == null) return null;
   final lens = policyLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<PolicyLimits> policyLimitsLens(PolicyLocation location) => _fleetRootLens()
-    .then(_fleetPoliciesItemPart(location.policyIndex))
-    .then(_fleetPolicyLimitsPart);
-
-PolicyLimits? policyLimitsAt(Fleet? root, PolicyLocation location) {
-  if (root == null) return null;
-  final lens = policyLimitsLens(location);
   try {
     if (!lens.canGet(root)) return null;
     return lens.get(root);

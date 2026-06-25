@@ -326,13 +326,20 @@ final class _TreeSchemaEmitter {
             name: field.name,
             scope: field.scope,
           );
-          structuralLenses.add(
-            _TreeStructuralLens(
-              name: nextPath.lensName,
-              type: field.type,
-              path: nextPath,
-            ),
+          final structuralPath = path.append(
+            part: part,
+            valueExpr: nextValue,
+            name: field.name,
           );
+          if (structuralPath.params.isEmpty) {
+            structuralLenses.add(
+              _TreeStructuralLens(
+                name: structuralPath.lensName,
+                type: field.type,
+                path: structuralPath,
+              ),
+            );
+          }
           comparableNodes[field.node.type] = field.node;
           _collectFields(
             parts,
@@ -425,7 +432,6 @@ final class _TreeSchemaEmitter {
             valueExpr:
                 '(${path.valueExpr}?.${field.property} ?? const <${field.elementType}>[])',
             name: field.name,
-            scope: field.scope,
           );
           structuralLenses.add(
             _TreeStructuralLens(

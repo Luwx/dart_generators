@@ -1,7 +1,7 @@
 ## 0.0.4
 
-* Emit public structural lenses and nullable read helpers for tree child/list
-  paths, including nested located list items.
+* Emit public structural lenses and nullable read helpers for root child
+  sections and list paths, including nested located list items.
 * Emit tagged-list facade helpers for branch access, key/index lookup, location
   creation, and guarded structural mutations.
 

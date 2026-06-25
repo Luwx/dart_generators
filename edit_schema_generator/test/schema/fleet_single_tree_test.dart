@@ -312,6 +312,15 @@ void main() {
       expect(updated.cars, same(fleet.cars));
     });
 
+    test('root child structural lens has a nullable read helper', () {
+      final fleet = _fleetForTree();
+      final lens = tree.settingsLens();
+
+      expect(lens.get(fleet).region, 'eu');
+      expect(tree.settingsAt(fleet)?.region, 'eu');
+      expect(tree.settingsAt(null), isNull);
+    });
+
     test('child-of-a-child composes a two-hop path', () {
       final fleet = _fleetForTree();
       final lens = tree.settingsNotificationsEmailLens();
@@ -334,8 +343,10 @@ void main() {
     });
 
     test('dispatched depot lens reads through an absent slot as empty', () {
-      expect(tree.depotCapacityLens(VehicleCategory.car).get(const Fleet()),
-          isNull);
+      expect(
+        tree.depotCapacityLens(VehicleCategory.car).get(const Fleet()),
+        isNull,
+      );
       final updated =
           tree.depotCapacityLens(VehicleCategory.car).set(const Fleet(), 12)
               as Fleet;
@@ -345,9 +356,11 @@ void main() {
     test('the depot dispatcher routes each category to its own slot', () {
       const fleet = Fleet();
       // Section lens writes the right slot per category and leaves siblings be.
-      final withTruck = tree
-          .depotSettingsLens(VehicleCategory.truck)
-          .set(fleet, const DepotSettings(bays: 7)) as Fleet;
+      final withTruck =
+          tree
+                  .depotSettingsLens(VehicleCategory.truck)
+                  .set(fleet, const DepotSettings(bays: 7))
+              as Fleet;
       expect(withTruck.truckDepot?.bays, 7);
       expect(withTruck.carDepot, isNull);
       expect(withTruck.bikeDepot, isNull);
@@ -367,15 +380,21 @@ void main() {
       final fleet = _fleetForTree();
 
       expect(
-        tree.carRegistrationPlateLens(const tree.CarLocation(carIndex: 0)).get(fleet),
+        tree
+            .carRegistrationPlateLens(const tree.CarLocation(carIndex: 0))
+            .get(fleet),
         'CAR-1',
       );
       expect(
-        tree.truckRegistrationPlateLens(const tree.TruckLocation(truckIndex: 0)).get(fleet),
+        tree
+            .truckRegistrationPlateLens(const tree.TruckLocation(truckIndex: 0))
+            .get(fleet),
         'TRK-1',
       );
       expect(
-        tree.bikeRegistrationPlateLens(const tree.BikeLocation(bikeIndex: 0)).get(fleet),
+        tree
+            .bikeRegistrationPlateLens(const tree.BikeLocation(bikeIndex: 0))
+            .get(fleet),
         'BIKE-1',
       );
     });
@@ -384,21 +403,24 @@ void main() {
       final fleet = _fleetForTree();
 
       // In range, the located field is readable as usual.
-      final inRange =
-          tree.carRegistrationPlateLens(const tree.CarLocation(carIndex: 0));
+      final inRange = tree.carRegistrationPlateLens(
+        const tree.CarLocation(carIndex: 0),
+      );
       expect(inRange.canGet(fleet), isTrue);
       expect(inRange.get(fleet), 'CAR-1');
 
       // Out of range, canGet guards the list bounds so readers never index past
       // the end. Regression: a stale selector for a just-removed row used to
       // RangeError here (the item LensPart had no canGet bounds guard).
-      final outOfRange =
-          tree.carRegistrationPlateLens(const tree.CarLocation(carIndex: 99));
+      final outOfRange = tree.carRegistrationPlateLens(
+        const tree.CarLocation(carIndex: 99),
+      );
       expect(outOfRange.canGet(fleet), isFalse);
 
       // The same guard covers plain (non-cross-cutting) positional lists.
-      final policy =
-          tree.policyConditionsLens(const tree.PolicyLocation(policyIndex: 99));
+      final policy = tree.policyConditionsLens(
+        const tree.PolicyLocation(policyIndex: 99),
+      );
       expect(policy.canGet(fleet), isFalse);
     });
 
@@ -408,7 +430,12 @@ void main() {
         final fleet = _fleetForTree();
 
         final updated =
-            tree.truckRegistrationRegionLens(const tree.TruckLocation(truckIndex: 0)).set(fleet, 'west') as Fleet;
+            tree
+                    .truckRegistrationRegionLens(
+                      const tree.TruckLocation(truckIndex: 0),
+                    )
+                    .set(fleet, 'west')
+                as Fleet;
         expect(updated.trucks.first.registration.region, 'west');
         expect(updated.cars.first.registration.region, 'north');
       },
@@ -427,7 +454,9 @@ void main() {
 
     test('per-case vehicle fields project and restore', () {
       final fleet = _fleetForTree();
-      final lens = tree.carCoupeTopSpeedLens(const tree.CarLocation(carIndex: 1));
+      final lens = tree.carCoupeTopSpeedLens(
+        const tree.CarLocation(carIndex: 1),
+      );
 
       expect(lens.get(fleet), 250);
       final updated = lens.set(fleet, 300) as Fleet;
@@ -437,7 +466,9 @@ void main() {
 
     test('deeply nested case child composes the full path', () {
       final fleet = _fleetForTree();
-      final lens = tree.carSedanTrimUpholsteryMaterialLens(const tree.CarLocation(carIndex: 0));
+      final lens = tree.carSedanTrimUpholsteryMaterialLens(
+        const tree.CarLocation(carIndex: 0),
+      );
 
       expect(lens.get(fleet), 'nappa');
       final updated = lens.set(fleet, 'cloth') as Fleet;
@@ -516,6 +547,23 @@ void main() {
       expect(
         identical(tree.removePermitAt(registration, 99), registration),
         isTrue,
+      );
+    });
+
+    test('nested list structural lenses have nullable read helpers', () {
+      final fleet = _fleetForTree();
+      const car = tree.CarLocation(carIndex: 0);
+      const permit = tree.CarPermitLocation(carIndex: 0, permitIndex: 1);
+
+      expect(tree.carRegistrationPermitsLens(car).get(fleet), hasLength(2));
+      expect(tree.carRegistrationPermitsAt(fleet, car), hasLength(2));
+      expect(tree.carRegistrationPermitAt(fleet, permit)?.label, 'access');
+      expect(
+        tree.carRegistrationPermitAt(
+          fleet,
+          const tree.CarPermitLocation(carIndex: 0, permitIndex: 99),
+        ),
+        isNull,
       );
     });
   });
@@ -601,7 +649,9 @@ void main() {
           containsAllInOrder([true, false]),
         );
         expect(
-          tree.carRegistrationLockedLens(const tree.CarLocation(carIndex: 0)).get(_fleetForTree()),
+          tree
+              .carRegistrationLockedLens(const tree.CarLocation(carIndex: 0))
+              .get(_fleetForTree()),
           isNull,
         );
       },
@@ -704,18 +754,21 @@ void main() {
       );
     });
 
-    test('null saved is never backed; root-scalar backs off saved presence', () {
-      final fleet = _fleetForTree();
-      expect(
-        tree.carRegistrationPlateHasSavedBacking(
-          null,
-          const tree.CarLocation(carIndex: 0),
-        ),
-        isFalse,
-      );
-      expect(tree.settingsAutoSyncHasSavedBacking(fleet), isTrue);
-      expect(tree.settingsAutoSyncHasSavedBacking(null), isFalse);
-    });
+    test(
+      'null saved is never backed; root-scalar backs off saved presence',
+      () {
+        final fleet = _fleetForTree();
+        expect(
+          tree.carRegistrationPlateHasSavedBacking(
+            null,
+            const tree.CarLocation(carIndex: 0),
+          ),
+          isFalse,
+        );
+        expect(tree.settingsAutoSyncHasSavedBacking(fleet), isTrue);
+        expect(tree.settingsAutoSyncHasSavedBacking(null), isFalse);
+      },
+    );
   });
 
   group('groups (#5)', () {
@@ -727,16 +780,19 @@ void main() {
       ]);
     });
 
-    test('group members reuse the node field compare rules (effective getter)', () {
-      // `active` is readOnly + projected, so the group tuple holds effectiveActive.
-      final registration = const Registration(plate: 'X'); // active == null
-      expect(tree.comparableRegistrationAuditValue(registration), [
-        'X',
-        null,
-        true, // effectiveActive default
-        null,
-      ]);
-    });
+    test(
+      'group members reuse the node field compare rules (effective getter)',
+      () {
+        // `active` is readOnly + projected, so the group tuple holds effectiveActive.
+        final registration = const Registration(plate: 'X'); // active == null
+        expect(tree.comparableRegistrationAuditValue(registration), [
+          'X',
+          null,
+          true, // effectiveActive default
+          null,
+        ]);
+      },
+    );
   });
 
   group('field refs (#4)', () {

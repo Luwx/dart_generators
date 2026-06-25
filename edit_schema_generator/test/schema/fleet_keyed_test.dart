@@ -24,10 +24,16 @@ void main() {
       ),
     ],
     trucks: [
-      BoxTruck(registration: Registration(plate: 'TRK-1', editId: 3), axleCount: 3),
+      BoxTruck(
+        registration: Registration(plate: 'TRK-1', editId: 3),
+        axleCount: 3,
+      ),
     ],
     bikes: [
-      RoadBike(registration: Registration(plate: 'BIKE-1', editId: 4), electric: true),
+      RoadBike(
+        registration: Registration(plate: 'BIKE-1', editId: 4),
+        electric: true,
+      ),
     ],
   );
 
@@ -65,22 +71,12 @@ void main() {
       expect(carColorLens(coupeLoc).get(reordered), 'blue');
     });
 
-    test('emits public intermediate lens and nullable read helper', () {
-      final registration = keyedVehicleRegistrationLens(sedanLoc).get(fleet);
-      expect(registration.plate, 'CAR-1');
-      expect(keyedVehicleRegistrationAt(fleet, sedanLoc)?.plate, 'CAR-1');
-      expect(keyedVehicleRegistrationAt(fleet, missingLoc), isNull);
-    });
-
     test('emits keyed tagged-list address helpers', () {
       expect(keyedVehiclesForKind(fleet, VehicleCategory.car), fleet.cars);
       expect(keyedVehicleAt(reordered, sedanLoc), isA<Sedan>());
       expect(keyedVehicleIndexOf(fleet, sedanLoc), 0);
       expect(keyedVehicleIndexOf(reordered, sedanLoc), 1);
-      expect(
-        keyedVehicleLocationAt(fleet, VehicleCategory.car, 1),
-        coupeLoc,
-      );
+      expect(keyedVehicleLocationAt(fleet, VehicleCategory.car, 1), coupeLoc);
       expect(
         keyedVehicleLocationOf(VehicleCategory.car, fleet.cars.first),
         sedanLoc,
@@ -129,10 +125,7 @@ void main() {
 
     test('set dispatches to the keyed element wherever it sits', () {
       final updated =
-          keyedVehicleRegistrationRegionLens(sedanLoc).set(
-                reordered,
-                'south',
-              )
+          keyedVehicleRegistrationRegionLens(sedanLoc).set(reordered, 'south')
               as Fleet;
       // The sedan is at index 1 in the reordered fleet.
       expect(updated.cars[1].registration.region, 'south');
@@ -156,10 +149,7 @@ void main() {
       });
 
       test('get throws', () {
-        expect(
-          () => keyedVehicleLens(missingLoc).get(fleet),
-          throwsRangeError,
-        );
+        expect(() => keyedVehicleLens(missingLoc).get(fleet), throwsRangeError);
       });
 
       test('base dispatcher set leaves the root unchanged', () {
@@ -173,10 +163,9 @@ void main() {
         // composed set on a missing key throws just as it does for a stale
         // index — callers guard with canGet either way.
         expect(
-          () => keyedVehicleRegistrationRegionLens(missingLoc).set(
-            fleet,
-            'south',
-          ),
+          () => keyedVehicleRegistrationRegionLens(
+            missingLoc,
+          ).set(fleet, 'south'),
           throwsRangeError,
         );
       });
@@ -195,16 +184,19 @@ void main() {
       });
     });
 
-    test('elements with a null key are unaddressable, others still resolve', () {
-      const unkeyed = Fleet(
-        cars: [
-          Sedan(registration: Registration(plate: 'NO-ID')),
-          Coupe(registration: Registration(plate: 'CAR-2', editId: 2)),
-        ],
-      );
-      expect(keyedVehicleLens(coupeLoc).get(unkeyed), isA<Coupe>());
-      expect(keyedVehicleLens(sedanLoc).canGet(unkeyed), isFalse);
-    });
+    test(
+      'elements with a null key are unaddressable, others still resolve',
+      () {
+        const unkeyed = Fleet(
+          cars: [
+            Sedan(registration: Registration(plate: 'NO-ID')),
+            Coupe(registration: Registration(plate: 'CAR-2', editId: 2)),
+          ],
+        );
+        expect(keyedVehicleLens(coupeLoc).get(unkeyed), isA<Coupe>());
+        expect(keyedVehicleLens(sedanLoc).canGet(unkeyed), isFalse);
+      },
+    );
 
     test('generated location carries value equality over kind/key', () {
       expect(

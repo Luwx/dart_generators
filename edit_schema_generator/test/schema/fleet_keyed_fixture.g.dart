@@ -382,23 +382,6 @@ final _keyedGarageAsCargoBikePart = LensPart<Bike, CargoBike>(
   name: 'CargoBike',
 );
 
-Lens<Registration> keyedVehicleRegistrationLens(KeyedGarageLocation location) =>
-    keyedVehicleLens(location).then(_keyedGarageKeyedVehicleRegistrationPart);
-
-Registration? keyedVehicleRegistrationAt(
-  Fleet? root,
-  KeyedGarageLocation location,
-) {
-  if (root == null) return null;
-  final lens = keyedVehicleRegistrationLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
 Lens<String?> keyedVehicleRegistrationPlateLens(KeyedGarageLocation location) =>
     keyedVehicleLens(location)
         .then(_keyedGarageKeyedVehicleRegistrationPart)

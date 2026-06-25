@@ -370,40 +370,6 @@ final _garageBikecargoBasketsPart = LensPart<CargoBike, int?>(
   name: 'baskets',
 );
 
-Lens<Registration> garageVehicleRegistrationLens(GarageLocation location) =>
-    garageVehicleLens(location).then(_garageGarageVehicleRegistrationPart);
-
-Registration? garageVehicleRegistrationAt(
-  Fleet? root,
-  GarageLocation location,
-) {
-  if (root == null) return null;
-  final lens = garageVehicleRegistrationLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
-Lens<Trim> carSedanTrimLens(GarageLocation location) =>
-    garageVehicleLens(location)
-        .then(_garageCarCastPart)
-        .then(_garageAsSedanPart)
-        .then(_garageCarsedanTrimPart);
-
-Trim? carSedanTrimAt(Fleet? root, GarageLocation location) {
-  if (root == null) return null;
-  final lens = carSedanTrimLens(location);
-  try {
-    if (!lens.canGet(root)) return null;
-    return lens.get(root);
-  } on Object catch (_) {
-    return null;
-  }
-}
-
 Lens<String?> garageVehicleRegistrationPlateLens(GarageLocation location) =>
     garageVehicleLens(location)
         .then(_garageGarageVehicleRegistrationPart)
