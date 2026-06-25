@@ -1,3 +1,9 @@
+## 0.0.7
+
+* Tighten `Lens.get`/`Lens.set` roots to non-null `Object` while keeping
+  `canGet` nullable-aware, avoiding nullable-cast diagnostics in generated
+  lenses.
+
 ## 0.0.6
 
 * Export canonical `Lens` and `LensPart` runtime classes from the package, with

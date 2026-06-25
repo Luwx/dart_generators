@@ -1,8 +1,8 @@
 /// Reads a value of type [T] from an edit root.
-typedef LensGet<T> = T Function(Object? root);
+typedef LensGet<T> = T Function(Object root);
 
 /// Writes a value of type [T] into an edit root and returns the updated root.
-typedef LensSet<T> = Object? Function(Object? root, T value);
+typedef LensSet<T> = Object Function(Object root, T value);
 
 /// Reports whether a lens can be read for an edit root.
 typedef LensCanGet = bool Function(Object? root);
@@ -52,13 +52,14 @@ final class Lens<T> {
   final LensCanGet? _canGet;
 
   /// Whether [get] is safe to call for [root].
-  bool canGet(Object? root) => _canGet?.call(root) ?? true;
+  bool canGet(Object? root) => root != null && (_canGet?.call(root) ?? true);
 
   /// Returns a copy of [root] with this lens value replaced.
   ///
   /// The returned value is cast back to the static root type passed by the
   /// caller. Generated lenses are responsible for preserving that root type.
-  TRoot set<TRoot>(TRoot root, T value) => _set(root, value) as TRoot;
+  TRoot set<TRoot extends Object>(TRoot root, T value) =>
+      _set(root, value) as TRoot;
 
   /// Composes this root lens with a typed subpart.
   Lens<TNext> then<TNext>(LensPart<T, TNext> part) {
@@ -71,9 +72,10 @@ final class Lens<T> {
       },
       name: '$name.${part.name}',
       canGet: (root) {
-        if (!canGet(root)) return false;
+        final nonNullRoot = root;
+        if (nonNullRoot == null || !canGet(nonNullRoot)) return false;
         final partCanGet = part.canGet;
-        return partCanGet == null || partCanGet(get(root));
+        return partCanGet == null || partCanGet(get(nonNullRoot));
       },
     );
   }
