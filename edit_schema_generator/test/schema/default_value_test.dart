@@ -1,8 +1,8 @@
+import 'package:edit_schema_generator/edit_schema_generator.dart';
 import 'package:test/test.dart';
 
 import 'default_value_fixture.dart';
 import 'default_value_test_models.dart';
-import 'test_lens.dart';
 
 void main() {
   group('prop defaultsTo', () {
@@ -16,15 +16,15 @@ void main() {
 
     test('writing a non-default value stores it through', () {
       final Lens<Mode> lens = taskModeLens(location);
-      final updated = lens.set(board, Mode.begin) as Board;
+      final updated = lens.set(board, Mode.begin);
       expect(lens.get(updated), Mode.begin);
       expect(updated.tasks.first.mode, Mode.begin);
     });
 
     test('writing the default compacts the property back to null', () {
       final Lens<Mode> lens = taskModeLens(location);
-      final set = lens.set(board, Mode.begin) as Board;
-      final cleared = lens.set(set, Mode.end) as Board;
+      final set = lens.set(board, Mode.begin);
+      final cleared = lens.set(set, Mode.end);
       expect(cleared.tasks.first.mode, isNull);
       expect(lens.get(cleared), Mode.end);
     });
@@ -32,9 +32,9 @@ void main() {
     test('bool default collapses and compacts the same way', () {
       final Lens<bool> lens = taskFlagLens(location);
       expect(lens.get(board), isTrue);
-      final off = lens.set(board, false) as Board;
+      final off = lens.set(board, false);
       expect(off.tasks.first.flag, isFalse);
-      final back = lens.set(off, true) as Board;
+      final back = lens.set(off, true);
       expect(back.tasks.first.flag, isNull);
       expect(lens.get(back), isTrue);
     });

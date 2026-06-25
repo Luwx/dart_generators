@@ -1,7 +1,6 @@
 import 'package:edit_schema_generator/edit_schema_generator.dart';
 
 import 'default_value_test_models.dart';
-import 'test_lens.dart';
 
 part 'default_value_fixture.g.dart';
 

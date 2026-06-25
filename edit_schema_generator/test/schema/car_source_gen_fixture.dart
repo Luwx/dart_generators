@@ -1,7 +1,6 @@
 import 'package:edit_schema_generator/edit_schema_generator.dart';
 
 import 'car_schema_test_models.dart';
-import 'test_lens.dart';
 
 part 'car_source_gen_fixture.g.dart';
 

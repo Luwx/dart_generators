@@ -1,7 +1,6 @@
 import 'package:edit_schema_generator/edit_schema_generator.dart';
 
 import 'edit_schema_test_models.dart';
-import 'test_lens.dart';
 
 part 'tearoff_self_union_fixture.g.dart';
 
@@ -38,6 +37,9 @@ final EditSchema<FixtureNode, FixtureLocation> tearoffNodeSchema =
       id: 'tearoffNode',
       rootLens: 'tearoffNodeLens',
       fields: [
-        prop('mode', select: lens(get: readMode, set: writeMode)),
+        prop(
+          'mode',
+          select: lens(get: readMode, set: writeMode),
+        ),
       ],
     );

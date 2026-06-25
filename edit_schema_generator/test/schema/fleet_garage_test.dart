@@ -18,8 +18,12 @@ void main() {
       ),
       Coupe(registration: Registration(plate: 'CAR-2'), topSpeed: 250),
     ],
-    trucks: [BoxTruck(registration: Registration(plate: 'TRK-1'), axleCount: 3)],
-    bikes: [RoadBike(registration: Registration(plate: 'BIKE-1'), electric: true)],
+    trucks: [
+      BoxTruck(registration: Registration(plate: 'TRK-1'), axleCount: 3),
+    ],
+    bikes: [
+      RoadBike(registration: Registration(plate: 'BIKE-1'), electric: true),
+    ],
   );
 
   group('taggedLists discriminator', () {
@@ -53,31 +57,37 @@ void main() {
       expect(plate(VehicleCategory.bike, 0), 'BIKE-1');
     });
 
-    test('shared set dispatches back into the right list via the supertype', () {
-      final updated =
-          garage
-                  .garageVehicleRegistrationRegionLens(
-                    const GarageLocation(kind: VehicleCategory.car, slot: 0),
-                  )
-                  .set(fleet, 'south')
-              as Fleet;
-      expect(updated.cars.first.registration.region, 'south');
-      expect(updated.trucks.first.registration.region, isNull);
-    });
+    test(
+      'shared set dispatches back into the right list via the supertype',
+      () {
+        final updated = garage
+            .garageVehicleRegistrationRegionLens(
+              const GarageLocation(kind: VehicleCategory.car, slot: 0),
+            )
+            .set(fleet, 'south');
+        expect(updated.cars.first.registration.region, 'south');
+        expect(updated.trucks.first.registration.region, isNull);
+      },
+    );
 
     test('per-entry case fields compose through the cast', () {
       final loc = const GarageLocation(kind: VehicleCategory.car, slot: 0);
       expect(garage.carColorLens(loc).get(fleet), 'red');
       expect(garage.carSedanTrimLevelLens(loc).get(fleet), 'lux');
-      final updated = garage.carCoupeTopSpeedLens(
-        const GarageLocation(kind: VehicleCategory.car, slot: 1),
-      ).set(fleet, 300) as Fleet;
+      final updated = garage
+          .carCoupeTopSpeedLens(
+            const GarageLocation(kind: VehicleCategory.car, slot: 1),
+          )
+          .set(fleet, 300);
       expect((updated.cars[1] as Coupe).topSpeed, 300);
     });
 
     test('shared backing + field ref carry the discriminator location', () {
       const loc = GarageLocation(kind: VehicleCategory.car, slot: 0);
-      expect(garage.garageVehicleRegistrationPlateHasSavedBacking(fleet, loc), isTrue);
+      expect(
+        garage.garageVehicleRegistrationPlateHasSavedBacking(fleet, loc),
+        isTrue,
+      );
       expect(
         garage.garageVehicleRegistrationPlateHasSavedBacking(
           fleet,
@@ -86,7 +96,10 @@ void main() {
         isFalse,
       );
       final ref = garage.garageVehicleRegistrationPlateField;
-      expect(ref.dirtyField, garage.GarageDirtyField.garageVehicleRegistrationPlate);
+      expect(
+        ref.dirtyField,
+        garage.GarageDirtyField.garageVehicleRegistrationPlate,
+      );
       expect(ref.lens(loc).get(fleet), 'CAR-1');
     });
 
@@ -150,25 +163,31 @@ void main() {
         );
       });
 
-      test('get throws RangeError for out-of-bounds slot (canGet prevents this path)', () {
-        // Proves why the guard matters: the raw `get` throws if called without
-        // checking canGet first.
-        const loc = GarageLocation(kind: VehicleCategory.car, slot: 9);
-        expect(
-          () => garage.garageVehicleLens(loc).get(fleet),
-          throwsRangeError,
-        );
-      });
+      test(
+        'get throws RangeError for out-of-bounds slot (canGet prevents this path)',
+        () {
+          // Proves why the guard matters: the raw `get` throws if called without
+          // checking canGet first.
+          const loc = GarageLocation(kind: VehicleCategory.car, slot: 9);
+          expect(
+            () => garage.garageVehicleLens(loc).get(fleet),
+            throwsRangeError,
+          );
+        },
+      );
 
-      test('composed lenses propagate canGet=false from the base dispatcher', () {
-        // A selector watching a registration-plate lens for a removed vehicle
-        // must not call get — canGet on the composed lens must also be false.
-        const loc = GarageLocation(kind: VehicleCategory.car, slot: 9);
-        expect(
-          garage.garageVehicleRegistrationPlateLens(loc).canGet(fleet),
-          isFalse,
-        );
-      });
+      test(
+        'composed lenses propagate canGet=false from the base dispatcher',
+        () {
+          // A selector watching a registration-plate lens for a removed vehicle
+          // must not call get — canGet on the composed lens must also be false.
+          const loc = GarageLocation(kind: VehicleCategory.car, slot: 9);
+          expect(
+            garage.garageVehicleRegistrationPlateLens(loc).canGet(fleet),
+            isFalse,
+          );
+        },
+      );
     });
   });
 }

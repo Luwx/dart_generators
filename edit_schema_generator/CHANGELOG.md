@@ -1,3 +1,9 @@
+## 0.0.6
+
+* Export canonical `Lens` and `LensPart` runtime classes from the package, with
+  documentation for generated edit paths, guarded reads, composition, and
+  stable path-name equality.
+
 ## 0.0.5
 
 * `GeneratedEditField` now carries `defaultValue`, populated from a tree prop's

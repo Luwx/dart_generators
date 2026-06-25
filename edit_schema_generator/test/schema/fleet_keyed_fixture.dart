@@ -6,7 +6,6 @@
 import 'package:edit_schema_generator/edit_schema_generator.dart';
 
 import 'fleet_test_models.dart';
-import 'test_lens.dart';
 
 part 'fleet_keyed_fixture.g.dart';
 
@@ -25,18 +24,12 @@ final TreeNode<Car> keyedCarNode = subtree<Car>(
 
 final TreeNode<Truck> keyedTruckNode = subtree<Truck>(
   fields: [prop('axleCount')],
-  cases: [
-    valueCase<BoxTruck>('box'),
-    valueCase<Tanker>('tanker'),
-  ],
+  cases: [valueCase<BoxTruck>('box'), valueCase<Tanker>('tanker')],
 );
 
 final TreeNode<Bike> keyedBikeNode = subtree<Bike>(
   fields: [prop('electric')],
-  cases: [
-    valueCase<RoadBike>('road'),
-    valueCase<CargoBike>('cargo'),
-  ],
+  cases: [valueCase<RoadBike>('road'), valueCase<CargoBike>('cargo')],
 );
 
 @GenerateEditSchema()

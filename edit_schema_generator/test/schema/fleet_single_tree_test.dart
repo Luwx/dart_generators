@@ -307,7 +307,7 @@ void main() {
       final lens = tree.settingsAutoSyncLens();
 
       expect(lens.get(fleet), isTrue);
-      final updated = lens.set(fleet, false) as Fleet;
+      final updated = lens.set(fleet, false);
       expect(updated.settings.autoSync, isFalse);
       expect(updated.cars, same(fleet.cars));
     });
@@ -326,18 +326,19 @@ void main() {
       final lens = tree.settingsNotificationsEmailLens();
 
       expect(lens.get(fleet), isTrue);
-      final updated = lens.set(fleet, false) as Fleet;
+      final updated = lens.set(fleet, false);
       expect(updated.settings.notifications.email, isFalse);
       expect(updated.settings.notifications.sms, isTrue);
     });
 
     test('dispatched depot compacts to null when empty', () {
       final fleet = _fleetForTree();
-      final withoutCapacity =
-          tree.depotCapacityLens(VehicleCategory.car).set(fleet, null) as Fleet;
-      final empty =
-          tree.depotBaysLens(VehicleCategory.car).set(withoutCapacity, null)
-              as Fleet;
+      final withoutCapacity = tree
+          .depotCapacityLens(VehicleCategory.car)
+          .set(fleet, null);
+      final empty = tree
+          .depotBaysLens(VehicleCategory.car)
+          .set(withoutCapacity, null);
 
       expect(empty.carDepot, isNull);
     });
@@ -347,28 +348,26 @@ void main() {
         tree.depotCapacityLens(VehicleCategory.car).get(const Fleet()),
         isNull,
       );
-      final updated =
-          tree.depotCapacityLens(VehicleCategory.car).set(const Fleet(), 12)
-              as Fleet;
+      final updated = tree
+          .depotCapacityLens(VehicleCategory.car)
+          .set(const Fleet(), 12);
       expect(updated.carDepot?.capacity, 12);
     });
 
     test('the depot dispatcher routes each category to its own slot', () {
       const fleet = Fleet();
       // Section lens writes the right slot per category and leaves siblings be.
-      final withTruck =
-          tree
-                  .depotSettingsLens(VehicleCategory.truck)
-                  .set(fleet, const DepotSettings(bays: 7))
-              as Fleet;
+      final withTruck = tree
+          .depotSettingsLens(VehicleCategory.truck)
+          .set(fleet, const DepotSettings(bays: 7));
       expect(withTruck.truckDepot?.bays, 7);
       expect(withTruck.carDepot, isNull);
       expect(withTruck.bikeDepot, isNull);
 
       // Per-field lens for one category does not leak into another.
-      final withBike =
-          tree.depotCapacityLens(VehicleCategory.bike).set(withTruck, 3)
-              as Fleet;
+      final withBike = tree
+          .depotCapacityLens(VehicleCategory.bike)
+          .set(withTruck, 3);
       expect(withBike.bikeDepot?.capacity, 3);
       expect(tree.depotCapacityLens(VehicleCategory.car).get(withBike), isNull);
       expect(tree.depotBaysLens(VehicleCategory.truck).get(withBike), 7);
@@ -429,13 +428,11 @@ void main() {
       () {
         final fleet = _fleetForTree();
 
-        final updated =
-            tree
-                    .truckRegistrationRegionLens(
-                      const tree.TruckLocation(truckIndex: 0),
-                    )
-                    .set(fleet, 'west')
-                as Fleet;
+        final updated = tree
+            .truckRegistrationRegionLens(
+              const tree.TruckLocation(truckIndex: 0),
+            )
+            .set(fleet, 'west');
         expect(updated.trucks.first.registration.region, 'west');
         expect(updated.cars.first.registration.region, 'north');
       },
@@ -459,7 +456,7 @@ void main() {
       );
 
       expect(lens.get(fleet), 250);
-      final updated = lens.set(fleet, 300) as Fleet;
+      final updated = lens.set(fleet, 300);
       expect((updated.cars[1] as Coupe).topSpeed, 300);
       expect(updated.cars.first, same(fleet.cars.first));
     });
@@ -471,7 +468,7 @@ void main() {
       );
 
       expect(lens.get(fleet), 'nappa');
-      final updated = lens.set(fleet, 'cloth') as Fleet;
+      final updated = lens.set(fleet, 'cloth');
       expect(((updated.cars.first as Sedan).trim.upholstery.material), 'cloth');
     });
   });
@@ -484,7 +481,7 @@ void main() {
       );
 
       expect(lens.get(fleet), 'access');
-      final updated = lens.set(fleet, 'updated') as Fleet;
+      final updated = lens.set(fleet, 'updated');
       expect(updated.cars.first.registration.permits[1].label, 'updated');
     });
 
@@ -509,11 +506,9 @@ void main() {
         tree.carRegistrationPermitDetailAccessGateIdLens(gate).get(fleet),
         'g1',
       );
-      final updated =
-          tree
-                  .carRegistrationPermitDetailAccessGateManualKeyLens(gate)
-                  .set(fleet, 'new-key')
-              as Fleet;
+      final updated = tree
+          .carRegistrationPermitDetailAccessGateManualKeyLens(gate)
+          .set(fleet, 'new-key');
       final access =
           updated.cars.first.registration.permits[1].detail as AccessPermit;
       expect((access.gates.first as ManualGate).key, 'new-key');
@@ -674,17 +669,15 @@ void main() {
       final lens = tree.defaultPolicyLimitsLens('north');
 
       expect(lens.get(fleet).maxSpeed, 90);
-      final updated = lens.set(fleet, const PolicyLimits(maxLoad: 10)) as Fleet;
+      final updated = lens.set(fleet, const PolicyLimits(maxLoad: 10));
       expect(updated.policies.single.limits.maxLoad, 10);
 
-      final created =
-          tree
-                  .defaultPolicyLimitsLens('south')
-                  .set(fleet, const PolicyLimits(maxSpeed: 50))
-              as Fleet;
+      final created = tree
+          .defaultPolicyLimitsLens('south')
+          .set(fleet, const PolicyLimits(maxSpeed: 50));
       expect(created.policies, hasLength(2));
 
-      final removed = lens.set(fleet, const PolicyLimits()) as Fleet;
+      final removed = lens.set(fleet, const PolicyLimits());
       expect(removed.policies, isEmpty);
     });
   });

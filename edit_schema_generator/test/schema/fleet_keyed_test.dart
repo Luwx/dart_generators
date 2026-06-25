@@ -124,9 +124,9 @@ void main() {
     });
 
     test('set dispatches to the keyed element wherever it sits', () {
-      final updated =
-          keyedVehicleRegistrationRegionLens(sedanLoc).set(reordered, 'south')
-              as Fleet;
+      final updated = keyedVehicleRegistrationRegionLens(
+        sedanLoc,
+      ).set(reordered, 'south');
       // The sedan is at index 1 in the reordered fleet.
       expect(updated.cars[1].registration.region, 'south');
       expect(updated.cars[0].registration.region, isNull);
@@ -134,8 +134,7 @@ void main() {
 
     test('per-entry case fields compose through the cast by key', () {
       expect(carCoupeTopSpeedLens(coupeLoc).get(fleet), 250);
-      final updated =
-          carCoupeTopSpeedLens(coupeLoc).set(reordered, 300) as Fleet;
+      final updated = carCoupeTopSpeedLens(coupeLoc).set(reordered, 300);
       expect((updated.cars[0] as Coupe).topSpeed, 300);
     });
 
@@ -153,8 +152,9 @@ void main() {
       });
 
       test('base dispatcher set leaves the root unchanged', () {
-        final updated =
-            keyedVehicleLens(missingLoc).set(fleet, fleet.cars.first) as Fleet;
+        final updated = keyedVehicleLens(
+          missingLoc,
+        ).set(fleet, fleet.cars.first);
         expect(identical(updated, fleet), isTrue);
       });
 
