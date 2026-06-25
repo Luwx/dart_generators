@@ -4,11 +4,13 @@ import 'edit_schema_test_models.dart';
 
 part 'tearoff_self_union_fixture.g.dart';
 
-Lens<FixtureVariant> fixtureVariantLens(FixtureLocation location) {
+Lens<FixtureVariant, FixtureVariant> fixtureVariantLens(
+  FixtureLocation location,
+) {
   throw UnimplementedError('Only generated helper signatures use this lens.');
 }
 
-Lens<FixtureNode> tearoffNodeLens(FixtureLocation location) {
+Lens<FixtureNode, FixtureNode> tearoffNodeLens(FixtureLocation location) {
   throw UnimplementedError('Only generated helper signatures use this lens.');
 }
 

@@ -9,7 +9,7 @@ part of 'default_value_fixture.dart';
 // Generated code. Do not modify by hand.
 // ignore_for_file: dead_code, prefer_null_aware_operators, lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, unnecessary_parenthesis, unreachable_switch_case, unused_element, invalid_null_aware_operator, unused_local_variable, avoid_equals_and_hash_code_on_mutable_classes, no_literal_bool_comparisons
 
-Lens<Board> _boardRootLens() => Lens<Board>(
+Lens<Board, Board> _boardRootLens() => Lens<Board, Board>(
   get: (root) => root as Board,
   set: (root, next) => next,
   name: 'board',
@@ -118,7 +118,7 @@ final _boardTaskFlagPart = LensPart<Task, bool>(
   name: 'flag',
 );
 
-Lens<List<Task>> tasksLens() => _boardRootLens().then(_boardTasksPart);
+Lens<Board, List<Task>> tasksLens() => _boardRootLens().then(_boardTasksPart);
 
 List<Task>? tasksAt(Board? root) {
   if (root == null) return null;
@@ -131,7 +131,7 @@ List<Task>? tasksAt(Board? root) {
   }
 }
 
-Lens<Task> taskLens(TaskLocation location) =>
+Lens<Board, Task> taskLens(TaskLocation location) =>
     _boardRootLens().then(_boardTasksItemPart(location.taskIndex));
 
 Task? taskAt(Board? root, TaskLocation location) {
@@ -145,15 +145,15 @@ Task? taskAt(Board? root, TaskLocation location) {
   }
 }
 
-Lens<String> taskTitleLens(TaskLocation location) => _boardRootLens()
+Lens<Board, String> taskTitleLens(TaskLocation location) => _boardRootLens()
     .then(_boardTasksItemPart(location.taskIndex))
     .then(_boardTaskTitlePart);
 
-Lens<Mode> taskModeLens(TaskLocation location) => _boardRootLens()
+Lens<Board, Mode> taskModeLens(TaskLocation location) => _boardRootLens()
     .then(_boardTasksItemPart(location.taskIndex))
     .then(_boardTaskModePart);
 
-Lens<bool> taskFlagLens(TaskLocation location) => _boardRootLens()
+Lens<Board, bool> taskFlagLens(TaskLocation location) => _boardRootLens()
     .then(_boardTasksItemPart(location.taskIndex))
     .then(_boardTaskFlagPart);
 
@@ -168,7 +168,7 @@ bool taskTitleHasSavedBacking(Board? saved, TaskLocation location) {
 }
 
 final taskTitleField =
-    GeneratedEditField<Board, TaskLocation, String, Lens<String>>(
+    GeneratedEditField<Board, TaskLocation, String, Lens<Board, String>>(
       id: 'taskTitle',
       dirtyField: BoardDirtyField.taskTitle,
       lens: taskTitleLens,
@@ -186,14 +186,15 @@ bool taskModeHasSavedBacking(Board? saved, TaskLocation location) {
   }
 }
 
-final taskModeField = GeneratedEditField<Board, TaskLocation, Mode, Lens<Mode>>(
-  id: 'taskMode',
-  dirtyField: BoardDirtyField.taskMode,
-  lens: taskModeLens,
-  fallback: null,
-  defaultValue: Mode.end,
-  adapter: FieldAdapterSpec<Mode>.identity(),
-);
+final taskModeField =
+    GeneratedEditField<Board, TaskLocation, Mode, Lens<Board, Mode>>(
+      id: 'taskMode',
+      dirtyField: BoardDirtyField.taskMode,
+      lens: taskModeLens,
+      fallback: null,
+      defaultValue: Mode.end,
+      adapter: FieldAdapterSpec<Mode>.identity(),
+    );
 
 bool taskFlagHasSavedBacking(Board? saved, TaskLocation location) {
   if (saved == null) return false;
@@ -205,14 +206,15 @@ bool taskFlagHasSavedBacking(Board? saved, TaskLocation location) {
   }
 }
 
-final taskFlagField = GeneratedEditField<Board, TaskLocation, bool, Lens<bool>>(
-  id: 'taskFlag',
-  dirtyField: BoardDirtyField.taskFlag,
-  lens: taskFlagLens,
-  fallback: null,
-  defaultValue: true,
-  adapter: FieldAdapterSpec<bool>.identity(),
-);
+final taskFlagField =
+    GeneratedEditField<Board, TaskLocation, bool, Lens<Board, bool>>(
+      id: 'taskFlag',
+      dirtyField: BoardDirtyField.taskFlag,
+      lens: taskFlagLens,
+      fallback: null,
+      defaultValue: true,
+      adapter: FieldAdapterSpec<bool>.identity(),
+    );
 
 Object? comparableBoardFieldValue(Board? value, BoardDirtyField field) =>
     switch (field) {

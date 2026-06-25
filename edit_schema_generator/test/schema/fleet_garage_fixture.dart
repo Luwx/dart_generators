@@ -1,7 +1,7 @@
 // Exercises the generalized `taggedLists` discriminator. Here:
 //   - the coordinate is `GarageLocation` with NON-default field names
 //     (`kind`/`slot`) — proving discriminator/index are configurable;
-//   - the dispatcher returns `Lens<Vehicle>` (the lists' common supertype), so
+//   - the dispatcher returns `Lens<Fleet, Vehicle>` (the lists' common supertype), so
 //     the `shared` registration is reached via the interface (≈ Gesture.common /
 //     withCommon) and yields a single lens family;
 //   - each entry contributes per-case fields.

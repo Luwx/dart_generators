@@ -24,9 +24,10 @@ final _variantTextPart = LensPart<TextVariant, String>(
   name: 'text',
 );
 
-Lens<String> variantTextLens(FixtureLocation location) => fixtureVariantLens(
-  location,
-).then(_variantAsTextVariantPart).then(_variantTextPart);
+Lens<FixtureVariant, String> variantTextLens(FixtureLocation location) =>
+    fixtureVariantLens(
+      location,
+    ).then(_variantAsTextVariantPart).then(_variantTextPart);
 
 final _variantAsListVariantPart = LensPart<FixtureVariant, ListVariant>(
   get: (value) => value as ListVariant,
@@ -41,13 +42,18 @@ final _variantItemsPart = LensPart<ListVariant, List<String>>(
   name: 'items',
 );
 
-Lens<List<String>> variantItemsLens(FixtureLocation location) =>
+Lens<FixtureVariant, List<String>> variantItemsLens(FixtureLocation location) =>
     fixtureVariantLens(
       location,
     ).then(_variantAsListVariantPart).then(_variantItemsPart);
 
 final variantTextField =
-    GeneratedEditField<FixtureVariant, FixtureLocation, String, Lens<String>>(
+    GeneratedEditField<
+      FixtureVariant,
+      FixtureLocation,
+      String,
+      Lens<FixtureVariant, String>
+    >(
       id: 'text',
       dirtyField: VariantDirtyField.text,
       lens: variantTextLens,
@@ -63,7 +69,7 @@ final variantItemsField =
       FixtureVariant,
       FixtureLocation,
       List<String>,
-      Lens<List<String>>
+      Lens<FixtureVariant, List<String>>
     >(
       id: 'items',
       dirtyField: VariantDirtyField.items,
@@ -125,11 +131,16 @@ final _tearoffNodeModePart = LensPart<FixtureNode, String?>(
   name: 'mode',
 );
 
-Lens<String?> tearoffNodeModeLens(FixtureLocation location) =>
+Lens<FixtureNode, String?> tearoffNodeModeLens(FixtureLocation location) =>
     tearoffNodeLens(location).then(_tearoffNodeModePart);
 
 final tearoffNodeModeField =
-    GeneratedEditField<FixtureNode, FixtureLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      FixtureNode,
+      FixtureLocation,
+      String?,
+      Lens<FixtureNode, String?>
+    >(
       id: 'mode',
       dirtyField: TearoffNodeDirtyField.mode,
       lens: tearoffNodeModeLens,

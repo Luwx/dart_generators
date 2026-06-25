@@ -19,11 +19,10 @@ final class _Child {
 
 void main() {
   test('Lens.then composes get, set, name, and canGet', () {
-    final rootLens = Lens<_Child>(
-      get: (root) => (root as _Root).child,
-      set: (root, value) => (root as _Root).copyWith(child: value),
+    final rootLens = Lens<_Root, _Child>(
+      get: (root) => root.child,
+      set: (root, value) => root.copyWith(child: value),
       name: 'child',
-      canGet: (root) => root is _Root,
     );
     final valuePart = LensPart<_Child, int>(
       get: (source) => source.value,
@@ -38,15 +37,14 @@ void main() {
     expect(lens.get(const _Root(_Child(3))), 3);
     expect(lens.canGet(const _Root(_Child(3))), isTrue);
     expect(lens.canGet(const _Root(_Child(-1))), isFalse);
-    expect(lens.canGet(Object()), isFalse);
 
     final updated = lens.set(const _Root(_Child(3)), 5);
     expect(updated.child.value, 5);
   });
 
   test('Lens equality is path-name based', () {
-    Lens<int> lens(String name) =>
-        Lens<int>(get: (_) => 1, set: (root, _) => root, name: name);
+    Lens<_Root, int> lens(String name) =>
+        Lens<_Root, int>(get: (_) => 1, set: (root, _) => root, name: name);
 
     expect(lens('a.b'), lens('a.b'));
     expect(lens('a.b'), isNot(lens('a.c')));

@@ -4,7 +4,7 @@ import 'car_schema_test_models.dart';
 
 part 'car_source_gen_fixture.g.dart';
 
-Lens<Car> carLens(CarLocation location) {
+Lens<Car, Car> carLens(CarLocation location) {
   throw UnimplementedError('Only generated helper signatures use this lens.');
 }
 

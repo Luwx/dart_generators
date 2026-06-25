@@ -12,35 +12,38 @@ int? _defaultPolicyIndex(Fleet fleet, String region) {
   return null;
 }
 
-Lens<PolicyLimits> defaultPolicyLimitsLens(String region) => Lens<PolicyLimits>(
-  get: (root) {
-    final fleet = root as Fleet;
-    final index = _defaultPolicyIndex(fleet, region);
-    return index == null ? const PolicyLimits() : fleet.policies[index].limits;
-  },
-  set: (root, next) {
-    final fleet = root as Fleet;
-    final compacted = next.isEmpty;
-    final index = _defaultPolicyIndex(fleet, region);
-    if (index == null) {
-      if (compacted) return fleet;
-      return addPolicy(
-        fleet,
-        Policy(
-          conditions: RegionCondition(region: region),
-          limits: next,
-        ),
-      );
-    }
-    if (compacted) return removePolicyAt(fleet, index);
-    return updatePolicyAt(
-      fleet,
-      index,
-      (policy) => policy.copyWith(limits: next),
+Lens<Fleet, PolicyLimits> defaultPolicyLimitsLens(String region) =>
+    Lens<Fleet, PolicyLimits>(
+      get: (root) {
+        final fleet = root;
+        final index = _defaultPolicyIndex(fleet, region);
+        return index == null
+            ? const PolicyLimits()
+            : fleet.policies[index].limits;
+      },
+      set: (root, next) {
+        final fleet = root;
+        final compacted = next.isEmpty;
+        final index = _defaultPolicyIndex(fleet, region);
+        if (index == null) {
+          if (compacted) return fleet;
+          return addPolicy(
+            fleet,
+            Policy(
+              conditions: RegionCondition(region: region),
+              limits: next,
+            ),
+          );
+        }
+        if (compacted) return removePolicyAt(fleet, index);
+        return updatePolicyAt(
+          fleet,
+          index,
+          (policy) => policy.copyWith(limits: next),
+        );
+      },
+      name: 'defaultPolicy[$region].limits',
     );
-  },
-  name: 'defaultPolicy[$region].limits',
-);
 
 final upholsteryNode = subtree<Upholstery>(
   fields: [prop('material'), prop('color'), prop('heated'), prop('rows')],

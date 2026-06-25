@@ -9,7 +9,7 @@ part of 'fleet_keyed_fixture.dart';
 // Generated code. Do not modify by hand.
 // ignore_for_file: dead_code, prefer_null_aware_operators, lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, unnecessary_parenthesis, unreachable_switch_case, unused_element, invalid_null_aware_operator, unused_local_variable, avoid_equals_and_hash_code_on_mutable_classes, no_literal_bool_comparisons
 
-Lens<Fleet> _keyedGarageRootLens() => Lens<Fleet>(
+Lens<Fleet, Fleet> _keyedGarageRootLens() => Lens<Fleet, Fleet>(
   get: (root) => root as Fleet,
   set: (root, next) => next,
   name: 'keyedGarage',
@@ -48,72 +48,76 @@ int _keyedVehicleLensIndexOf(List<Vehicle> list, int key) {
   return -1;
 }
 
-Lens<Vehicle> keyedVehicleLens(KeyedGarageLocation location) => Lens<Vehicle>(
-  get: (root) {
-    final container = root as Fleet;
-    return switch (location.kind) {
-      VehicleCategory.car =>
-        container.cars[_keyedVehicleLensIndexOf(
-          container.cars,
-          location.editId,
-        )],
-      VehicleCategory.truck =>
-        container.trucks[_keyedVehicleLensIndexOf(
-          container.trucks,
-          location.editId,
-        )],
-      VehicleCategory.bike =>
-        container.bikes[_keyedVehicleLensIndexOf(
-          container.bikes,
-          location.editId,
-        )],
-    };
-  },
-  set: (root, nextValue) {
-    final container = root as Fleet;
-    return switch (location.kind) {
-      VehicleCategory.car => () {
-        final index = _keyedVehicleLensIndexOf(container.cars, location.editId);
-        if (index < 0) return container;
-        final next = List<Car>.of(container.cars);
-        next[index] = nextValue as Car;
-        return container.copyWith(cars: next);
-      }(),
-      VehicleCategory.truck => () {
-        final index = _keyedVehicleLensIndexOf(
-          container.trucks,
-          location.editId,
-        );
-        if (index < 0) return container;
-        final next = List<Truck>.of(container.trucks);
-        next[index] = nextValue as Truck;
-        return container.copyWith(trucks: next);
-      }(),
-      VehicleCategory.bike => () {
-        final index = _keyedVehicleLensIndexOf(
-          container.bikes,
-          location.editId,
-        );
-        if (index < 0) return container;
-        final next = List<Bike>.of(container.bikes);
-        next[index] = nextValue as Bike;
-        return container.copyWith(bikes: next);
-      }(),
-    };
-  },
-  canGet: (root) {
-    final container = root as Fleet;
-    return switch (location.kind) {
-      VehicleCategory.car =>
-        _keyedVehicleLensIndexOf(container.cars, location.editId) >= 0,
-      VehicleCategory.truck =>
-        _keyedVehicleLensIndexOf(container.trucks, location.editId) >= 0,
-      VehicleCategory.bike =>
-        _keyedVehicleLensIndexOf(container.bikes, location.editId) >= 0,
-    };
-  },
-  name: 'keyedVehicle[${location.kind}/#${location.editId}]',
-);
+Lens<Fleet, Vehicle> keyedVehicleLens(KeyedGarageLocation location) =>
+    Lens<Fleet, Vehicle>(
+      get: (root) {
+        final container = root as Fleet;
+        return switch (location.kind) {
+          VehicleCategory.car =>
+            container.cars[_keyedVehicleLensIndexOf(
+              container.cars,
+              location.editId,
+            )],
+          VehicleCategory.truck =>
+            container.trucks[_keyedVehicleLensIndexOf(
+              container.trucks,
+              location.editId,
+            )],
+          VehicleCategory.bike =>
+            container.bikes[_keyedVehicleLensIndexOf(
+              container.bikes,
+              location.editId,
+            )],
+        };
+      },
+      set: (root, nextValue) {
+        final container = root as Fleet;
+        return switch (location.kind) {
+          VehicleCategory.car => () {
+            final index = _keyedVehicleLensIndexOf(
+              container.cars,
+              location.editId,
+            );
+            if (index < 0) return container;
+            final next = List<Car>.of(container.cars);
+            next[index] = nextValue as Car;
+            return container.copyWith(cars: next);
+          }(),
+          VehicleCategory.truck => () {
+            final index = _keyedVehicleLensIndexOf(
+              container.trucks,
+              location.editId,
+            );
+            if (index < 0) return container;
+            final next = List<Truck>.of(container.trucks);
+            next[index] = nextValue as Truck;
+            return container.copyWith(trucks: next);
+          }(),
+          VehicleCategory.bike => () {
+            final index = _keyedVehicleLensIndexOf(
+              container.bikes,
+              location.editId,
+            );
+            if (index < 0) return container;
+            final next = List<Bike>.of(container.bikes);
+            next[index] = nextValue as Bike;
+            return container.copyWith(bikes: next);
+          }(),
+        };
+      },
+      canGet: (root) {
+        final container = root as Fleet;
+        return switch (location.kind) {
+          VehicleCategory.car =>
+            _keyedVehicleLensIndexOf(container.cars, location.editId) >= 0,
+          VehicleCategory.truck =>
+            _keyedVehicleLensIndexOf(container.trucks, location.editId) >= 0,
+          VehicleCategory.bike =>
+            _keyedVehicleLensIndexOf(container.bikes, location.editId) >= 0,
+        };
+      },
+      name: 'keyedVehicle[${location.kind}/#${location.editId}]',
+    );
 
 List<Vehicle> keyedVehiclesForKind(Fleet root, VehicleCategory kind) =>
     switch (kind) {
@@ -382,34 +386,38 @@ final _keyedGarageAsCargoBikePart = LensPart<Bike, CargoBike>(
   name: 'CargoBike',
 );
 
-Lens<String?> keyedVehicleRegistrationPlateLens(KeyedGarageLocation location) =>
-    keyedVehicleLens(location)
-        .then(_keyedGarageKeyedVehicleRegistrationPart)
-        .then(_keyedGarageKeyedVehicleregistrationPlatePart);
+Lens<Fleet, String?> keyedVehicleRegistrationPlateLens(
+  KeyedGarageLocation location,
+) => keyedVehicleLens(location)
+    .then(_keyedGarageKeyedVehicleRegistrationPart)
+    .then(_keyedGarageKeyedVehicleregistrationPlatePart);
 
-Lens<String?> keyedVehicleRegistrationRegionLens(
+Lens<Fleet, String?> keyedVehicleRegistrationRegionLens(
   KeyedGarageLocation location,
 ) => keyedVehicleLens(location)
     .then(_keyedGarageKeyedVehicleRegistrationPart)
     .then(_keyedGarageKeyedVehicleregistrationRegionPart);
 
-Lens<String> carColorLens(KeyedGarageLocation location) => keyedVehicleLens(
-  location,
-).then(_keyedGarageCarCastPart).then(_keyedGarageCarColorPart);
+Lens<Fleet, String> carColorLens(KeyedGarageLocation location) =>
+    keyedVehicleLens(
+      location,
+    ).then(_keyedGarageCarCastPart).then(_keyedGarageCarColorPart);
 
-Lens<int?> carCoupeTopSpeedLens(KeyedGarageLocation location) =>
+Lens<Fleet, int?> carCoupeTopSpeedLens(KeyedGarageLocation location) =>
     keyedVehicleLens(location)
         .then(_keyedGarageCarCastPart)
         .then(_keyedGarageAsCoupePart)
         .then(_keyedGarageCarcoupeTopSpeedPart);
 
-Lens<int?> truckAxleCountLens(KeyedGarageLocation location) => keyedVehicleLens(
-  location,
-).then(_keyedGarageTruckCastPart).then(_keyedGarageTruckAxleCountPart);
+Lens<Fleet, int?> truckAxleCountLens(KeyedGarageLocation location) =>
+    keyedVehicleLens(
+      location,
+    ).then(_keyedGarageTruckCastPart).then(_keyedGarageTruckAxleCountPart);
 
-Lens<bool?> bikeElectricLens(KeyedGarageLocation location) => keyedVehicleLens(
-  location,
-).then(_keyedGarageBikeCastPart).then(_keyedGarageBikeElectricPart);
+Lens<Fleet, bool?> bikeElectricLens(KeyedGarageLocation location) =>
+    keyedVehicleLens(
+      location,
+    ).then(_keyedGarageBikeCastPart).then(_keyedGarageBikeElectricPart);
 
 bool keyedVehicleRegistrationPlateHasSavedBacking(
   Fleet? saved,
@@ -425,7 +433,12 @@ bool keyedVehicleRegistrationPlateHasSavedBacking(
 }
 
 final keyedVehicleRegistrationPlateField =
-    GeneratedEditField<Fleet, KeyedGarageLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      KeyedGarageLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'keyedVehicleRegistrationPlate',
       dirtyField: KeyedGarageDirtyField.keyedVehicleRegistrationPlate,
       lens: keyedVehicleRegistrationPlateLens,
@@ -447,7 +460,12 @@ bool keyedVehicleRegistrationRegionHasSavedBacking(
 }
 
 final keyedVehicleRegistrationRegionField =
-    GeneratedEditField<Fleet, KeyedGarageLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      KeyedGarageLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'keyedVehicleRegistrationRegion',
       dirtyField: KeyedGarageDirtyField.keyedVehicleRegistrationRegion,
       lens: keyedVehicleRegistrationRegionLens,
@@ -466,7 +484,7 @@ bool carColorHasSavedBacking(Fleet? saved, KeyedGarageLocation location) {
 }
 
 final carColorField =
-    GeneratedEditField<Fleet, KeyedGarageLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, KeyedGarageLocation, String, Lens<Fleet, String>>(
       id: 'carColor',
       dirtyField: KeyedGarageDirtyField.carColor,
       lens: carColorLens,
@@ -488,7 +506,7 @@ bool carCoupeTopSpeedHasSavedBacking(
 }
 
 final carCoupeTopSpeedField =
-    GeneratedEditField<Fleet, KeyedGarageLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, KeyedGarageLocation, int?, Lens<Fleet, int?>>(
       id: 'carCoupeTopSpeed',
       dirtyField: KeyedGarageDirtyField.carCoupeTopSpeed,
       lens: carCoupeTopSpeedLens,
@@ -507,7 +525,7 @@ bool truckAxleCountHasSavedBacking(Fleet? saved, KeyedGarageLocation location) {
 }
 
 final truckAxleCountField =
-    GeneratedEditField<Fleet, KeyedGarageLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, KeyedGarageLocation, int?, Lens<Fleet, int?>>(
       id: 'truckAxleCount',
       dirtyField: KeyedGarageDirtyField.truckAxleCount,
       lens: truckAxleCountLens,
@@ -526,7 +544,7 @@ bool bikeElectricHasSavedBacking(Fleet? saved, KeyedGarageLocation location) {
 }
 
 final bikeElectricField =
-    GeneratedEditField<Fleet, KeyedGarageLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, KeyedGarageLocation, bool?, Lens<Fleet, bool?>>(
       id: 'bikeElectric',
       dirtyField: KeyedGarageDirtyField.bikeElectric,
       lens: bikeElectricLens,

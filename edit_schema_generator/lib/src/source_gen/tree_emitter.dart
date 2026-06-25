@@ -33,7 +33,7 @@ final class _TreeSchemaEmitter {
 
     body
       ..writeln(
-        'Lens<${schema.rootType}> _${schema.id}RootLens() => Lens<${schema.rootType}>(',
+        'Lens<${schema.rootType}, ${schema.rootType}> _${schema.id}RootLens() => Lens<${schema.rootType}, ${schema.rootType}>(',
       )
       ..writeln('  get: (root) => root as ${schema.rootType},')
       ..writeln('  set: (root, next) => next,')
@@ -69,7 +69,7 @@ final class _TreeSchemaEmitter {
     for (final lens in lenses) {
       body
         ..writeln(
-          'Lens<${lens.type}> ${lens.name}Lens(${lens.path.lensParams}) =>',
+          'Lens<${schema.rootType}, ${lens.type}> ${lens.name}Lens(${lens.path.lensParams}) =>',
         )
         ..writeln('    ${lens.path.lensBase};');
       if (lens.path.lensParams.isEmpty) body.writeln();
@@ -238,7 +238,7 @@ final class _TreeSchemaEmitter {
         ..writeln('final ${lens.name}Field =')
         ..writeln(
           '    GeneratedEditField<$rootType, $refLocType, $type, '
-          'Lens<$type>>(',
+          'Lens<$rootType, $type>>(',
         )
         ..writeln("      id: '${lens.name}',")
         ..writeln('      dirtyField: $fieldEnum.${lens.name},')
@@ -263,7 +263,9 @@ final class _TreeSchemaEmitter {
       if (lens.name.isEmpty || !seen.add(lens.name)) continue;
       final params = lens.path.lensParams;
       buffer
-        ..writeln('Lens<${lens.type}> ${lens.name}Lens($params) =>')
+        ..writeln(
+          'Lens<${lens.path.rootType}, ${lens.type}> ${lens.name}Lens($params) =>',
+        )
         ..writeln('    ${lens.path.lensBase};');
       if (params.isEmpty) buffer.writeln();
       buffer
@@ -971,11 +973,13 @@ final class _TreeSchemaEmitter {
     final lensName = source.lensName;
     final disc = source.discriminator;
     final idx = source.indexField;
-    if (buffer.toString().contains('Lens<$element> $lensName(')) return;
+    if (buffer.toString().contains('Lens<$rootType, $element> $lensName(')) {
+      return;
+    }
     buffer
       ..writeln(
-        'Lens<$element> $lensName(${source.locationType} location) => '
-        'Lens<$element>(',
+        'Lens<$rootType, $element> $lensName(${source.locationType} location) => '
+        'Lens<$rootType, $element>(',
       )
       ..writeln('  get: (root) {')
       ..writeln('    final container = root as $rootType;')
@@ -1043,7 +1047,9 @@ final class _TreeSchemaEmitter {
     final disc = source.discriminator;
     final key = source.key!;
     final keyField = key.field;
-    if (buffer.toString().contains('Lens<$element> $lensName(')) return;
+    if (buffer.toString().contains('Lens<$rootType, $element> $lensName(')) {
+      return;
+    }
 
     final indexOf = '_${lensName}IndexOf';
     buffer
@@ -1055,8 +1061,8 @@ final class _TreeSchemaEmitter {
       ..writeln('}')
       ..writeln()
       ..writeln(
-        'Lens<$element> $lensName(${source.locationType} location) => '
-        'Lens<$element>(',
+        'Lens<$rootType, $element> $lensName(${source.locationType} location) => '
+        'Lens<$rootType, $element>(',
       )
       ..writeln('  get: (root) {')
       ..writeln('    final container = root as $rootType;')
@@ -1298,7 +1304,7 @@ final class _TreeSchemaEmitter {
   }
 
   /// Emits the section dispatcher for a [dispatch] node: a
-  /// `Lens<TNode>(TCategory)` that reads `root.<branch> ?? const TNode()` and
+  /// `Lens<TRoot, TNode>(TCategory)` that reads `root.<branch> ?? const TNode()` and
   /// writes back through `copyWith`, compacting an empty value to `null` when
   /// the node declares `compactWhen`. Categories absent from the branch map
   /// read a `const TNode()` and ignore writes.
@@ -1310,12 +1316,14 @@ final class _TreeSchemaEmitter {
     final element = field.elementType;
     final lensName = field.lensName;
     final param = field.paramName;
-    if (buffer.toString().contains('Lens<$element> $lensName(')) return;
+    if (buffer.toString().contains('Lens<$rootType, $element> $lensName(')) {
+      return;
+    }
     final compact = field.node.compactSource;
     buffer
       ..writeln(
-        'Lens<$element> $lensName(${field.categoryType} $param) => '
-        'Lens<$element>(',
+        'Lens<$rootType, $element> $lensName(${field.categoryType} $param) => '
+        'Lens<$rootType, $element>(',
       )
       ..writeln('  get: (root) {')
       ..writeln('    final container = root as $rootType;')

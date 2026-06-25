@@ -9,7 +9,7 @@ part of 'fleet_single_tree_fixture.dart';
 // Generated code. Do not modify by hand.
 // ignore_for_file: dead_code, prefer_null_aware_operators, lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, unnecessary_parenthesis, unreachable_switch_case, unused_element, invalid_null_aware_operator, unused_local_variable, avoid_equals_and_hash_code_on_mutable_classes, no_literal_bool_comparisons
 
-Lens<Fleet> _fleetRootLens() => Lens<Fleet>(
+Lens<Fleet, Fleet> _fleetRootLens() => Lens<Fleet, Fleet>(
   get: (root) => root as Fleet,
   set: (root, next) => next,
   name: 'fleet',
@@ -1848,8 +1848,8 @@ final _fleetPolicylimitsInspectionDaysPart = LensPart<PolicyLimits, int?>(
   name: 'inspectionDays',
 );
 
-Lens<DepotSettings> depotSettingsLens(VehicleCategory category) =>
-    Lens<DepotSettings>(
+Lens<Fleet, DepotSettings> depotSettingsLens(VehicleCategory category) =>
+    Lens<Fleet, DepotSettings>(
       get: (root) {
         final container = root as Fleet;
         return switch (category) {
@@ -1905,7 +1905,8 @@ final _fleetDepotNotesPart = LensPart<DepotSettings, String?>(
   name: 'notes',
 );
 
-Lens<FleetSettings> settingsLens() => _fleetRootLens().then(_fleetSettingsPart);
+Lens<Fleet, FleetSettings> settingsLens() =>
+    _fleetRootLens().then(_fleetSettingsPart);
 
 FleetSettings? settingsAt(Fleet? root) {
   if (root == null) return null;
@@ -1918,9 +1919,10 @@ FleetSettings? settingsAt(Fleet? root) {
   }
 }
 
-Lens<NotificationSettings> settingsNotificationsLens() => _fleetRootLens()
-    .then(_fleetSettingsPart)
-    .then(_fleetSettingsNotificationsPart);
+Lens<Fleet, NotificationSettings> settingsNotificationsLens() =>
+    _fleetRootLens()
+        .then(_fleetSettingsPart)
+        .then(_fleetSettingsNotificationsPart);
 
 NotificationSettings? settingsNotificationsAt(Fleet? root) {
   if (root == null) return null;
@@ -1933,7 +1935,7 @@ NotificationSettings? settingsNotificationsAt(Fleet? root) {
   }
 }
 
-Lens<List<Car>> carLens() => _fleetRootLens().then(_fleetCarPart);
+Lens<Fleet, List<Car>> carLens() => _fleetRootLens().then(_fleetCarPart);
 
 List<Car>? carAt(Fleet? root) {
   if (root == null) return null;
@@ -1946,7 +1948,7 @@ List<Car>? carAt(Fleet? root) {
   }
 }
 
-Lens<List<Permit>> carRegistrationPermitsLens(CarLocation location) =>
+Lens<Fleet, List<Permit>> carRegistrationPermitsLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarRegistrationPart)
@@ -1963,7 +1965,7 @@ List<Permit>? carRegistrationPermitsAt(Fleet? root, CarLocation location) {
   }
 }
 
-Lens<Permit> carRegistrationPermitLens(CarPermitLocation location) =>
+Lens<Fleet, Permit> carRegistrationPermitLens(CarPermitLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarRegistrationPart)
@@ -1980,7 +1982,7 @@ Permit? carRegistrationPermitAt(Fleet? root, CarPermitLocation location) {
   }
 }
 
-Lens<List<Gate>> carRegistrationPermitDetailAccessGatesLens(
+Lens<Fleet, List<Gate>> carRegistrationPermitDetailAccessGatesLens(
   CarPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2004,7 +2006,7 @@ List<Gate>? carRegistrationPermitDetailAccessGatesAt(
   }
 }
 
-Lens<Gate> carRegistrationPermitDetailAccessGateLens(
+Lens<Fleet, Gate> carRegistrationPermitDetailAccessGateLens(
   CarPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2030,7 +2032,7 @@ Gate? carRegistrationPermitDetailAccessGateAt(
   }
 }
 
-Lens<List<Truck>> truckLens() => _fleetRootLens().then(_fleetTruckPart);
+Lens<Fleet, List<Truck>> truckLens() => _fleetRootLens().then(_fleetTruckPart);
 
 List<Truck>? truckAt(Fleet? root) {
   if (root == null) return null;
@@ -2043,11 +2045,12 @@ List<Truck>? truckAt(Fleet? root) {
   }
 }
 
-Lens<List<Permit>> truckRegistrationPermitsLens(TruckLocation location) =>
-    _fleetRootLens()
-        .then(_fleetTruckItemPart(location.truckIndex))
-        .then(_fleetTruckRegistrationPart)
-        .then(_fleetTruckregistrationPermitsPart);
+Lens<Fleet, List<Permit>> truckRegistrationPermitsLens(
+  TruckLocation location,
+) => _fleetRootLens()
+    .then(_fleetTruckItemPart(location.truckIndex))
+    .then(_fleetTruckRegistrationPart)
+    .then(_fleetTruckregistrationPermitsPart);
 
 List<Permit>? truckRegistrationPermitsAt(Fleet? root, TruckLocation location) {
   if (root == null) return null;
@@ -2060,7 +2063,7 @@ List<Permit>? truckRegistrationPermitsAt(Fleet? root, TruckLocation location) {
   }
 }
 
-Lens<Permit> truckRegistrationPermitLens(TruckPermitLocation location) =>
+Lens<Fleet, Permit> truckRegistrationPermitLens(TruckPermitLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckRegistrationPart)
@@ -2077,7 +2080,7 @@ Permit? truckRegistrationPermitAt(Fleet? root, TruckPermitLocation location) {
   }
 }
 
-Lens<List<Gate>> truckRegistrationPermitDetailAccessGatesLens(
+Lens<Fleet, List<Gate>> truckRegistrationPermitDetailAccessGatesLens(
   TruckPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2101,7 +2104,7 @@ List<Gate>? truckRegistrationPermitDetailAccessGatesAt(
   }
 }
 
-Lens<Gate> truckRegistrationPermitDetailAccessGateLens(
+Lens<Fleet, Gate> truckRegistrationPermitDetailAccessGateLens(
   TruckPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2129,7 +2132,7 @@ Gate? truckRegistrationPermitDetailAccessGateAt(
   }
 }
 
-Lens<List<Bike>> bikeLens() => _fleetRootLens().then(_fleetBikePart);
+Lens<Fleet, List<Bike>> bikeLens() => _fleetRootLens().then(_fleetBikePart);
 
 List<Bike>? bikeAt(Fleet? root) {
   if (root == null) return null;
@@ -2142,7 +2145,7 @@ List<Bike>? bikeAt(Fleet? root) {
   }
 }
 
-Lens<List<Permit>> bikeRegistrationPermitsLens(BikeLocation location) =>
+Lens<Fleet, List<Permit>> bikeRegistrationPermitsLens(BikeLocation location) =>
     _fleetRootLens()
         .then(_fleetBikeItemPart(location.bikeIndex))
         .then(_fleetBikeRegistrationPart)
@@ -2159,7 +2162,7 @@ List<Permit>? bikeRegistrationPermitsAt(Fleet? root, BikeLocation location) {
   }
 }
 
-Lens<Permit> bikeRegistrationPermitLens(BikePermitLocation location) =>
+Lens<Fleet, Permit> bikeRegistrationPermitLens(BikePermitLocation location) =>
     _fleetRootLens()
         .then(_fleetBikeItemPart(location.bikeIndex))
         .then(_fleetBikeRegistrationPart)
@@ -2176,7 +2179,7 @@ Permit? bikeRegistrationPermitAt(Fleet? root, BikePermitLocation location) {
   }
 }
 
-Lens<List<Gate>> bikeRegistrationPermitDetailAccessGatesLens(
+Lens<Fleet, List<Gate>> bikeRegistrationPermitDetailAccessGatesLens(
   BikePermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2200,7 +2203,7 @@ List<Gate>? bikeRegistrationPermitDetailAccessGatesAt(
   }
 }
 
-Lens<Gate> bikeRegistrationPermitDetailAccessGateLens(
+Lens<Fleet, Gate> bikeRegistrationPermitDetailAccessGateLens(
   BikePermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2226,7 +2229,8 @@ Gate? bikeRegistrationPermitDetailAccessGateAt(
   }
 }
 
-Lens<List<Policy>> policiesLens() => _fleetRootLens().then(_fleetPoliciesPart);
+Lens<Fleet, List<Policy>> policiesLens() =>
+    _fleetRootLens().then(_fleetPoliciesPart);
 
 List<Policy>? policiesAt(Fleet? root) {
   if (root == null) return null;
@@ -2239,7 +2243,7 @@ List<Policy>? policiesAt(Fleet? root) {
   }
 }
 
-Lens<Policy> policyLens(PolicyLocation location) =>
+Lens<Fleet, Policy> policyLens(PolicyLocation location) =>
     _fleetRootLens().then(_fleetPoliciesItemPart(location.policyIndex));
 
 Policy? policyAt(Fleet? root, PolicyLocation location) {
@@ -2253,67 +2257,71 @@ Policy? policyAt(Fleet? root, PolicyLocation location) {
   }
 }
 
-Lens<bool?> settingsAutoSyncLens() =>
+Lens<Fleet, bool?> settingsAutoSyncLens() =>
     _fleetRootLens().then(_fleetSettingsPart).then(_fleetSettingsAutoSyncPart);
 
-Lens<bool?> settingsAlertsLens() =>
+Lens<Fleet, bool?> settingsAlertsLens() =>
     _fleetRootLens().then(_fleetSettingsPart).then(_fleetSettingsAlertsPart);
 
-Lens<String?> settingsRegionLens() =>
+Lens<Fleet, String?> settingsRegionLens() =>
     _fleetRootLens().then(_fleetSettingsPart).then(_fleetSettingsRegionPart);
 
-Lens<List<String>?> settingsEmergencyContactsLens() => _fleetRootLens()
+Lens<Fleet, List<String>?> settingsEmergencyContactsLens() => _fleetRootLens()
     .then(_fleetSettingsPart)
     .then(_fleetSettingsEmergencyContactsPart);
 
-Lens<bool?> settingsNotificationsEmailLens() => _fleetRootLens()
+Lens<Fleet, bool?> settingsNotificationsEmailLens() => _fleetRootLens()
     .then(_fleetSettingsPart)
     .then(_fleetSettingsNotificationsPart)
     .then(_fleetSettingsnotificationsEmailPart);
 
-Lens<bool?> settingsNotificationsSmsLens() => _fleetRootLens()
+Lens<Fleet, bool?> settingsNotificationsSmsLens() => _fleetRootLens()
     .then(_fleetSettingsPart)
     .then(_fleetSettingsNotificationsPart)
     .then(_fleetSettingsnotificationsSmsPart);
 
-Lens<String?> settingsNotificationsWebhookUrlLens() => _fleetRootLens()
+Lens<Fleet, String?> settingsNotificationsWebhookUrlLens() => _fleetRootLens()
     .then(_fleetSettingsPart)
     .then(_fleetSettingsNotificationsPart)
     .then(_fleetSettingsnotificationsWebhookUrlPart);
 
-Lens<String?> carRegistrationPlateLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarRegistrationPart)
-    .then(_fleetCarregistrationPlatePart);
+Lens<Fleet, String?> carRegistrationPlateLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarRegistrationPart)
+        .then(_fleetCarregistrationPlatePart);
 
-Lens<String?> carRegistrationVinLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarRegistrationPart)
-    .then(_fleetCarregistrationVinPart);
+Lens<Fleet, String?> carRegistrationVinLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarRegistrationPart)
+        .then(_fleetCarregistrationVinPart);
 
-Lens<String?> carRegistrationRegionLens(CarLocation location) =>
+Lens<Fleet, String?> carRegistrationRegionLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarRegistrationPart)
         .then(_fleetCarregistrationRegionPart);
 
-Lens<bool?> carRegistrationLockedLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarRegistrationPart)
-    .then(_fleetCarregistrationLockedPart);
+Lens<Fleet, bool?> carRegistrationLockedLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarRegistrationPart)
+        .then(_fleetCarregistrationLockedPart);
 
-Lens<List<String>> carRegistrationTagsLens(CarLocation location) =>
+Lens<Fleet, List<String>> carRegistrationTagsLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarRegistrationPart)
         .then(_fleetCarregistrationTagsPart);
 
-Lens<String?> carRegistrationNotesLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarRegistrationPart)
-    .then(_fleetCarregistrationNotesPart);
+Lens<Fleet, String?> carRegistrationNotesLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarRegistrationPart)
+        .then(_fleetCarregistrationNotesPart);
 
-Lens<String?> carRegistrationPermitDetailAuthorityLens(
+Lens<Fleet, String?> carRegistrationPermitDetailAuthorityLens(
   CarPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2322,7 +2330,7 @@ Lens<String?> carRegistrationPermitDetailAuthorityLens(
     .then(_fleetCarregistrationpermitDetailPart)
     .then(_fleetCarregistrationpermitDetailAuthorityPart);
 
-Lens<bool?> carRegistrationPermitDetailRevokedLens(
+Lens<Fleet, bool?> carRegistrationPermitDetailRevokedLens(
   CarPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2331,7 +2339,7 @@ Lens<bool?> carRegistrationPermitDetailRevokedLens(
     .then(_fleetCarregistrationpermitDetailPart)
     .then(_fleetCarregistrationpermitDetailRevokedPart);
 
-Lens<String> carRegistrationPermitDetailParkingZoneLens(
+Lens<Fleet, String> carRegistrationPermitDetailParkingZoneLens(
   CarPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2341,7 +2349,7 @@ Lens<String> carRegistrationPermitDetailParkingZoneLens(
     .then(_fleetCarregistrationpermitAsParkingPermitPart)
     .then(_fleetCarregistrationpermitdetailparkingZonePart);
 
-Lens<int?> carRegistrationPermitDetailParkingHoursLens(
+Lens<Fleet, int?> carRegistrationPermitDetailParkingHoursLens(
   CarPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2351,7 +2359,7 @@ Lens<int?> carRegistrationPermitDetailParkingHoursLens(
     .then(_fleetCarregistrationpermitAsParkingPermitPart)
     .then(_fleetCarregistrationpermitdetailparkingHoursPart);
 
-Lens<String> carRegistrationPermitDetailTollAccountLens(
+Lens<Fleet, String> carRegistrationPermitDetailTollAccountLens(
   CarPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2361,7 +2369,7 @@ Lens<String> carRegistrationPermitDetailTollAccountLens(
     .then(_fleetCarregistrationpermitAsTollPermitPart)
     .then(_fleetCarregistrationpermitdetailtollAccountPart);
 
-Lens<double> carRegistrationPermitDetailTollBalanceLens(
+Lens<Fleet, double> carRegistrationPermitDetailTollBalanceLens(
   CarPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2371,7 +2379,7 @@ Lens<double> carRegistrationPermitDetailTollBalanceLens(
     .then(_fleetCarregistrationpermitAsTollPermitPart)
     .then(_fleetCarregistrationpermitdetailtollBalancePart);
 
-Lens<String> carRegistrationPermitDetailAccessGateIdLens(
+Lens<Fleet, String> carRegistrationPermitDetailAccessGateIdLens(
   CarPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2384,7 +2392,7 @@ Lens<String> carRegistrationPermitDetailAccessGateIdLens(
     )
     .then(_fleetCarregistrationpermitdetailaccessgateIdPart);
 
-Lens<String?> carRegistrationPermitDetailAccessGateManualKeyLens(
+Lens<Fleet, String?> carRegistrationPermitDetailAccessGateManualKeyLens(
   CarPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2398,7 +2406,7 @@ Lens<String?> carRegistrationPermitDetailAccessGateManualKeyLens(
     .then(_fleetCarregistrationpermitdetailaccessgateAsManualGatePart)
     .then(_fleetCarregistrationpermitdetailaccessgatemanualKeyPart);
 
-Lens<String?> carRegistrationPermitDetailAccessGateAutoSensorModelLens(
+Lens<Fleet, String?> carRegistrationPermitDetailAccessGateAutoSensorModelLens(
   CarPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2412,7 +2420,7 @@ Lens<String?> carRegistrationPermitDetailAccessGateAutoSensorModelLens(
     .then(_fleetCarregistrationpermitdetailaccessgateAsAutoGatePart)
     .then(_fleetCarregistrationpermitdetailaccessgateautoSensorModelPart);
 
-Lens<String?> carRegistrationPermitDetailAccessGateAutoBackupIdLens(
+Lens<Fleet, String?> carRegistrationPermitDetailAccessGateAutoBackupIdLens(
   CarPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
@@ -2426,55 +2434,60 @@ Lens<String?> carRegistrationPermitDetailAccessGateAutoBackupIdLens(
     .then(_fleetCarregistrationpermitdetailaccessgateAsAutoGatePart)
     .then(_fleetCarregistrationpermitdetailaccessgateautoBackupIdPart);
 
-Lens<String?> carRegistrationPermitLabelLens(CarPermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarRegistrationPart)
-        .then(_fleetCarregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetCarregistrationpermitLabelPart);
+Lens<Fleet, String?> carRegistrationPermitLabelLens(
+  CarPermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetCarItemPart(location.carIndex))
+    .then(_fleetCarRegistrationPart)
+    .then(_fleetCarregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetCarregistrationpermitLabelPart);
 
-Lens<int?> carRegistrationPermitPriorityLens(CarPermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarRegistrationPart)
-        .then(_fleetCarregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetCarregistrationpermitPriorityPart);
+Lens<Fleet, int?> carRegistrationPermitPriorityLens(
+  CarPermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetCarItemPart(location.carIndex))
+    .then(_fleetCarRegistrationPart)
+    .then(_fleetCarregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetCarregistrationpermitPriorityPart);
 
-Lens<int?> carRegistrationPermitRepeatLens(CarPermitLocation location) =>
+Lens<Fleet, int?> carRegistrationPermitRepeatLens(CarPermitLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarRegistrationPart)
         .then(_fleetCarregistrationPermitsItemPart(location.permitIndex))
         .then(_fleetCarregistrationpermitRepeatPart);
 
-Lens<bool?> carRegistrationPermitEnabledLens(CarPermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarRegistrationPart)
-        .then(_fleetCarregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetCarregistrationpermitEnabledPart);
+Lens<Fleet, bool?> carRegistrationPermitEnabledLens(
+  CarPermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetCarItemPart(location.carIndex))
+    .then(_fleetCarRegistrationPart)
+    .then(_fleetCarregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetCarregistrationpermitEnabledPart);
 
-Lens<String> carColorLens(CarLocation location) => _fleetRootLens()
+Lens<Fleet, String> carColorLens(CarLocation location) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
     .then(_fleetCarColorPart);
 
-Lens<int?> carYearLens(CarLocation location) => _fleetRootLens()
+Lens<Fleet, int?> carYearLens(CarLocation location) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
     .then(_fleetCarYearPart);
 
-Lens<String?> carSedanTrimLevelLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarAsSedanPart)
-    .then(_fleetCarsedanTrimPart)
-    .then(_fleetCarsedantrimLevelPart);
+Lens<Fleet, String?> carSedanTrimLevelLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarAsSedanPart)
+        .then(_fleetCarsedanTrimPart)
+        .then(_fleetCarsedantrimLevelPart);
 
-Lens<bool?> carSedanTrimLeatherLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarAsSedanPart)
-    .then(_fleetCarsedanTrimPart)
-    .then(_fleetCarsedantrimLeatherPart);
+Lens<Fleet, bool?> carSedanTrimLeatherLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarAsSedanPart)
+        .then(_fleetCarsedanTrimPart)
+        .then(_fleetCarsedantrimLeatherPart);
 
-Lens<String?> carSedanTrimUpholsteryMaterialLens(CarLocation location) =>
+Lens<Fleet, String?> carSedanTrimUpholsteryMaterialLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsSedanPart)
@@ -2482,7 +2495,7 @@ Lens<String?> carSedanTrimUpholsteryMaterialLens(CarLocation location) =>
         .then(_fleetCarsedantrimUpholsteryPart)
         .then(_fleetCarsedantrimupholsteryMaterialPart);
 
-Lens<String?> carSedanTrimUpholsteryColorLens(CarLocation location) =>
+Lens<Fleet, String?> carSedanTrimUpholsteryColorLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsSedanPart)
@@ -2490,7 +2503,7 @@ Lens<String?> carSedanTrimUpholsteryColorLens(CarLocation location) =>
         .then(_fleetCarsedantrimUpholsteryPart)
         .then(_fleetCarsedantrimupholsteryColorPart);
 
-Lens<bool?> carSedanTrimUpholsteryHeatedLens(CarLocation location) =>
+Lens<Fleet, bool?> carSedanTrimUpholsteryHeatedLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsSedanPart)
@@ -2498,7 +2511,7 @@ Lens<bool?> carSedanTrimUpholsteryHeatedLens(CarLocation location) =>
         .then(_fleetCarsedantrimUpholsteryPart)
         .then(_fleetCarsedantrimupholsteryHeatedPart);
 
-Lens<List<int>> carSedanTrimUpholsteryRowsLens(CarLocation location) =>
+Lens<Fleet, List<int>> carSedanTrimUpholsteryRowsLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsSedanPart)
@@ -2506,19 +2519,21 @@ Lens<List<int>> carSedanTrimUpholsteryRowsLens(CarLocation location) =>
         .then(_fleetCarsedantrimUpholsteryPart)
         .then(_fleetCarsedantrimupholsteryRowsPart);
 
-Lens<String?> carCoupeTrimLevelLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarAsCoupePart)
-    .then(_fleetCarcoupeTrimPart)
-    .then(_fleetCarcoupetrimLevelPart);
+Lens<Fleet, String?> carCoupeTrimLevelLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarAsCoupePart)
+        .then(_fleetCarcoupeTrimPart)
+        .then(_fleetCarcoupetrimLevelPart);
 
-Lens<bool?> carCoupeTrimLeatherLens(CarLocation location) => _fleetRootLens()
-    .then(_fleetCarItemPart(location.carIndex))
-    .then(_fleetCarAsCoupePart)
-    .then(_fleetCarcoupeTrimPart)
-    .then(_fleetCarcoupetrimLeatherPart);
+Lens<Fleet, bool?> carCoupeTrimLeatherLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarAsCoupePart)
+        .then(_fleetCarcoupeTrimPart)
+        .then(_fleetCarcoupetrimLeatherPart);
 
-Lens<String?> carCoupeTrimUpholsteryMaterialLens(CarLocation location) =>
+Lens<Fleet, String?> carCoupeTrimUpholsteryMaterialLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2526,7 +2541,7 @@ Lens<String?> carCoupeTrimUpholsteryMaterialLens(CarLocation location) =>
         .then(_fleetCarcoupetrimUpholsteryPart)
         .then(_fleetCarcoupetrimupholsteryMaterialPart);
 
-Lens<String?> carCoupeTrimUpholsteryColorLens(CarLocation location) =>
+Lens<Fleet, String?> carCoupeTrimUpholsteryColorLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2534,7 +2549,7 @@ Lens<String?> carCoupeTrimUpholsteryColorLens(CarLocation location) =>
         .then(_fleetCarcoupetrimUpholsteryPart)
         .then(_fleetCarcoupetrimupholsteryColorPart);
 
-Lens<bool?> carCoupeTrimUpholsteryHeatedLens(CarLocation location) =>
+Lens<Fleet, bool?> carCoupeTrimUpholsteryHeatedLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2542,7 +2557,7 @@ Lens<bool?> carCoupeTrimUpholsteryHeatedLens(CarLocation location) =>
         .then(_fleetCarcoupetrimUpholsteryPart)
         .then(_fleetCarcoupetrimupholsteryHeatedPart);
 
-Lens<List<int>> carCoupeTrimUpholsteryRowsLens(CarLocation location) =>
+Lens<Fleet, List<int>> carCoupeTrimUpholsteryRowsLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2550,14 +2565,14 @@ Lens<List<int>> carCoupeTrimUpholsteryRowsLens(CarLocation location) =>
         .then(_fleetCarcoupetrimUpholsteryPart)
         .then(_fleetCarcoupetrimupholsteryRowsPart);
 
-Lens<String?> carCoupeDrivetrainLabelLens(CarLocation location) =>
+Lens<Fleet, String?> carCoupeDrivetrainLabelLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
         .then(_fleetCarcoupeDrivetrainPart)
         .then(_fleetCarcoupedrivetrainLabelPart);
 
-Lens<String> carCoupeDrivetrainFixedAxleLens(CarLocation location) =>
+Lens<Fleet, String> carCoupeDrivetrainFixedAxleLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2565,7 +2580,7 @@ Lens<String> carCoupeDrivetrainFixedAxleLens(CarLocation location) =>
         .then(_fleetCarcoupedrivetrainAsFixedDrivePart)
         .then(_fleetCarcoupedrivetrainfixedAxlePart);
 
-Lens<double> carCoupeDrivetrainRangeMinRatioLens(CarLocation location) =>
+Lens<Fleet, double> carCoupeDrivetrainRangeMinRatioLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2573,7 +2588,7 @@ Lens<double> carCoupeDrivetrainRangeMinRatioLens(CarLocation location) =>
         .then(_fleetCarcoupedrivetrainAsRangeDrivePart)
         .then(_fleetCarcoupedrivetrainrangeMinRatioPart);
 
-Lens<double> carCoupeDrivetrainRangeMaxRatioLens(CarLocation location) =>
+Lens<Fleet, double> carCoupeDrivetrainRangeMaxRatioLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2581,7 +2596,7 @@ Lens<double> carCoupeDrivetrainRangeMaxRatioLens(CarLocation location) =>
         .then(_fleetCarcoupedrivetrainAsRangeDrivePart)
         .then(_fleetCarcoupedrivetrainrangeMaxRatioPart);
 
-Lens<bool> carCoupeDrivetrainRangeLockingLens(CarLocation location) =>
+Lens<Fleet, bool> carCoupeDrivetrainRangeLockingLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsCoupePart)
@@ -2589,99 +2604,104 @@ Lens<bool> carCoupeDrivetrainRangeLockingLens(CarLocation location) =>
         .then(_fleetCarcoupedrivetrainAsRangeDrivePart)
         .then(_fleetCarcoupedrivetrainrangeLockingPart);
 
-Lens<int?> carCoupeTopSpeedLens(CarLocation location) => _fleetRootLens()
+Lens<Fleet, int?> carCoupeTopSpeedLens(CarLocation location) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
     .then(_fleetCarAsCoupePart)
     .then(_fleetCarcoupeTopSpeedPart);
 
-Lens<String?> carConvertibleTrimLevelLens(CarLocation location) =>
+Lens<Fleet, String?> carConvertibleTrimLevelLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsConvertiblePart)
         .then(_fleetCarconvertibleTrimPart)
         .then(_fleetCarconvertibletrimLevelPart);
 
-Lens<bool?> carConvertibleTrimLeatherLens(CarLocation location) =>
+Lens<Fleet, bool?> carConvertibleTrimLeatherLens(CarLocation location) =>
     _fleetRootLens()
         .then(_fleetCarItemPart(location.carIndex))
         .then(_fleetCarAsConvertiblePart)
         .then(_fleetCarconvertibleTrimPart)
         .then(_fleetCarconvertibletrimLeatherPart);
 
-Lens<String?> carConvertibleTrimUpholsteryMaterialLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsConvertiblePart)
-        .then(_fleetCarconvertibleTrimPart)
-        .then(_fleetCarconvertibletrimUpholsteryPart)
-        .then(_fleetCarconvertibletrimupholsteryMaterialPart);
-
-Lens<String?> carConvertibleTrimUpholsteryColorLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsConvertiblePart)
-        .then(_fleetCarconvertibleTrimPart)
-        .then(_fleetCarconvertibletrimUpholsteryPart)
-        .then(_fleetCarconvertibletrimupholsteryColorPart);
-
-Lens<bool?> carConvertibleTrimUpholsteryHeatedLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsConvertiblePart)
-        .then(_fleetCarconvertibleTrimPart)
-        .then(_fleetCarconvertibletrimUpholsteryPart)
-        .then(_fleetCarconvertibletrimupholsteryHeatedPart);
-
-Lens<List<int>> carConvertibleTrimUpholsteryRowsLens(CarLocation location) =>
-    _fleetRootLens()
-        .then(_fleetCarItemPart(location.carIndex))
-        .then(_fleetCarAsConvertiblePart)
-        .then(_fleetCarconvertibleTrimPart)
-        .then(_fleetCarconvertibletrimUpholsteryPart)
-        .then(_fleetCarconvertibletrimupholsteryRowsPart);
-
-Lens<bool?> carConvertibleRoofOpenLens(CarLocation location) => _fleetRootLens()
+Lens<Fleet, String?> carConvertibleTrimUpholsteryMaterialLens(
+  CarLocation location,
+) => _fleetRootLens()
     .then(_fleetCarItemPart(location.carIndex))
     .then(_fleetCarAsConvertiblePart)
-    .then(_fleetCarconvertibleRoofOpenPart);
+    .then(_fleetCarconvertibleTrimPart)
+    .then(_fleetCarconvertibletrimUpholsteryPart)
+    .then(_fleetCarconvertibletrimupholsteryMaterialPart);
 
-Lens<String?> truckRegistrationPlateLens(TruckLocation location) =>
+Lens<Fleet, String?> carConvertibleTrimUpholsteryColorLens(
+  CarLocation location,
+) => _fleetRootLens()
+    .then(_fleetCarItemPart(location.carIndex))
+    .then(_fleetCarAsConvertiblePart)
+    .then(_fleetCarconvertibleTrimPart)
+    .then(_fleetCarconvertibletrimUpholsteryPart)
+    .then(_fleetCarconvertibletrimupholsteryColorPart);
+
+Lens<Fleet, bool?> carConvertibleTrimUpholsteryHeatedLens(
+  CarLocation location,
+) => _fleetRootLens()
+    .then(_fleetCarItemPart(location.carIndex))
+    .then(_fleetCarAsConvertiblePart)
+    .then(_fleetCarconvertibleTrimPart)
+    .then(_fleetCarconvertibletrimUpholsteryPart)
+    .then(_fleetCarconvertibletrimupholsteryHeatedPart);
+
+Lens<Fleet, List<int>> carConvertibleTrimUpholsteryRowsLens(
+  CarLocation location,
+) => _fleetRootLens()
+    .then(_fleetCarItemPart(location.carIndex))
+    .then(_fleetCarAsConvertiblePart)
+    .then(_fleetCarconvertibleTrimPart)
+    .then(_fleetCarconvertibletrimUpholsteryPart)
+    .then(_fleetCarconvertibletrimupholsteryRowsPart);
+
+Lens<Fleet, bool?> carConvertibleRoofOpenLens(CarLocation location) =>
+    _fleetRootLens()
+        .then(_fleetCarItemPart(location.carIndex))
+        .then(_fleetCarAsConvertiblePart)
+        .then(_fleetCarconvertibleRoofOpenPart);
+
+Lens<Fleet, String?> truckRegistrationPlateLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckRegistrationPart)
         .then(_fleetTruckregistrationPlatePart);
 
-Lens<String?> truckRegistrationVinLens(TruckLocation location) =>
+Lens<Fleet, String?> truckRegistrationVinLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckRegistrationPart)
         .then(_fleetTruckregistrationVinPart);
 
-Lens<String?> truckRegistrationRegionLens(TruckLocation location) =>
+Lens<Fleet, String?> truckRegistrationRegionLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckRegistrationPart)
         .then(_fleetTruckregistrationRegionPart);
 
-Lens<bool?> truckRegistrationLockedLens(TruckLocation location) =>
+Lens<Fleet, bool?> truckRegistrationLockedLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckRegistrationPart)
         .then(_fleetTruckregistrationLockedPart);
 
-Lens<List<String>> truckRegistrationTagsLens(TruckLocation location) =>
+Lens<Fleet, List<String>> truckRegistrationTagsLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckRegistrationPart)
         .then(_fleetTruckregistrationTagsPart);
 
-Lens<String?> truckRegistrationNotesLens(TruckLocation location) =>
+Lens<Fleet, String?> truckRegistrationNotesLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckRegistrationPart)
         .then(_fleetTruckregistrationNotesPart);
 
-Lens<String?> truckRegistrationPermitDetailAuthorityLens(
+Lens<Fleet, String?> truckRegistrationPermitDetailAuthorityLens(
   TruckPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2690,7 +2710,7 @@ Lens<String?> truckRegistrationPermitDetailAuthorityLens(
     .then(_fleetTruckregistrationpermitDetailPart)
     .then(_fleetTruckregistrationpermitDetailAuthorityPart);
 
-Lens<bool?> truckRegistrationPermitDetailRevokedLens(
+Lens<Fleet, bool?> truckRegistrationPermitDetailRevokedLens(
   TruckPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2699,7 +2719,7 @@ Lens<bool?> truckRegistrationPermitDetailRevokedLens(
     .then(_fleetTruckregistrationpermitDetailPart)
     .then(_fleetTruckregistrationpermitDetailRevokedPart);
 
-Lens<String> truckRegistrationPermitDetailParkingZoneLens(
+Lens<Fleet, String> truckRegistrationPermitDetailParkingZoneLens(
   TruckPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2709,7 +2729,7 @@ Lens<String> truckRegistrationPermitDetailParkingZoneLens(
     .then(_fleetTruckregistrationpermitAsParkingPermitPart)
     .then(_fleetTruckregistrationpermitdetailparkingZonePart);
 
-Lens<int?> truckRegistrationPermitDetailParkingHoursLens(
+Lens<Fleet, int?> truckRegistrationPermitDetailParkingHoursLens(
   TruckPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2719,7 +2739,7 @@ Lens<int?> truckRegistrationPermitDetailParkingHoursLens(
     .then(_fleetTruckregistrationpermitAsParkingPermitPart)
     .then(_fleetTruckregistrationpermitdetailparkingHoursPart);
 
-Lens<String> truckRegistrationPermitDetailTollAccountLens(
+Lens<Fleet, String> truckRegistrationPermitDetailTollAccountLens(
   TruckPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2729,7 +2749,7 @@ Lens<String> truckRegistrationPermitDetailTollAccountLens(
     .then(_fleetTruckregistrationpermitAsTollPermitPart)
     .then(_fleetTruckregistrationpermitdetailtollAccountPart);
 
-Lens<double> truckRegistrationPermitDetailTollBalanceLens(
+Lens<Fleet, double> truckRegistrationPermitDetailTollBalanceLens(
   TruckPermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2739,7 +2759,7 @@ Lens<double> truckRegistrationPermitDetailTollBalanceLens(
     .then(_fleetTruckregistrationpermitAsTollPermitPart)
     .then(_fleetTruckregistrationpermitdetailtollBalancePart);
 
-Lens<String> truckRegistrationPermitDetailAccessGateIdLens(
+Lens<Fleet, String> truckRegistrationPermitDetailAccessGateIdLens(
   TruckPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2754,7 +2774,7 @@ Lens<String> truckRegistrationPermitDetailAccessGateIdLens(
     )
     .then(_fleetTruckregistrationpermitdetailaccessgateIdPart);
 
-Lens<String?> truckRegistrationPermitDetailAccessGateManualKeyLens(
+Lens<Fleet, String?> truckRegistrationPermitDetailAccessGateManualKeyLens(
   TruckPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2770,7 +2790,7 @@ Lens<String?> truckRegistrationPermitDetailAccessGateManualKeyLens(
     .then(_fleetTruckregistrationpermitdetailaccessgateAsManualGatePart)
     .then(_fleetTruckregistrationpermitdetailaccessgatemanualKeyPart);
 
-Lens<String?> truckRegistrationPermitDetailAccessGateAutoSensorModelLens(
+Lens<Fleet, String?> truckRegistrationPermitDetailAccessGateAutoSensorModelLens(
   TruckPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2786,7 +2806,7 @@ Lens<String?> truckRegistrationPermitDetailAccessGateAutoSensorModelLens(
     .then(_fleetTruckregistrationpermitdetailaccessgateAsAutoGatePart)
     .then(_fleetTruckregistrationpermitdetailaccessgateautoSensorModelPart);
 
-Lens<String?> truckRegistrationPermitDetailAccessGateAutoBackupIdLens(
+Lens<Fleet, String?> truckRegistrationPermitDetailAccessGateAutoBackupIdLens(
   TruckPermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
@@ -2802,59 +2822,66 @@ Lens<String?> truckRegistrationPermitDetailAccessGateAutoBackupIdLens(
     .then(_fleetTruckregistrationpermitdetailaccessgateAsAutoGatePart)
     .then(_fleetTruckregistrationpermitdetailaccessgateautoBackupIdPart);
 
-Lens<String?> truckRegistrationPermitLabelLens(TruckPermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetTruckItemPart(location.truckIndex))
-        .then(_fleetTruckRegistrationPart)
-        .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetTruckregistrationpermitLabelPart);
+Lens<Fleet, String?> truckRegistrationPermitLabelLens(
+  TruckPermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetTruckItemPart(location.truckIndex))
+    .then(_fleetTruckRegistrationPart)
+    .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetTruckregistrationpermitLabelPart);
 
-Lens<int?> truckRegistrationPermitPriorityLens(TruckPermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetTruckItemPart(location.truckIndex))
-        .then(_fleetTruckRegistrationPart)
-        .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetTruckregistrationpermitPriorityPart);
+Lens<Fleet, int?> truckRegistrationPermitPriorityLens(
+  TruckPermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetTruckItemPart(location.truckIndex))
+    .then(_fleetTruckRegistrationPart)
+    .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetTruckregistrationpermitPriorityPart);
 
-Lens<int?> truckRegistrationPermitRepeatLens(TruckPermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetTruckItemPart(location.truckIndex))
-        .then(_fleetTruckRegistrationPart)
-        .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetTruckregistrationpermitRepeatPart);
+Lens<Fleet, int?> truckRegistrationPermitRepeatLens(
+  TruckPermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetTruckItemPart(location.truckIndex))
+    .then(_fleetTruckRegistrationPart)
+    .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetTruckregistrationpermitRepeatPart);
 
-Lens<bool?> truckRegistrationPermitEnabledLens(TruckPermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetTruckItemPart(location.truckIndex))
-        .then(_fleetTruckRegistrationPart)
-        .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetTruckregistrationpermitEnabledPart);
+Lens<Fleet, bool?> truckRegistrationPermitEnabledLens(
+  TruckPermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetTruckItemPart(location.truckIndex))
+    .then(_fleetTruckRegistrationPart)
+    .then(_fleetTruckregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetTruckregistrationpermitEnabledPart);
 
-Lens<int?> truckAxleCountLens(TruckLocation location) => _fleetRootLens()
+Lens<Fleet, int?> truckAxleCountLens(TruckLocation location) => _fleetRootLens()
     .then(_fleetTruckItemPart(location.truckIndex))
     .then(_fleetTruckAxleCountPart);
 
-Lens<String?> truckBoxTrimLevelLens(TruckLocation location) => _fleetRootLens()
-    .then(_fleetTruckItemPart(location.truckIndex))
-    .then(_fleetTruckAsBoxTruckPart)
-    .then(_fleetTruckboxTrimPart)
-    .then(_fleetTruckboxtrimLevelPart);
-
-Lens<bool?> truckBoxTrimLeatherLens(TruckLocation location) => _fleetRootLens()
-    .then(_fleetTruckItemPart(location.truckIndex))
-    .then(_fleetTruckAsBoxTruckPart)
-    .then(_fleetTruckboxTrimPart)
-    .then(_fleetTruckboxtrimLeatherPart);
-
-Lens<String?> truckBoxTrimUpholsteryMaterialLens(TruckLocation location) =>
+Lens<Fleet, String?> truckBoxTrimLevelLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckAsBoxTruckPart)
         .then(_fleetTruckboxTrimPart)
-        .then(_fleetTruckboxtrimUpholsteryPart)
-        .then(_fleetTruckboxtrimupholsteryMaterialPart);
+        .then(_fleetTruckboxtrimLevelPart);
 
-Lens<String?> truckBoxTrimUpholsteryColorLens(TruckLocation location) =>
+Lens<Fleet, bool?> truckBoxTrimLeatherLens(TruckLocation location) =>
+    _fleetRootLens()
+        .then(_fleetTruckItemPart(location.truckIndex))
+        .then(_fleetTruckAsBoxTruckPart)
+        .then(_fleetTruckboxTrimPart)
+        .then(_fleetTruckboxtrimLeatherPart);
+
+Lens<Fleet, String?> truckBoxTrimUpholsteryMaterialLens(
+  TruckLocation location,
+) => _fleetRootLens()
+    .then(_fleetTruckItemPart(location.truckIndex))
+    .then(_fleetTruckAsBoxTruckPart)
+    .then(_fleetTruckboxTrimPart)
+    .then(_fleetTruckboxtrimUpholsteryPart)
+    .then(_fleetTruckboxtrimupholsteryMaterialPart);
+
+Lens<Fleet, String?> truckBoxTrimUpholsteryColorLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckAsBoxTruckPart)
@@ -2862,7 +2889,7 @@ Lens<String?> truckBoxTrimUpholsteryColorLens(TruckLocation location) =>
         .then(_fleetTruckboxtrimUpholsteryPart)
         .then(_fleetTruckboxtrimupholsteryColorPart);
 
-Lens<bool?> truckBoxTrimUpholsteryHeatedLens(TruckLocation location) =>
+Lens<Fleet, bool?> truckBoxTrimUpholsteryHeatedLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckAsBoxTruckPart)
@@ -2870,7 +2897,7 @@ Lens<bool?> truckBoxTrimUpholsteryHeatedLens(TruckLocation location) =>
         .then(_fleetTruckboxtrimUpholsteryPart)
         .then(_fleetTruckboxtrimupholsteryHeatedPart);
 
-Lens<List<int>> truckBoxTrimUpholsteryRowsLens(TruckLocation location) =>
+Lens<Fleet, List<int>> truckBoxTrimUpholsteryRowsLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckAsBoxTruckPart)
@@ -2878,58 +2905,61 @@ Lens<List<int>> truckBoxTrimUpholsteryRowsLens(TruckLocation location) =>
         .then(_fleetTruckboxtrimUpholsteryPart)
         .then(_fleetTruckboxtrimupholsteryRowsPart);
 
-Lens<double?> truckBoxBoxVolumeLens(TruckLocation location) => _fleetRootLens()
-    .then(_fleetTruckItemPart(location.truckIndex))
-    .then(_fleetTruckAsBoxTruckPart)
-    .then(_fleetTruckboxBoxVolumePart);
+Lens<Fleet, double?> truckBoxBoxVolumeLens(TruckLocation location) =>
+    _fleetRootLens()
+        .then(_fleetTruckItemPart(location.truckIndex))
+        .then(_fleetTruckAsBoxTruckPart)
+        .then(_fleetTruckboxBoxVolumePart);
 
-Lens<double?> truckTankerCapacityLens(TruckLocation location) =>
+Lens<Fleet, double?> truckTankerCapacityLens(TruckLocation location) =>
     _fleetRootLens()
         .then(_fleetTruckItemPart(location.truckIndex))
         .then(_fleetTruckAsTankerPart)
         .then(_fleetTrucktankerCapacityPart);
 
-Lens<bool?> truckTankerHazmatLens(TruckLocation location) => _fleetRootLens()
-    .then(_fleetTruckItemPart(location.truckIndex))
-    .then(_fleetTruckAsTankerPart)
-    .then(_fleetTrucktankerHazmatPart);
+Lens<Fleet, bool?> truckTankerHazmatLens(TruckLocation location) =>
+    _fleetRootLens()
+        .then(_fleetTruckItemPart(location.truckIndex))
+        .then(_fleetTruckAsTankerPart)
+        .then(_fleetTrucktankerHazmatPart);
 
-Lens<String?> bikeRegistrationPlateLens(BikeLocation location) =>
+Lens<Fleet, String?> bikeRegistrationPlateLens(BikeLocation location) =>
     _fleetRootLens()
         .then(_fleetBikeItemPart(location.bikeIndex))
         .then(_fleetBikeRegistrationPart)
         .then(_fleetBikeregistrationPlatePart);
 
-Lens<String?> bikeRegistrationVinLens(BikeLocation location) => _fleetRootLens()
-    .then(_fleetBikeItemPart(location.bikeIndex))
-    .then(_fleetBikeRegistrationPart)
-    .then(_fleetBikeregistrationVinPart);
+Lens<Fleet, String?> bikeRegistrationVinLens(BikeLocation location) =>
+    _fleetRootLens()
+        .then(_fleetBikeItemPart(location.bikeIndex))
+        .then(_fleetBikeRegistrationPart)
+        .then(_fleetBikeregistrationVinPart);
 
-Lens<String?> bikeRegistrationRegionLens(BikeLocation location) =>
+Lens<Fleet, String?> bikeRegistrationRegionLens(BikeLocation location) =>
     _fleetRootLens()
         .then(_fleetBikeItemPart(location.bikeIndex))
         .then(_fleetBikeRegistrationPart)
         .then(_fleetBikeregistrationRegionPart);
 
-Lens<bool?> bikeRegistrationLockedLens(BikeLocation location) =>
+Lens<Fleet, bool?> bikeRegistrationLockedLens(BikeLocation location) =>
     _fleetRootLens()
         .then(_fleetBikeItemPart(location.bikeIndex))
         .then(_fleetBikeRegistrationPart)
         .then(_fleetBikeregistrationLockedPart);
 
-Lens<List<String>> bikeRegistrationTagsLens(BikeLocation location) =>
+Lens<Fleet, List<String>> bikeRegistrationTagsLens(BikeLocation location) =>
     _fleetRootLens()
         .then(_fleetBikeItemPart(location.bikeIndex))
         .then(_fleetBikeRegistrationPart)
         .then(_fleetBikeregistrationTagsPart);
 
-Lens<String?> bikeRegistrationNotesLens(BikeLocation location) =>
+Lens<Fleet, String?> bikeRegistrationNotesLens(BikeLocation location) =>
     _fleetRootLens()
         .then(_fleetBikeItemPart(location.bikeIndex))
         .then(_fleetBikeRegistrationPart)
         .then(_fleetBikeregistrationNotesPart);
 
-Lens<String?> bikeRegistrationPermitDetailAuthorityLens(
+Lens<Fleet, String?> bikeRegistrationPermitDetailAuthorityLens(
   BikePermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2938,7 +2968,7 @@ Lens<String?> bikeRegistrationPermitDetailAuthorityLens(
     .then(_fleetBikeregistrationpermitDetailPart)
     .then(_fleetBikeregistrationpermitDetailAuthorityPart);
 
-Lens<bool?> bikeRegistrationPermitDetailRevokedLens(
+Lens<Fleet, bool?> bikeRegistrationPermitDetailRevokedLens(
   BikePermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2947,7 +2977,7 @@ Lens<bool?> bikeRegistrationPermitDetailRevokedLens(
     .then(_fleetBikeregistrationpermitDetailPart)
     .then(_fleetBikeregistrationpermitDetailRevokedPart);
 
-Lens<String> bikeRegistrationPermitDetailParkingZoneLens(
+Lens<Fleet, String> bikeRegistrationPermitDetailParkingZoneLens(
   BikePermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2957,7 +2987,7 @@ Lens<String> bikeRegistrationPermitDetailParkingZoneLens(
     .then(_fleetBikeregistrationpermitAsParkingPermitPart)
     .then(_fleetBikeregistrationpermitdetailparkingZonePart);
 
-Lens<int?> bikeRegistrationPermitDetailParkingHoursLens(
+Lens<Fleet, int?> bikeRegistrationPermitDetailParkingHoursLens(
   BikePermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2967,7 +2997,7 @@ Lens<int?> bikeRegistrationPermitDetailParkingHoursLens(
     .then(_fleetBikeregistrationpermitAsParkingPermitPart)
     .then(_fleetBikeregistrationpermitdetailparkingHoursPart);
 
-Lens<String> bikeRegistrationPermitDetailTollAccountLens(
+Lens<Fleet, String> bikeRegistrationPermitDetailTollAccountLens(
   BikePermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2977,7 +3007,7 @@ Lens<String> bikeRegistrationPermitDetailTollAccountLens(
     .then(_fleetBikeregistrationpermitAsTollPermitPart)
     .then(_fleetBikeregistrationpermitdetailtollAccountPart);
 
-Lens<double> bikeRegistrationPermitDetailTollBalanceLens(
+Lens<Fleet, double> bikeRegistrationPermitDetailTollBalanceLens(
   BikePermitLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -2987,7 +3017,7 @@ Lens<double> bikeRegistrationPermitDetailTollBalanceLens(
     .then(_fleetBikeregistrationpermitAsTollPermitPart)
     .then(_fleetBikeregistrationpermitdetailtollBalancePart);
 
-Lens<String> bikeRegistrationPermitDetailAccessGateIdLens(
+Lens<Fleet, String> bikeRegistrationPermitDetailAccessGateIdLens(
   BikePermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -3000,7 +3030,7 @@ Lens<String> bikeRegistrationPermitDetailAccessGateIdLens(
     )
     .then(_fleetBikeregistrationpermitdetailaccessgateIdPart);
 
-Lens<String?> bikeRegistrationPermitDetailAccessGateManualKeyLens(
+Lens<Fleet, String?> bikeRegistrationPermitDetailAccessGateManualKeyLens(
   BikePermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -3014,7 +3044,7 @@ Lens<String?> bikeRegistrationPermitDetailAccessGateManualKeyLens(
     .then(_fleetBikeregistrationpermitdetailaccessgateAsManualGatePart)
     .then(_fleetBikeregistrationpermitdetailaccessgatemanualKeyPart);
 
-Lens<String?> bikeRegistrationPermitDetailAccessGateAutoSensorModelLens(
+Lens<Fleet, String?> bikeRegistrationPermitDetailAccessGateAutoSensorModelLens(
   BikePermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -3028,7 +3058,7 @@ Lens<String?> bikeRegistrationPermitDetailAccessGateAutoSensorModelLens(
     .then(_fleetBikeregistrationpermitdetailaccessgateAsAutoGatePart)
     .then(_fleetBikeregistrationpermitdetailaccessgateautoSensorModelPart);
 
-Lens<String?> bikeRegistrationPermitDetailAccessGateAutoBackupIdLens(
+Lens<Fleet, String?> bikeRegistrationPermitDetailAccessGateAutoBackupIdLens(
   BikePermitGateLocation location,
 ) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
@@ -3042,95 +3072,104 @@ Lens<String?> bikeRegistrationPermitDetailAccessGateAutoBackupIdLens(
     .then(_fleetBikeregistrationpermitdetailaccessgateAsAutoGatePart)
     .then(_fleetBikeregistrationpermitdetailaccessgateautoBackupIdPart);
 
-Lens<String?> bikeRegistrationPermitLabelLens(BikePermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetBikeItemPart(location.bikeIndex))
-        .then(_fleetBikeRegistrationPart)
-        .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetBikeregistrationpermitLabelPart);
+Lens<Fleet, String?> bikeRegistrationPermitLabelLens(
+  BikePermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetBikeItemPart(location.bikeIndex))
+    .then(_fleetBikeRegistrationPart)
+    .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetBikeregistrationpermitLabelPart);
 
-Lens<int?> bikeRegistrationPermitPriorityLens(BikePermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetBikeItemPart(location.bikeIndex))
-        .then(_fleetBikeRegistrationPart)
-        .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetBikeregistrationpermitPriorityPart);
+Lens<Fleet, int?> bikeRegistrationPermitPriorityLens(
+  BikePermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetBikeItemPart(location.bikeIndex))
+    .then(_fleetBikeRegistrationPart)
+    .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetBikeregistrationpermitPriorityPart);
 
-Lens<int?> bikeRegistrationPermitRepeatLens(BikePermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetBikeItemPart(location.bikeIndex))
-        .then(_fleetBikeRegistrationPart)
-        .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetBikeregistrationpermitRepeatPart);
+Lens<Fleet, int?> bikeRegistrationPermitRepeatLens(
+  BikePermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetBikeItemPart(location.bikeIndex))
+    .then(_fleetBikeRegistrationPart)
+    .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetBikeregistrationpermitRepeatPart);
 
-Lens<bool?> bikeRegistrationPermitEnabledLens(BikePermitLocation location) =>
-    _fleetRootLens()
-        .then(_fleetBikeItemPart(location.bikeIndex))
-        .then(_fleetBikeRegistrationPart)
-        .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
-        .then(_fleetBikeregistrationpermitEnabledPart);
+Lens<Fleet, bool?> bikeRegistrationPermitEnabledLens(
+  BikePermitLocation location,
+) => _fleetRootLens()
+    .then(_fleetBikeItemPart(location.bikeIndex))
+    .then(_fleetBikeRegistrationPart)
+    .then(_fleetBikeregistrationPermitsItemPart(location.permitIndex))
+    .then(_fleetBikeregistrationpermitEnabledPart);
 
-Lens<bool?> bikeElectricLens(BikeLocation location) => _fleetRootLens()
+Lens<Fleet, bool?> bikeElectricLens(BikeLocation location) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
     .then(_fleetBikeElectricPart);
 
-Lens<int?> bikeRoadGearsLens(BikeLocation location) => _fleetRootLens()
+Lens<Fleet, int?> bikeRoadGearsLens(BikeLocation location) => _fleetRootLens()
     .then(_fleetBikeItemPart(location.bikeIndex))
     .then(_fleetBikeAsRoadBikePart)
     .then(_fleetBikeroadGearsPart);
 
-Lens<int?> bikeCargoBasketsLens(BikeLocation location) => _fleetRootLens()
-    .then(_fleetBikeItemPart(location.bikeIndex))
-    .then(_fleetBikeAsCargoBikePart)
-    .then(_fleetBikecargoBasketsPart);
+Lens<Fleet, int?> bikeCargoBasketsLens(BikeLocation location) =>
+    _fleetRootLens()
+        .then(_fleetBikeItemPart(location.bikeIndex))
+        .then(_fleetBikeAsCargoBikePart)
+        .then(_fleetBikecargoBasketsPart);
 
-Lens<bool?> bikeCargoAssistLens(BikeLocation location) => _fleetRootLens()
-    .then(_fleetBikeItemPart(location.bikeIndex))
-    .then(_fleetBikeAsCargoBikePart)
-    .then(_fleetBikecargoAssistPart);
+Lens<Fleet, bool?> bikeCargoAssistLens(BikeLocation location) =>
+    _fleetRootLens()
+        .then(_fleetBikeItemPart(location.bikeIndex))
+        .then(_fleetBikeAsCargoBikePart)
+        .then(_fleetBikecargoAssistPart);
 
-Lens<PolicyCondition?> policyConditionsLens(PolicyLocation location) =>
+Lens<Fleet, PolicyCondition?> policyConditionsLens(PolicyLocation location) =>
     _fleetRootLens()
         .then(_fleetPoliciesItemPart(location.policyIndex))
         .then(_fleetPolicyConditionsPart);
 
-Lens<int?> policyLimitsMaxSpeedLens(PolicyLocation location) => _fleetRootLens()
-    .then(_fleetPoliciesItemPart(location.policyIndex))
-    .then(_fleetPolicyLimitsPart)
-    .then(_fleetPolicylimitsMaxSpeedPart);
+Lens<Fleet, int?> policyLimitsMaxSpeedLens(PolicyLocation location) =>
+    _fleetRootLens()
+        .then(_fleetPoliciesItemPart(location.policyIndex))
+        .then(_fleetPolicyLimitsPart)
+        .then(_fleetPolicylimitsMaxSpeedPart);
 
-Lens<double?> policyLimitsMaxLoadLens(PolicyLocation location) =>
+Lens<Fleet, double?> policyLimitsMaxLoadLens(PolicyLocation location) =>
     _fleetRootLens()
         .then(_fleetPoliciesItemPart(location.policyIndex))
         .then(_fleetPolicyLimitsPart)
         .then(_fleetPolicylimitsMaxLoadPart);
 
-Lens<bool?> policyLimitsEscortLens(PolicyLocation location) => _fleetRootLens()
-    .then(_fleetPoliciesItemPart(location.policyIndex))
-    .then(_fleetPolicyLimitsPart)
-    .then(_fleetPolicylimitsEscortPart);
+Lens<Fleet, bool?> policyLimitsEscortLens(PolicyLocation location) =>
+    _fleetRootLens()
+        .then(_fleetPoliciesItemPart(location.policyIndex))
+        .then(_fleetPolicyLimitsPart)
+        .then(_fleetPolicylimitsEscortPart);
 
-Lens<int?> policyLimitsCurfewLens(PolicyLocation location) => _fleetRootLens()
-    .then(_fleetPoliciesItemPart(location.policyIndex))
-    .then(_fleetPolicyLimitsPart)
-    .then(_fleetPolicylimitsCurfewPart);
+Lens<Fleet, int?> policyLimitsCurfewLens(PolicyLocation location) =>
+    _fleetRootLens()
+        .then(_fleetPoliciesItemPart(location.policyIndex))
+        .then(_fleetPolicyLimitsPart)
+        .then(_fleetPolicylimitsCurfewPart);
 
-Lens<int?> policyLimitsInspectionDaysLens(PolicyLocation location) =>
+Lens<Fleet, int?> policyLimitsInspectionDaysLens(PolicyLocation location) =>
     _fleetRootLens()
         .then(_fleetPoliciesItemPart(location.policyIndex))
         .then(_fleetPolicyLimitsPart)
         .then(_fleetPolicylimitsInspectionDaysPart);
 
-Lens<int?> depotCapacityLens(VehicleCategory category) =>
+Lens<Fleet, int?> depotCapacityLens(VehicleCategory category) =>
     depotSettingsLens(category).then(_fleetDepotCapacityPart);
 
-Lens<int?> depotBaysLens(VehicleCategory category) =>
+Lens<Fleet, int?> depotBaysLens(VehicleCategory category) =>
     depotSettingsLens(category).then(_fleetDepotBaysPart);
 
-Lens<bool?> depotNightShiftLens(VehicleCategory category) =>
+Lens<Fleet, bool?> depotNightShiftLens(VehicleCategory category) =>
     depotSettingsLens(category).then(_fleetDepotNightShiftPart);
 
-Lens<String?> depotNotesLens(VehicleCategory category) =>
+Lens<Fleet, String?> depotNotesLens(VehicleCategory category) =>
     depotSettingsLens(category).then(_fleetDepotNotesPart);
 
 bool settingsAutoSyncHasSavedBacking(Fleet? saved) {
@@ -3143,13 +3182,14 @@ bool settingsAutoSyncHasSavedBacking(Fleet? saved) {
   }
 }
 
-final settingsAutoSyncField = GeneratedEditField<Fleet, (), bool?, Lens<bool?>>(
-  id: 'settingsAutoSync',
-  dirtyField: FleetDirtyField.settingsAutoSync,
-  lens: (location) => settingsAutoSyncLens(),
-  fallback: null,
-  adapter: FieldAdapterSpec<bool?>.identity(),
-);
+final settingsAutoSyncField =
+    GeneratedEditField<Fleet, (), bool?, Lens<Fleet, bool?>>(
+      id: 'settingsAutoSync',
+      dirtyField: FleetDirtyField.settingsAutoSync,
+      lens: (location) => settingsAutoSyncLens(),
+      fallback: null,
+      adapter: FieldAdapterSpec<bool?>.identity(),
+    );
 
 bool settingsAlertsHasSavedBacking(Fleet? saved) {
   if (saved == null) return false;
@@ -3161,13 +3201,14 @@ bool settingsAlertsHasSavedBacking(Fleet? saved) {
   }
 }
 
-final settingsAlertsField = GeneratedEditField<Fleet, (), bool?, Lens<bool?>>(
-  id: 'settingsAlerts',
-  dirtyField: FleetDirtyField.settingsAlerts,
-  lens: (location) => settingsAlertsLens(),
-  fallback: null,
-  adapter: FieldAdapterSpec<bool?>.identity(),
-);
+final settingsAlertsField =
+    GeneratedEditField<Fleet, (), bool?, Lens<Fleet, bool?>>(
+      id: 'settingsAlerts',
+      dirtyField: FleetDirtyField.settingsAlerts,
+      lens: (location) => settingsAlertsLens(),
+      fallback: null,
+      adapter: FieldAdapterSpec<bool?>.identity(),
+    );
 
 bool settingsRegionHasSavedBacking(Fleet? saved) {
   if (saved == null) return false;
@@ -3180,7 +3221,7 @@ bool settingsRegionHasSavedBacking(Fleet? saved) {
 }
 
 final settingsRegionField =
-    GeneratedEditField<Fleet, (), String?, Lens<String?>>(
+    GeneratedEditField<Fleet, (), String?, Lens<Fleet, String?>>(
       id: 'settingsRegion',
       dirtyField: FleetDirtyField.settingsRegion,
       lens: (location) => settingsRegionLens(),
@@ -3199,7 +3240,7 @@ bool settingsEmergencyContactsHasSavedBacking(Fleet? saved) {
 }
 
 final settingsEmergencyContactsField =
-    GeneratedEditField<Fleet, (), List<String>?, Lens<List<String>?>>(
+    GeneratedEditField<Fleet, (), List<String>?, Lens<Fleet, List<String>?>>(
       id: 'settingsEmergencyContacts',
       dirtyField: FleetDirtyField.settingsEmergencyContacts,
       lens: (location) => settingsEmergencyContactsLens(),
@@ -3218,7 +3259,7 @@ bool settingsNotificationsEmailHasSavedBacking(Fleet? saved) {
 }
 
 final settingsNotificationsEmailField =
-    GeneratedEditField<Fleet, (), bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, (), bool?, Lens<Fleet, bool?>>(
       id: 'settingsNotificationsEmail',
       dirtyField: FleetDirtyField.settingsNotificationsEmail,
       lens: (location) => settingsNotificationsEmailLens(),
@@ -3237,7 +3278,7 @@ bool settingsNotificationsSmsHasSavedBacking(Fleet? saved) {
 }
 
 final settingsNotificationsSmsField =
-    GeneratedEditField<Fleet, (), bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, (), bool?, Lens<Fleet, bool?>>(
       id: 'settingsNotificationsSms',
       dirtyField: FleetDirtyField.settingsNotificationsSms,
       lens: (location) => settingsNotificationsSmsLens(),
@@ -3256,7 +3297,7 @@ bool settingsNotificationsWebhookUrlHasSavedBacking(Fleet? saved) {
 }
 
 final settingsNotificationsWebhookUrlField =
-    GeneratedEditField<Fleet, (), String?, Lens<String?>>(
+    GeneratedEditField<Fleet, (), String?, Lens<Fleet, String?>>(
       id: 'settingsNotificationsWebhookUrl',
       dirtyField: FleetDirtyField.settingsNotificationsWebhookUrl,
       lens: (location) => settingsNotificationsWebhookUrlLens(),
@@ -3275,7 +3316,7 @@ bool carRegistrationPlateHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carRegistrationPlateField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carRegistrationPlate',
       dirtyField: FleetDirtyField.carRegistrationPlate,
       lens: carRegistrationPlateLens,
@@ -3294,7 +3335,7 @@ bool carRegistrationVinHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carRegistrationVinField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carRegistrationVin',
       dirtyField: FleetDirtyField.carRegistrationVin,
       lens: carRegistrationVinLens,
@@ -3313,7 +3354,7 @@ bool carRegistrationRegionHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carRegistrationRegionField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carRegistrationRegion',
       dirtyField: FleetDirtyField.carRegistrationRegion,
       lens: carRegistrationRegionLens,
@@ -3332,7 +3373,7 @@ bool carRegistrationLockedHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carRegistrationLockedField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carRegistrationLocked',
       dirtyField: FleetDirtyField.carRegistrationLocked,
       lens: carRegistrationLockedLens,
@@ -3351,7 +3392,12 @@ bool carRegistrationTagsHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carRegistrationTagsField =
-    GeneratedEditField<Fleet, CarLocation, List<String>, Lens<List<String>>>(
+    GeneratedEditField<
+      Fleet,
+      CarLocation,
+      List<String>,
+      Lens<Fleet, List<String>>
+    >(
       id: 'carRegistrationTags',
       dirtyField: FleetDirtyField.carRegistrationTags,
       lens: carRegistrationTagsLens,
@@ -3370,7 +3416,7 @@ bool carRegistrationNotesHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carRegistrationNotesField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carRegistrationNotes',
       dirtyField: FleetDirtyField.carRegistrationNotes,
       lens: carRegistrationNotesLens,
@@ -3392,7 +3438,7 @@ bool carRegistrationPermitDetailAuthorityHasSavedBacking(
 }
 
 final carRegistrationPermitDetailAuthorityField =
-    GeneratedEditField<Fleet, CarPermitLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarPermitLocation, String?, Lens<Fleet, String?>>(
       id: 'carRegistrationPermitDetailAuthority',
       dirtyField: FleetDirtyField.carRegistrationPermitDetailAuthority,
       lens: carRegistrationPermitDetailAuthorityLens,
@@ -3414,7 +3460,7 @@ bool carRegistrationPermitDetailRevokedHasSavedBacking(
 }
 
 final carRegistrationPermitDetailRevokedField =
-    GeneratedEditField<Fleet, CarPermitLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarPermitLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carRegistrationPermitDetailRevoked',
       dirtyField: FleetDirtyField.carRegistrationPermitDetailRevoked,
       lens: carRegistrationPermitDetailRevokedLens,
@@ -3436,7 +3482,7 @@ bool carRegistrationPermitDetailParkingZoneHasSavedBacking(
 }
 
 final carRegistrationPermitDetailParkingZoneField =
-    GeneratedEditField<Fleet, CarPermitLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, CarPermitLocation, String, Lens<Fleet, String>>(
       id: 'carRegistrationPermitDetailParkingZone',
       dirtyField: FleetDirtyField.carRegistrationPermitDetailParkingZone,
       lens: carRegistrationPermitDetailParkingZoneLens,
@@ -3458,7 +3504,7 @@ bool carRegistrationPermitDetailParkingHoursHasSavedBacking(
 }
 
 final carRegistrationPermitDetailParkingHoursField =
-    GeneratedEditField<Fleet, CarPermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, CarPermitLocation, int?, Lens<Fleet, int?>>(
       id: 'carRegistrationPermitDetailParkingHours',
       dirtyField: FleetDirtyField.carRegistrationPermitDetailParkingHours,
       lens: carRegistrationPermitDetailParkingHoursLens,
@@ -3480,7 +3526,7 @@ bool carRegistrationPermitDetailTollAccountHasSavedBacking(
 }
 
 final carRegistrationPermitDetailTollAccountField =
-    GeneratedEditField<Fleet, CarPermitLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, CarPermitLocation, String, Lens<Fleet, String>>(
       id: 'carRegistrationPermitDetailTollAccount',
       dirtyField: FleetDirtyField.carRegistrationPermitDetailTollAccount,
       lens: carRegistrationPermitDetailTollAccountLens,
@@ -3502,7 +3548,7 @@ bool carRegistrationPermitDetailTollBalanceHasSavedBacking(
 }
 
 final carRegistrationPermitDetailTollBalanceField =
-    GeneratedEditField<Fleet, CarPermitLocation, double, Lens<double>>(
+    GeneratedEditField<Fleet, CarPermitLocation, double, Lens<Fleet, double>>(
       id: 'carRegistrationPermitDetailTollBalance',
       dirtyField: FleetDirtyField.carRegistrationPermitDetailTollBalance,
       lens: carRegistrationPermitDetailTollBalanceLens,
@@ -3524,7 +3570,12 @@ bool carRegistrationPermitDetailAccessGateIdHasSavedBacking(
 }
 
 final carRegistrationPermitDetailAccessGateIdField =
-    GeneratedEditField<Fleet, CarPermitGateLocation, String, Lens<String>>(
+    GeneratedEditField<
+      Fleet,
+      CarPermitGateLocation,
+      String,
+      Lens<Fleet, String>
+    >(
       id: 'carRegistrationPermitDetailAccessGateId',
       dirtyField: FleetDirtyField.carRegistrationPermitDetailAccessGateId,
       lens: carRegistrationPermitDetailAccessGateIdLens,
@@ -3546,7 +3597,12 @@ bool carRegistrationPermitDetailAccessGateManualKeyHasSavedBacking(
 }
 
 final carRegistrationPermitDetailAccessGateManualKeyField =
-    GeneratedEditField<Fleet, CarPermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      CarPermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'carRegistrationPermitDetailAccessGateManualKey',
       dirtyField:
           FleetDirtyField.carRegistrationPermitDetailAccessGateManualKey,
@@ -3571,7 +3627,12 @@ bool carRegistrationPermitDetailAccessGateAutoSensorModelHasSavedBacking(
 }
 
 final carRegistrationPermitDetailAccessGateAutoSensorModelField =
-    GeneratedEditField<Fleet, CarPermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      CarPermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'carRegistrationPermitDetailAccessGateAutoSensorModel',
       dirtyField:
           FleetDirtyField.carRegistrationPermitDetailAccessGateAutoSensorModel,
@@ -3594,7 +3655,12 @@ bool carRegistrationPermitDetailAccessGateAutoBackupIdHasSavedBacking(
 }
 
 final carRegistrationPermitDetailAccessGateAutoBackupIdField =
-    GeneratedEditField<Fleet, CarPermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      CarPermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'carRegistrationPermitDetailAccessGateAutoBackupId',
       dirtyField:
           FleetDirtyField.carRegistrationPermitDetailAccessGateAutoBackupId,
@@ -3617,7 +3683,7 @@ bool carRegistrationPermitLabelHasSavedBacking(
 }
 
 final carRegistrationPermitLabelField =
-    GeneratedEditField<Fleet, CarPermitLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarPermitLocation, String?, Lens<Fleet, String?>>(
       id: 'carRegistrationPermitLabel',
       dirtyField: FleetDirtyField.carRegistrationPermitLabel,
       lens: carRegistrationPermitLabelLens,
@@ -3639,7 +3705,7 @@ bool carRegistrationPermitPriorityHasSavedBacking(
 }
 
 final carRegistrationPermitPriorityField =
-    GeneratedEditField<Fleet, CarPermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, CarPermitLocation, int?, Lens<Fleet, int?>>(
       id: 'carRegistrationPermitPriority',
       dirtyField: FleetDirtyField.carRegistrationPermitPriority,
       lens: carRegistrationPermitPriorityLens,
@@ -3661,7 +3727,7 @@ bool carRegistrationPermitRepeatHasSavedBacking(
 }
 
 final carRegistrationPermitRepeatField =
-    GeneratedEditField<Fleet, CarPermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, CarPermitLocation, int?, Lens<Fleet, int?>>(
       id: 'carRegistrationPermitRepeat',
       dirtyField: FleetDirtyField.carRegistrationPermitRepeat,
       lens: carRegistrationPermitRepeatLens,
@@ -3683,7 +3749,7 @@ bool carRegistrationPermitEnabledHasSavedBacking(
 }
 
 final carRegistrationPermitEnabledField =
-    GeneratedEditField<Fleet, CarPermitLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarPermitLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carRegistrationPermitEnabled',
       dirtyField: FleetDirtyField.carRegistrationPermitEnabled,
       lens: carRegistrationPermitEnabledLens,
@@ -3702,7 +3768,7 @@ bool carColorHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carColorField =
-    GeneratedEditField<Fleet, CarLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, CarLocation, String, Lens<Fleet, String>>(
       id: 'carColor',
       dirtyField: FleetDirtyField.carColor,
       lens: carColorLens,
@@ -3720,13 +3786,14 @@ bool carYearHasSavedBacking(Fleet? saved, CarLocation location) {
   }
 }
 
-final carYearField = GeneratedEditField<Fleet, CarLocation, int?, Lens<int?>>(
-  id: 'carYear',
-  dirtyField: FleetDirtyField.carYear,
-  lens: carYearLens,
-  fallback: null,
-  adapter: FieldAdapterSpec<int?>.identity(),
-);
+final carYearField =
+    GeneratedEditField<Fleet, CarLocation, int?, Lens<Fleet, int?>>(
+      id: 'carYear',
+      dirtyField: FleetDirtyField.carYear,
+      lens: carYearLens,
+      fallback: null,
+      adapter: FieldAdapterSpec<int?>.identity(),
+    );
 
 bool carSedanTrimLevelHasSavedBacking(Fleet? saved, CarLocation location) {
   if (saved == null) return false;
@@ -3739,7 +3806,7 @@ bool carSedanTrimLevelHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carSedanTrimLevelField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carSedanTrimLevel',
       dirtyField: FleetDirtyField.carSedanTrimLevel,
       lens: carSedanTrimLevelLens,
@@ -3758,7 +3825,7 @@ bool carSedanTrimLeatherHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carSedanTrimLeatherField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carSedanTrimLeather',
       dirtyField: FleetDirtyField.carSedanTrimLeather,
       lens: carSedanTrimLeatherLens,
@@ -3780,7 +3847,7 @@ bool carSedanTrimUpholsteryMaterialHasSavedBacking(
 }
 
 final carSedanTrimUpholsteryMaterialField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carSedanTrimUpholsteryMaterial',
       dirtyField: FleetDirtyField.carSedanTrimUpholsteryMaterial,
       lens: carSedanTrimUpholsteryMaterialLens,
@@ -3802,7 +3869,7 @@ bool carSedanTrimUpholsteryColorHasSavedBacking(
 }
 
 final carSedanTrimUpholsteryColorField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carSedanTrimUpholsteryColor',
       dirtyField: FleetDirtyField.carSedanTrimUpholsteryColor,
       lens: carSedanTrimUpholsteryColorLens,
@@ -3824,7 +3891,7 @@ bool carSedanTrimUpholsteryHeatedHasSavedBacking(
 }
 
 final carSedanTrimUpholsteryHeatedField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carSedanTrimUpholsteryHeated',
       dirtyField: FleetDirtyField.carSedanTrimUpholsteryHeated,
       lens: carSedanTrimUpholsteryHeatedLens,
@@ -3846,7 +3913,7 @@ bool carSedanTrimUpholsteryRowsHasSavedBacking(
 }
 
 final carSedanTrimUpholsteryRowsField =
-    GeneratedEditField<Fleet, CarLocation, List<int>, Lens<List<int>>>(
+    GeneratedEditField<Fleet, CarLocation, List<int>, Lens<Fleet, List<int>>>(
       id: 'carSedanTrimUpholsteryRows',
       dirtyField: FleetDirtyField.carSedanTrimUpholsteryRows,
       lens: carSedanTrimUpholsteryRowsLens,
@@ -3865,7 +3932,7 @@ bool carCoupeTrimLevelHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carCoupeTrimLevelField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carCoupeTrimLevel',
       dirtyField: FleetDirtyField.carCoupeTrimLevel,
       lens: carCoupeTrimLevelLens,
@@ -3884,7 +3951,7 @@ bool carCoupeTrimLeatherHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carCoupeTrimLeatherField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carCoupeTrimLeather',
       dirtyField: FleetDirtyField.carCoupeTrimLeather,
       lens: carCoupeTrimLeatherLens,
@@ -3906,7 +3973,7 @@ bool carCoupeTrimUpholsteryMaterialHasSavedBacking(
 }
 
 final carCoupeTrimUpholsteryMaterialField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carCoupeTrimUpholsteryMaterial',
       dirtyField: FleetDirtyField.carCoupeTrimUpholsteryMaterial,
       lens: carCoupeTrimUpholsteryMaterialLens,
@@ -3928,7 +3995,7 @@ bool carCoupeTrimUpholsteryColorHasSavedBacking(
 }
 
 final carCoupeTrimUpholsteryColorField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carCoupeTrimUpholsteryColor',
       dirtyField: FleetDirtyField.carCoupeTrimUpholsteryColor,
       lens: carCoupeTrimUpholsteryColorLens,
@@ -3950,7 +4017,7 @@ bool carCoupeTrimUpholsteryHeatedHasSavedBacking(
 }
 
 final carCoupeTrimUpholsteryHeatedField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carCoupeTrimUpholsteryHeated',
       dirtyField: FleetDirtyField.carCoupeTrimUpholsteryHeated,
       lens: carCoupeTrimUpholsteryHeatedLens,
@@ -3972,7 +4039,7 @@ bool carCoupeTrimUpholsteryRowsHasSavedBacking(
 }
 
 final carCoupeTrimUpholsteryRowsField =
-    GeneratedEditField<Fleet, CarLocation, List<int>, Lens<List<int>>>(
+    GeneratedEditField<Fleet, CarLocation, List<int>, Lens<Fleet, List<int>>>(
       id: 'carCoupeTrimUpholsteryRows',
       dirtyField: FleetDirtyField.carCoupeTrimUpholsteryRows,
       lens: carCoupeTrimUpholsteryRowsLens,
@@ -3994,7 +4061,7 @@ bool carCoupeDrivetrainLabelHasSavedBacking(
 }
 
 final carCoupeDrivetrainLabelField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carCoupeDrivetrainLabel',
       dirtyField: FleetDirtyField.carCoupeDrivetrainLabel,
       lens: carCoupeDrivetrainLabelLens,
@@ -4016,7 +4083,7 @@ bool carCoupeDrivetrainFixedAxleHasSavedBacking(
 }
 
 final carCoupeDrivetrainFixedAxleField =
-    GeneratedEditField<Fleet, CarLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, CarLocation, String, Lens<Fleet, String>>(
       id: 'carCoupeDrivetrainFixedAxle',
       dirtyField: FleetDirtyField.carCoupeDrivetrainFixedAxle,
       lens: carCoupeDrivetrainFixedAxleLens,
@@ -4038,7 +4105,7 @@ bool carCoupeDrivetrainRangeMinRatioHasSavedBacking(
 }
 
 final carCoupeDrivetrainRangeMinRatioField =
-    GeneratedEditField<Fleet, CarLocation, double, Lens<double>>(
+    GeneratedEditField<Fleet, CarLocation, double, Lens<Fleet, double>>(
       id: 'carCoupeDrivetrainRangeMinRatio',
       dirtyField: FleetDirtyField.carCoupeDrivetrainRangeMinRatio,
       lens: carCoupeDrivetrainRangeMinRatioLens,
@@ -4060,7 +4127,7 @@ bool carCoupeDrivetrainRangeMaxRatioHasSavedBacking(
 }
 
 final carCoupeDrivetrainRangeMaxRatioField =
-    GeneratedEditField<Fleet, CarLocation, double, Lens<double>>(
+    GeneratedEditField<Fleet, CarLocation, double, Lens<Fleet, double>>(
       id: 'carCoupeDrivetrainRangeMaxRatio',
       dirtyField: FleetDirtyField.carCoupeDrivetrainRangeMaxRatio,
       lens: carCoupeDrivetrainRangeMaxRatioLens,
@@ -4082,7 +4149,7 @@ bool carCoupeDrivetrainRangeLockingHasSavedBacking(
 }
 
 final carCoupeDrivetrainRangeLockingField =
-    GeneratedEditField<Fleet, CarLocation, bool, Lens<bool>>(
+    GeneratedEditField<Fleet, CarLocation, bool, Lens<Fleet, bool>>(
       id: 'carCoupeDrivetrainRangeLocking',
       dirtyField: FleetDirtyField.carCoupeDrivetrainRangeLocking,
       lens: carCoupeDrivetrainRangeLockingLens,
@@ -4101,7 +4168,7 @@ bool carCoupeTopSpeedHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carCoupeTopSpeedField =
-    GeneratedEditField<Fleet, CarLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, CarLocation, int?, Lens<Fleet, int?>>(
       id: 'carCoupeTopSpeed',
       dirtyField: FleetDirtyField.carCoupeTopSpeed,
       lens: carCoupeTopSpeedLens,
@@ -4123,7 +4190,7 @@ bool carConvertibleTrimLevelHasSavedBacking(
 }
 
 final carConvertibleTrimLevelField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carConvertibleTrimLevel',
       dirtyField: FleetDirtyField.carConvertibleTrimLevel,
       lens: carConvertibleTrimLevelLens,
@@ -4145,7 +4212,7 @@ bool carConvertibleTrimLeatherHasSavedBacking(
 }
 
 final carConvertibleTrimLeatherField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carConvertibleTrimLeather',
       dirtyField: FleetDirtyField.carConvertibleTrimLeather,
       lens: carConvertibleTrimLeatherLens,
@@ -4167,7 +4234,7 @@ bool carConvertibleTrimUpholsteryMaterialHasSavedBacking(
 }
 
 final carConvertibleTrimUpholsteryMaterialField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carConvertibleTrimUpholsteryMaterial',
       dirtyField: FleetDirtyField.carConvertibleTrimUpholsteryMaterial,
       lens: carConvertibleTrimUpholsteryMaterialLens,
@@ -4189,7 +4256,7 @@ bool carConvertibleTrimUpholsteryColorHasSavedBacking(
 }
 
 final carConvertibleTrimUpholsteryColorField =
-    GeneratedEditField<Fleet, CarLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, CarLocation, String?, Lens<Fleet, String?>>(
       id: 'carConvertibleTrimUpholsteryColor',
       dirtyField: FleetDirtyField.carConvertibleTrimUpholsteryColor,
       lens: carConvertibleTrimUpholsteryColorLens,
@@ -4211,7 +4278,7 @@ bool carConvertibleTrimUpholsteryHeatedHasSavedBacking(
 }
 
 final carConvertibleTrimUpholsteryHeatedField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carConvertibleTrimUpholsteryHeated',
       dirtyField: FleetDirtyField.carConvertibleTrimUpholsteryHeated,
       lens: carConvertibleTrimUpholsteryHeatedLens,
@@ -4233,7 +4300,7 @@ bool carConvertibleTrimUpholsteryRowsHasSavedBacking(
 }
 
 final carConvertibleTrimUpholsteryRowsField =
-    GeneratedEditField<Fleet, CarLocation, List<int>, Lens<List<int>>>(
+    GeneratedEditField<Fleet, CarLocation, List<int>, Lens<Fleet, List<int>>>(
       id: 'carConvertibleTrimUpholsteryRows',
       dirtyField: FleetDirtyField.carConvertibleTrimUpholsteryRows,
       lens: carConvertibleTrimUpholsteryRowsLens,
@@ -4252,7 +4319,7 @@ bool carConvertibleRoofOpenHasSavedBacking(Fleet? saved, CarLocation location) {
 }
 
 final carConvertibleRoofOpenField =
-    GeneratedEditField<Fleet, CarLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, CarLocation, bool?, Lens<Fleet, bool?>>(
       id: 'carConvertibleRoofOpen',
       dirtyField: FleetDirtyField.carConvertibleRoofOpen,
       lens: carConvertibleRoofOpenLens,
@@ -4274,7 +4341,7 @@ bool truckRegistrationPlateHasSavedBacking(
 }
 
 final truckRegistrationPlateField =
-    GeneratedEditField<Fleet, TruckLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, TruckLocation, String?, Lens<Fleet, String?>>(
       id: 'truckRegistrationPlate',
       dirtyField: FleetDirtyField.truckRegistrationPlate,
       lens: truckRegistrationPlateLens,
@@ -4293,7 +4360,7 @@ bool truckRegistrationVinHasSavedBacking(Fleet? saved, TruckLocation location) {
 }
 
 final truckRegistrationVinField =
-    GeneratedEditField<Fleet, TruckLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, TruckLocation, String?, Lens<Fleet, String?>>(
       id: 'truckRegistrationVin',
       dirtyField: FleetDirtyField.truckRegistrationVin,
       lens: truckRegistrationVinLens,
@@ -4315,7 +4382,7 @@ bool truckRegistrationRegionHasSavedBacking(
 }
 
 final truckRegistrationRegionField =
-    GeneratedEditField<Fleet, TruckLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, TruckLocation, String?, Lens<Fleet, String?>>(
       id: 'truckRegistrationRegion',
       dirtyField: FleetDirtyField.truckRegistrationRegion,
       lens: truckRegistrationRegionLens,
@@ -4337,7 +4404,7 @@ bool truckRegistrationLockedHasSavedBacking(
 }
 
 final truckRegistrationLockedField =
-    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<Fleet, bool?>>(
       id: 'truckRegistrationLocked',
       dirtyField: FleetDirtyField.truckRegistrationLocked,
       lens: truckRegistrationLockedLens,
@@ -4359,7 +4426,12 @@ bool truckRegistrationTagsHasSavedBacking(
 }
 
 final truckRegistrationTagsField =
-    GeneratedEditField<Fleet, TruckLocation, List<String>, Lens<List<String>>>(
+    GeneratedEditField<
+      Fleet,
+      TruckLocation,
+      List<String>,
+      Lens<Fleet, List<String>>
+    >(
       id: 'truckRegistrationTags',
       dirtyField: FleetDirtyField.truckRegistrationTags,
       lens: truckRegistrationTagsLens,
@@ -4381,7 +4453,7 @@ bool truckRegistrationNotesHasSavedBacking(
 }
 
 final truckRegistrationNotesField =
-    GeneratedEditField<Fleet, TruckLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, TruckLocation, String?, Lens<Fleet, String?>>(
       id: 'truckRegistrationNotes',
       dirtyField: FleetDirtyField.truckRegistrationNotes,
       lens: truckRegistrationNotesLens,
@@ -4403,7 +4475,12 @@ bool truckRegistrationPermitDetailAuthorityHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailAuthorityField =
-    GeneratedEditField<Fleet, TruckPermitLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      TruckPermitLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'truckRegistrationPermitDetailAuthority',
       dirtyField: FleetDirtyField.truckRegistrationPermitDetailAuthority,
       lens: truckRegistrationPermitDetailAuthorityLens,
@@ -4425,7 +4502,7 @@ bool truckRegistrationPermitDetailRevokedHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailRevokedField =
-    GeneratedEditField<Fleet, TruckPermitLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, bool?, Lens<Fleet, bool?>>(
       id: 'truckRegistrationPermitDetailRevoked',
       dirtyField: FleetDirtyField.truckRegistrationPermitDetailRevoked,
       lens: truckRegistrationPermitDetailRevokedLens,
@@ -4447,7 +4524,7 @@ bool truckRegistrationPermitDetailParkingZoneHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailParkingZoneField =
-    GeneratedEditField<Fleet, TruckPermitLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, String, Lens<Fleet, String>>(
       id: 'truckRegistrationPermitDetailParkingZone',
       dirtyField: FleetDirtyField.truckRegistrationPermitDetailParkingZone,
       lens: truckRegistrationPermitDetailParkingZoneLens,
@@ -4469,7 +4546,7 @@ bool truckRegistrationPermitDetailParkingHoursHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailParkingHoursField =
-    GeneratedEditField<Fleet, TruckPermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, int?, Lens<Fleet, int?>>(
       id: 'truckRegistrationPermitDetailParkingHours',
       dirtyField: FleetDirtyField.truckRegistrationPermitDetailParkingHours,
       lens: truckRegistrationPermitDetailParkingHoursLens,
@@ -4491,7 +4568,7 @@ bool truckRegistrationPermitDetailTollAccountHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailTollAccountField =
-    GeneratedEditField<Fleet, TruckPermitLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, String, Lens<Fleet, String>>(
       id: 'truckRegistrationPermitDetailTollAccount',
       dirtyField: FleetDirtyField.truckRegistrationPermitDetailTollAccount,
       lens: truckRegistrationPermitDetailTollAccountLens,
@@ -4513,7 +4590,7 @@ bool truckRegistrationPermitDetailTollBalanceHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailTollBalanceField =
-    GeneratedEditField<Fleet, TruckPermitLocation, double, Lens<double>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, double, Lens<Fleet, double>>(
       id: 'truckRegistrationPermitDetailTollBalance',
       dirtyField: FleetDirtyField.truckRegistrationPermitDetailTollBalance,
       lens: truckRegistrationPermitDetailTollBalanceLens,
@@ -4535,7 +4612,12 @@ bool truckRegistrationPermitDetailAccessGateIdHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailAccessGateIdField =
-    GeneratedEditField<Fleet, TruckPermitGateLocation, String, Lens<String>>(
+    GeneratedEditField<
+      Fleet,
+      TruckPermitGateLocation,
+      String,
+      Lens<Fleet, String>
+    >(
       id: 'truckRegistrationPermitDetailAccessGateId',
       dirtyField: FleetDirtyField.truckRegistrationPermitDetailAccessGateId,
       lens: truckRegistrationPermitDetailAccessGateIdLens,
@@ -4557,7 +4639,12 @@ bool truckRegistrationPermitDetailAccessGateManualKeyHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailAccessGateManualKeyField =
-    GeneratedEditField<Fleet, TruckPermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      TruckPermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'truckRegistrationPermitDetailAccessGateManualKey',
       dirtyField:
           FleetDirtyField.truckRegistrationPermitDetailAccessGateManualKey,
@@ -4582,7 +4669,12 @@ bool truckRegistrationPermitDetailAccessGateAutoSensorModelHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailAccessGateAutoSensorModelField =
-    GeneratedEditField<Fleet, TruckPermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      TruckPermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'truckRegistrationPermitDetailAccessGateAutoSensorModel',
       dirtyField: FleetDirtyField
           .truckRegistrationPermitDetailAccessGateAutoSensorModel,
@@ -4607,7 +4699,12 @@ bool truckRegistrationPermitDetailAccessGateAutoBackupIdHasSavedBacking(
 }
 
 final truckRegistrationPermitDetailAccessGateAutoBackupIdField =
-    GeneratedEditField<Fleet, TruckPermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      TruckPermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'truckRegistrationPermitDetailAccessGateAutoBackupId',
       dirtyField:
           FleetDirtyField.truckRegistrationPermitDetailAccessGateAutoBackupId,
@@ -4630,7 +4727,12 @@ bool truckRegistrationPermitLabelHasSavedBacking(
 }
 
 final truckRegistrationPermitLabelField =
-    GeneratedEditField<Fleet, TruckPermitLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      TruckPermitLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'truckRegistrationPermitLabel',
       dirtyField: FleetDirtyField.truckRegistrationPermitLabel,
       lens: truckRegistrationPermitLabelLens,
@@ -4652,7 +4754,7 @@ bool truckRegistrationPermitPriorityHasSavedBacking(
 }
 
 final truckRegistrationPermitPriorityField =
-    GeneratedEditField<Fleet, TruckPermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, int?, Lens<Fleet, int?>>(
       id: 'truckRegistrationPermitPriority',
       dirtyField: FleetDirtyField.truckRegistrationPermitPriority,
       lens: truckRegistrationPermitPriorityLens,
@@ -4674,7 +4776,7 @@ bool truckRegistrationPermitRepeatHasSavedBacking(
 }
 
 final truckRegistrationPermitRepeatField =
-    GeneratedEditField<Fleet, TruckPermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, int?, Lens<Fleet, int?>>(
       id: 'truckRegistrationPermitRepeat',
       dirtyField: FleetDirtyField.truckRegistrationPermitRepeat,
       lens: truckRegistrationPermitRepeatLens,
@@ -4696,7 +4798,7 @@ bool truckRegistrationPermitEnabledHasSavedBacking(
 }
 
 final truckRegistrationPermitEnabledField =
-    GeneratedEditField<Fleet, TruckPermitLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, TruckPermitLocation, bool?, Lens<Fleet, bool?>>(
       id: 'truckRegistrationPermitEnabled',
       dirtyField: FleetDirtyField.truckRegistrationPermitEnabled,
       lens: truckRegistrationPermitEnabledLens,
@@ -4715,7 +4817,7 @@ bool truckAxleCountHasSavedBacking(Fleet? saved, TruckLocation location) {
 }
 
 final truckAxleCountField =
-    GeneratedEditField<Fleet, TruckLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, TruckLocation, int?, Lens<Fleet, int?>>(
       id: 'truckAxleCount',
       dirtyField: FleetDirtyField.truckAxleCount,
       lens: truckAxleCountLens,
@@ -4734,7 +4836,7 @@ bool truckBoxTrimLevelHasSavedBacking(Fleet? saved, TruckLocation location) {
 }
 
 final truckBoxTrimLevelField =
-    GeneratedEditField<Fleet, TruckLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, TruckLocation, String?, Lens<Fleet, String?>>(
       id: 'truckBoxTrimLevel',
       dirtyField: FleetDirtyField.truckBoxTrimLevel,
       lens: truckBoxTrimLevelLens,
@@ -4753,7 +4855,7 @@ bool truckBoxTrimLeatherHasSavedBacking(Fleet? saved, TruckLocation location) {
 }
 
 final truckBoxTrimLeatherField =
-    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<Fleet, bool?>>(
       id: 'truckBoxTrimLeather',
       dirtyField: FleetDirtyField.truckBoxTrimLeather,
       lens: truckBoxTrimLeatherLens,
@@ -4775,7 +4877,7 @@ bool truckBoxTrimUpholsteryMaterialHasSavedBacking(
 }
 
 final truckBoxTrimUpholsteryMaterialField =
-    GeneratedEditField<Fleet, TruckLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, TruckLocation, String?, Lens<Fleet, String?>>(
       id: 'truckBoxTrimUpholsteryMaterial',
       dirtyField: FleetDirtyField.truckBoxTrimUpholsteryMaterial,
       lens: truckBoxTrimUpholsteryMaterialLens,
@@ -4797,7 +4899,7 @@ bool truckBoxTrimUpholsteryColorHasSavedBacking(
 }
 
 final truckBoxTrimUpholsteryColorField =
-    GeneratedEditField<Fleet, TruckLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, TruckLocation, String?, Lens<Fleet, String?>>(
       id: 'truckBoxTrimUpholsteryColor',
       dirtyField: FleetDirtyField.truckBoxTrimUpholsteryColor,
       lens: truckBoxTrimUpholsteryColorLens,
@@ -4819,7 +4921,7 @@ bool truckBoxTrimUpholsteryHeatedHasSavedBacking(
 }
 
 final truckBoxTrimUpholsteryHeatedField =
-    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<Fleet, bool?>>(
       id: 'truckBoxTrimUpholsteryHeated',
       dirtyField: FleetDirtyField.truckBoxTrimUpholsteryHeated,
       lens: truckBoxTrimUpholsteryHeatedLens,
@@ -4841,7 +4943,7 @@ bool truckBoxTrimUpholsteryRowsHasSavedBacking(
 }
 
 final truckBoxTrimUpholsteryRowsField =
-    GeneratedEditField<Fleet, TruckLocation, List<int>, Lens<List<int>>>(
+    GeneratedEditField<Fleet, TruckLocation, List<int>, Lens<Fleet, List<int>>>(
       id: 'truckBoxTrimUpholsteryRows',
       dirtyField: FleetDirtyField.truckBoxTrimUpholsteryRows,
       lens: truckBoxTrimUpholsteryRowsLens,
@@ -4860,7 +4962,7 @@ bool truckBoxBoxVolumeHasSavedBacking(Fleet? saved, TruckLocation location) {
 }
 
 final truckBoxBoxVolumeField =
-    GeneratedEditField<Fleet, TruckLocation, double?, Lens<double?>>(
+    GeneratedEditField<Fleet, TruckLocation, double?, Lens<Fleet, double?>>(
       id: 'truckBoxBoxVolume',
       dirtyField: FleetDirtyField.truckBoxBoxVolume,
       lens: truckBoxBoxVolumeLens,
@@ -4879,7 +4981,7 @@ bool truckTankerCapacityHasSavedBacking(Fleet? saved, TruckLocation location) {
 }
 
 final truckTankerCapacityField =
-    GeneratedEditField<Fleet, TruckLocation, double?, Lens<double?>>(
+    GeneratedEditField<Fleet, TruckLocation, double?, Lens<Fleet, double?>>(
       id: 'truckTankerCapacity',
       dirtyField: FleetDirtyField.truckTankerCapacity,
       lens: truckTankerCapacityLens,
@@ -4898,7 +5000,7 @@ bool truckTankerHazmatHasSavedBacking(Fleet? saved, TruckLocation location) {
 }
 
 final truckTankerHazmatField =
-    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, TruckLocation, bool?, Lens<Fleet, bool?>>(
       id: 'truckTankerHazmat',
       dirtyField: FleetDirtyField.truckTankerHazmat,
       lens: truckTankerHazmatLens,
@@ -4917,7 +5019,7 @@ bool bikeRegistrationPlateHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeRegistrationPlateField =
-    GeneratedEditField<Fleet, BikeLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, BikeLocation, String?, Lens<Fleet, String?>>(
       id: 'bikeRegistrationPlate',
       dirtyField: FleetDirtyField.bikeRegistrationPlate,
       lens: bikeRegistrationPlateLens,
@@ -4936,7 +5038,7 @@ bool bikeRegistrationVinHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeRegistrationVinField =
-    GeneratedEditField<Fleet, BikeLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, BikeLocation, String?, Lens<Fleet, String?>>(
       id: 'bikeRegistrationVin',
       dirtyField: FleetDirtyField.bikeRegistrationVin,
       lens: bikeRegistrationVinLens,
@@ -4958,7 +5060,7 @@ bool bikeRegistrationRegionHasSavedBacking(
 }
 
 final bikeRegistrationRegionField =
-    GeneratedEditField<Fleet, BikeLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, BikeLocation, String?, Lens<Fleet, String?>>(
       id: 'bikeRegistrationRegion',
       dirtyField: FleetDirtyField.bikeRegistrationRegion,
       lens: bikeRegistrationRegionLens,
@@ -4980,7 +5082,7 @@ bool bikeRegistrationLockedHasSavedBacking(
 }
 
 final bikeRegistrationLockedField =
-    GeneratedEditField<Fleet, BikeLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, BikeLocation, bool?, Lens<Fleet, bool?>>(
       id: 'bikeRegistrationLocked',
       dirtyField: FleetDirtyField.bikeRegistrationLocked,
       lens: bikeRegistrationLockedLens,
@@ -4999,7 +5101,12 @@ bool bikeRegistrationTagsHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeRegistrationTagsField =
-    GeneratedEditField<Fleet, BikeLocation, List<String>, Lens<List<String>>>(
+    GeneratedEditField<
+      Fleet,
+      BikeLocation,
+      List<String>,
+      Lens<Fleet, List<String>>
+    >(
       id: 'bikeRegistrationTags',
       dirtyField: FleetDirtyField.bikeRegistrationTags,
       lens: bikeRegistrationTagsLens,
@@ -5018,7 +5125,7 @@ bool bikeRegistrationNotesHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeRegistrationNotesField =
-    GeneratedEditField<Fleet, BikeLocation, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, BikeLocation, String?, Lens<Fleet, String?>>(
       id: 'bikeRegistrationNotes',
       dirtyField: FleetDirtyField.bikeRegistrationNotes,
       lens: bikeRegistrationNotesLens,
@@ -5040,7 +5147,12 @@ bool bikeRegistrationPermitDetailAuthorityHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailAuthorityField =
-    GeneratedEditField<Fleet, BikePermitLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      BikePermitLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'bikeRegistrationPermitDetailAuthority',
       dirtyField: FleetDirtyField.bikeRegistrationPermitDetailAuthority,
       lens: bikeRegistrationPermitDetailAuthorityLens,
@@ -5062,7 +5174,7 @@ bool bikeRegistrationPermitDetailRevokedHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailRevokedField =
-    GeneratedEditField<Fleet, BikePermitLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, BikePermitLocation, bool?, Lens<Fleet, bool?>>(
       id: 'bikeRegistrationPermitDetailRevoked',
       dirtyField: FleetDirtyField.bikeRegistrationPermitDetailRevoked,
       lens: bikeRegistrationPermitDetailRevokedLens,
@@ -5084,7 +5196,7 @@ bool bikeRegistrationPermitDetailParkingZoneHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailParkingZoneField =
-    GeneratedEditField<Fleet, BikePermitLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, BikePermitLocation, String, Lens<Fleet, String>>(
       id: 'bikeRegistrationPermitDetailParkingZone',
       dirtyField: FleetDirtyField.bikeRegistrationPermitDetailParkingZone,
       lens: bikeRegistrationPermitDetailParkingZoneLens,
@@ -5106,7 +5218,7 @@ bool bikeRegistrationPermitDetailParkingHoursHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailParkingHoursField =
-    GeneratedEditField<Fleet, BikePermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, BikePermitLocation, int?, Lens<Fleet, int?>>(
       id: 'bikeRegistrationPermitDetailParkingHours',
       dirtyField: FleetDirtyField.bikeRegistrationPermitDetailParkingHours,
       lens: bikeRegistrationPermitDetailParkingHoursLens,
@@ -5128,7 +5240,7 @@ bool bikeRegistrationPermitDetailTollAccountHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailTollAccountField =
-    GeneratedEditField<Fleet, BikePermitLocation, String, Lens<String>>(
+    GeneratedEditField<Fleet, BikePermitLocation, String, Lens<Fleet, String>>(
       id: 'bikeRegistrationPermitDetailTollAccount',
       dirtyField: FleetDirtyField.bikeRegistrationPermitDetailTollAccount,
       lens: bikeRegistrationPermitDetailTollAccountLens,
@@ -5150,7 +5262,7 @@ bool bikeRegistrationPermitDetailTollBalanceHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailTollBalanceField =
-    GeneratedEditField<Fleet, BikePermitLocation, double, Lens<double>>(
+    GeneratedEditField<Fleet, BikePermitLocation, double, Lens<Fleet, double>>(
       id: 'bikeRegistrationPermitDetailTollBalance',
       dirtyField: FleetDirtyField.bikeRegistrationPermitDetailTollBalance,
       lens: bikeRegistrationPermitDetailTollBalanceLens,
@@ -5172,7 +5284,12 @@ bool bikeRegistrationPermitDetailAccessGateIdHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailAccessGateIdField =
-    GeneratedEditField<Fleet, BikePermitGateLocation, String, Lens<String>>(
+    GeneratedEditField<
+      Fleet,
+      BikePermitGateLocation,
+      String,
+      Lens<Fleet, String>
+    >(
       id: 'bikeRegistrationPermitDetailAccessGateId',
       dirtyField: FleetDirtyField.bikeRegistrationPermitDetailAccessGateId,
       lens: bikeRegistrationPermitDetailAccessGateIdLens,
@@ -5194,7 +5311,12 @@ bool bikeRegistrationPermitDetailAccessGateManualKeyHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailAccessGateManualKeyField =
-    GeneratedEditField<Fleet, BikePermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      BikePermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'bikeRegistrationPermitDetailAccessGateManualKey',
       dirtyField:
           FleetDirtyField.bikeRegistrationPermitDetailAccessGateManualKey,
@@ -5219,7 +5341,12 @@ bool bikeRegistrationPermitDetailAccessGateAutoSensorModelHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailAccessGateAutoSensorModelField =
-    GeneratedEditField<Fleet, BikePermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      BikePermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'bikeRegistrationPermitDetailAccessGateAutoSensorModel',
       dirtyField:
           FleetDirtyField.bikeRegistrationPermitDetailAccessGateAutoSensorModel,
@@ -5242,7 +5369,12 @@ bool bikeRegistrationPermitDetailAccessGateAutoBackupIdHasSavedBacking(
 }
 
 final bikeRegistrationPermitDetailAccessGateAutoBackupIdField =
-    GeneratedEditField<Fleet, BikePermitGateLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      BikePermitGateLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'bikeRegistrationPermitDetailAccessGateAutoBackupId',
       dirtyField:
           FleetDirtyField.bikeRegistrationPermitDetailAccessGateAutoBackupId,
@@ -5265,7 +5397,12 @@ bool bikeRegistrationPermitLabelHasSavedBacking(
 }
 
 final bikeRegistrationPermitLabelField =
-    GeneratedEditField<Fleet, BikePermitLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      Fleet,
+      BikePermitLocation,
+      String?,
+      Lens<Fleet, String?>
+    >(
       id: 'bikeRegistrationPermitLabel',
       dirtyField: FleetDirtyField.bikeRegistrationPermitLabel,
       lens: bikeRegistrationPermitLabelLens,
@@ -5287,7 +5424,7 @@ bool bikeRegistrationPermitPriorityHasSavedBacking(
 }
 
 final bikeRegistrationPermitPriorityField =
-    GeneratedEditField<Fleet, BikePermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, BikePermitLocation, int?, Lens<Fleet, int?>>(
       id: 'bikeRegistrationPermitPriority',
       dirtyField: FleetDirtyField.bikeRegistrationPermitPriority,
       lens: bikeRegistrationPermitPriorityLens,
@@ -5309,7 +5446,7 @@ bool bikeRegistrationPermitRepeatHasSavedBacking(
 }
 
 final bikeRegistrationPermitRepeatField =
-    GeneratedEditField<Fleet, BikePermitLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, BikePermitLocation, int?, Lens<Fleet, int?>>(
       id: 'bikeRegistrationPermitRepeat',
       dirtyField: FleetDirtyField.bikeRegistrationPermitRepeat,
       lens: bikeRegistrationPermitRepeatLens,
@@ -5331,7 +5468,7 @@ bool bikeRegistrationPermitEnabledHasSavedBacking(
 }
 
 final bikeRegistrationPermitEnabledField =
-    GeneratedEditField<Fleet, BikePermitLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, BikePermitLocation, bool?, Lens<Fleet, bool?>>(
       id: 'bikeRegistrationPermitEnabled',
       dirtyField: FleetDirtyField.bikeRegistrationPermitEnabled,
       lens: bikeRegistrationPermitEnabledLens,
@@ -5350,7 +5487,7 @@ bool bikeElectricHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeElectricField =
-    GeneratedEditField<Fleet, BikeLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, BikeLocation, bool?, Lens<Fleet, bool?>>(
       id: 'bikeElectric',
       dirtyField: FleetDirtyField.bikeElectric,
       lens: bikeElectricLens,
@@ -5369,7 +5506,7 @@ bool bikeRoadGearsHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeRoadGearsField =
-    GeneratedEditField<Fleet, BikeLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, BikeLocation, int?, Lens<Fleet, int?>>(
       id: 'bikeRoadGears',
       dirtyField: FleetDirtyField.bikeRoadGears,
       lens: bikeRoadGearsLens,
@@ -5388,7 +5525,7 @@ bool bikeCargoBasketsHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeCargoBasketsField =
-    GeneratedEditField<Fleet, BikeLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, BikeLocation, int?, Lens<Fleet, int?>>(
       id: 'bikeCargoBaskets',
       dirtyField: FleetDirtyField.bikeCargoBaskets,
       lens: bikeCargoBasketsLens,
@@ -5407,7 +5544,7 @@ bool bikeCargoAssistHasSavedBacking(Fleet? saved, BikeLocation location) {
 }
 
 final bikeCargoAssistField =
-    GeneratedEditField<Fleet, BikeLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, BikeLocation, bool?, Lens<Fleet, bool?>>(
       id: 'bikeCargoAssist',
       dirtyField: FleetDirtyField.bikeCargoAssist,
       lens: bikeCargoAssistLens,
@@ -5430,7 +5567,7 @@ final policyConditionsField =
       Fleet,
       PolicyLocation,
       PolicyCondition?,
-      Lens<PolicyCondition?>
+      Lens<Fleet, PolicyCondition?>
     >(
       id: 'policyConditions',
       dirtyField: FleetDirtyField.policyConditions,
@@ -5453,7 +5590,7 @@ bool policyLimitsMaxSpeedHasSavedBacking(
 }
 
 final policyLimitsMaxSpeedField =
-    GeneratedEditField<Fleet, PolicyLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, PolicyLocation, int?, Lens<Fleet, int?>>(
       id: 'policyLimitsMaxSpeed',
       dirtyField: FleetDirtyField.policyLimitsMaxSpeed,
       lens: policyLimitsMaxSpeedLens,
@@ -5472,7 +5609,7 @@ bool policyLimitsMaxLoadHasSavedBacking(Fleet? saved, PolicyLocation location) {
 }
 
 final policyLimitsMaxLoadField =
-    GeneratedEditField<Fleet, PolicyLocation, double?, Lens<double?>>(
+    GeneratedEditField<Fleet, PolicyLocation, double?, Lens<Fleet, double?>>(
       id: 'policyLimitsMaxLoad',
       dirtyField: FleetDirtyField.policyLimitsMaxLoad,
       lens: policyLimitsMaxLoadLens,
@@ -5491,7 +5628,7 @@ bool policyLimitsEscortHasSavedBacking(Fleet? saved, PolicyLocation location) {
 }
 
 final policyLimitsEscortField =
-    GeneratedEditField<Fleet, PolicyLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, PolicyLocation, bool?, Lens<Fleet, bool?>>(
       id: 'policyLimitsEscort',
       dirtyField: FleetDirtyField.policyLimitsEscort,
       lens: policyLimitsEscortLens,
@@ -5510,7 +5647,7 @@ bool policyLimitsCurfewHasSavedBacking(Fleet? saved, PolicyLocation location) {
 }
 
 final policyLimitsCurfewField =
-    GeneratedEditField<Fleet, PolicyLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, PolicyLocation, int?, Lens<Fleet, int?>>(
       id: 'policyLimitsCurfew',
       dirtyField: FleetDirtyField.policyLimitsCurfew,
       lens: policyLimitsCurfewLens,
@@ -5532,7 +5669,7 @@ bool policyLimitsInspectionDaysHasSavedBacking(
 }
 
 final policyLimitsInspectionDaysField =
-    GeneratedEditField<Fleet, PolicyLocation, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, PolicyLocation, int?, Lens<Fleet, int?>>(
       id: 'policyLimitsInspectionDays',
       dirtyField: FleetDirtyField.policyLimitsInspectionDays,
       lens: policyLimitsInspectionDaysLens,
@@ -5551,7 +5688,7 @@ bool depotCapacityHasSavedBacking(Fleet? saved, VehicleCategory location) {
 }
 
 final depotCapacityField =
-    GeneratedEditField<Fleet, VehicleCategory, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, VehicleCategory, int?, Lens<Fleet, int?>>(
       id: 'depotCapacity',
       dirtyField: FleetDirtyField.depotCapacity,
       lens: depotCapacityLens,
@@ -5570,7 +5707,7 @@ bool depotBaysHasSavedBacking(Fleet? saved, VehicleCategory location) {
 }
 
 final depotBaysField =
-    GeneratedEditField<Fleet, VehicleCategory, int?, Lens<int?>>(
+    GeneratedEditField<Fleet, VehicleCategory, int?, Lens<Fleet, int?>>(
       id: 'depotBays',
       dirtyField: FleetDirtyField.depotBays,
       lens: depotBaysLens,
@@ -5589,7 +5726,7 @@ bool depotNightShiftHasSavedBacking(Fleet? saved, VehicleCategory location) {
 }
 
 final depotNightShiftField =
-    GeneratedEditField<Fleet, VehicleCategory, bool?, Lens<bool?>>(
+    GeneratedEditField<Fleet, VehicleCategory, bool?, Lens<Fleet, bool?>>(
       id: 'depotNightShift',
       dirtyField: FleetDirtyField.depotNightShift,
       lens: depotNightShiftLens,
@@ -5608,7 +5745,7 @@ bool depotNotesHasSavedBacking(Fleet? saved, VehicleCategory location) {
 }
 
 final depotNotesField =
-    GeneratedEditField<Fleet, VehicleCategory, String?, Lens<String?>>(
+    GeneratedEditField<Fleet, VehicleCategory, String?, Lens<Fleet, String?>>(
       id: 'depotNotes',
       dirtyField: FleetDirtyField.depotNotes,
       lens: depotNotesLens,

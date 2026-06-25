@@ -7,7 +7,8 @@ part 'default_value_fixture.g.dart';
 final taskNode = subtree<Task>(
   fields: [
     prop('title'),
-    // Collapses the nullable `mode` onto its default so the lens is Lens<Mode>.
+    // Collapses the nullable `mode` onto its default so the lens is
+    // Lens<Board, Mode>.
     prop('mode', defaultsTo: Mode.end),
     // Bool default exercises the `next == true` setter / generated-lint ignore.
     prop('flag', defaultsTo: true),

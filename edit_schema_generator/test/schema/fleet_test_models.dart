@@ -463,7 +463,7 @@ final class RangeDrive extends Drivetrain {
 // ===========================================================================
 
 /// Common supertype of the cross-cutting vehicle lists. A `taggedLists`
-/// discriminator returns `Lens<Vehicle>` and reaches the shared `registration` through it.
+/// discriminator returns `Lens<Fleet, Vehicle>` and reaches the shared `registration` through it.
 abstract interface class Vehicle {
   Registration get registration;
   Vehicle copyWithRegistration(Registration registration);

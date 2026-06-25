@@ -10,19 +10,19 @@ void main() {
     const location = TaskLocation(taskIndex: 0);
 
     test('lens type is non-nullable and reads the default when absent', () {
-      final Lens<Mode> lens = taskModeLens(location);
+      final Lens<Board, Mode> lens = taskModeLens(location);
       expect(lens.get(board), Mode.end);
     });
 
     test('writing a non-default value stores it through', () {
-      final Lens<Mode> lens = taskModeLens(location);
+      final Lens<Board, Mode> lens = taskModeLens(location);
       final updated = lens.set(board, Mode.begin);
       expect(lens.get(updated), Mode.begin);
       expect(updated.tasks.first.mode, Mode.begin);
     });
 
     test('writing the default compacts the property back to null', () {
-      final Lens<Mode> lens = taskModeLens(location);
+      final Lens<Board, Mode> lens = taskModeLens(location);
       final set = lens.set(board, Mode.begin);
       final cleared = lens.set(set, Mode.end);
       expect(cleared.tasks.first.mode, isNull);
@@ -30,7 +30,7 @@ void main() {
     });
 
     test('bool default collapses and compacts the same way', () {
-      final Lens<bool> lens = taskFlagLens(location);
+      final Lens<Board, bool> lens = taskFlagLens(location);
       expect(lens.get(board), isTrue);
       final off = lens.set(board, false);
       expect(off.tasks.first.flag, isFalse);

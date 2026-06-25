@@ -31,7 +31,7 @@ final _carNamePart = LensPart<Car, String>(
   name: 'name',
 );
 
-Lens<String> carNameLens(CarLocation location) =>
+Lens<Car, String> carNameLens(CarLocation location) =>
     carLens(location).then(_carNamePart);
 
 final _carYearPart = LensPart<Car, int>(
@@ -40,7 +40,7 @@ final _carYearPart = LensPart<Car, int>(
   name: 'year',
 );
 
-Lens<int> carYearLens(CarLocation location) =>
+Lens<Car, int> carYearLens(CarLocation location) =>
     carLens(location).then(_carYearPart);
 
 final _carWheelsPart = LensPart<Car, List<Wheel>>(
@@ -49,7 +49,7 @@ final _carWheelsPart = LensPart<Car, List<Wheel>>(
   name: 'wheels',
 );
 
-Lens<List<Wheel>> carWheelsLens(CarLocation location) =>
+Lens<Car, List<Wheel>> carWheelsLens(CarLocation location) =>
     carLens(location).then(_carWheelsPart);
 
 final _carSeatsPart = LensPart<Car, List<Seat>>(
@@ -58,7 +58,7 @@ final _carSeatsPart = LensPart<Car, List<Seat>>(
   name: 'seats',
 );
 
-Lens<List<Seat>> carSeatsLens(CarLocation location) =>
+Lens<Car, List<Seat>> carSeatsLens(CarLocation location) =>
     carLens(location).then(_carSeatsPart);
 
 final _carColorPart = LensPart<Car, String>(
@@ -67,7 +67,7 @@ final _carColorPart = LensPart<Car, String>(
   name: 'color',
 );
 
-Lens<String> carColorLens(CarLocation location) =>
+Lens<Car, String> carColorLens(CarLocation location) =>
     carLens(location).then(_carColorPart);
 
 final _carTagsPart = LensPart<Car, List<String>>(
@@ -76,7 +76,7 @@ final _carTagsPart = LensPart<Car, List<String>>(
   name: 'tags',
 );
 
-Lens<List<String>> carTagsLens(CarLocation location) =>
+Lens<Car, List<String>> carTagsLens(CarLocation location) =>
     carLens(location).then(_carTagsPart);
 
 final _carAsGasEnginePart = LensPart<Car, GasEngine>(
@@ -92,7 +92,7 @@ final _carEngineNamePart = LensPart<GasEngine, String>(
   name: 'engineName',
 );
 
-Lens<String> carEngineNameLens(CarLocation location) =>
+Lens<Car, String> carEngineNameLens(CarLocation location) =>
     carLens(location).then(_carAsGasEnginePart).then(_carEngineNamePart);
 
 final _carHorsepowerPart = LensPart<GasEngine, int>(
@@ -101,7 +101,7 @@ final _carHorsepowerPart = LensPart<GasEngine, int>(
   name: 'horsepower',
 );
 
-Lens<int> carHorsepowerLens(CarLocation location) =>
+Lens<Car, int> carHorsepowerLens(CarLocation location) =>
     carLens(location).then(_carAsGasEnginePart).then(_carHorsepowerPart);
 
 final _carAsElectricEnginePart = LensPart<Car, ElectricEngine>(
@@ -117,7 +117,7 @@ final _carKwPart = LensPart<ElectricEngine, int>(
   name: 'kw',
 );
 
-Lens<int> carKwLens(CarLocation location) =>
+Lens<Car, int> carKwLens(CarLocation location) =>
     carLens(location).then(_carAsElectricEnginePart).then(_carKwPart);
 
 final _carBatteryPart = LensPart<ElectricEngine, int>(
@@ -126,18 +126,19 @@ final _carBatteryPart = LensPart<ElectricEngine, int>(
   name: 'battery',
 );
 
-Lens<int> carBatteryLens(CarLocation location) =>
+Lens<Car, int> carBatteryLens(CarLocation location) =>
     carLens(location).then(_carAsElectricEnginePart).then(_carBatteryPart);
 
-final carNameField = GeneratedEditField<Car, CarLocation, String, Lens<String>>(
-  id: 'name',
-  dirtyField: CarDirtyField.name,
-  lens: carNameLens,
-  fallback: (value) => value.name,
-  adapter: FieldAdapterSpec<String>.identity(),
-);
+final carNameField =
+    GeneratedEditField<Car, CarLocation, String, Lens<Car, String>>(
+      id: 'name',
+      dirtyField: CarDirtyField.name,
+      lens: carNameLens,
+      fallback: (value) => value.name,
+      adapter: FieldAdapterSpec<String>.identity(),
+    );
 
-final carYearField = GeneratedEditField<Car, CarLocation, int, Lens<int>>(
+final carYearField = GeneratedEditField<Car, CarLocation, int, Lens<Car, int>>(
   id: 'year',
   dirtyField: CarDirtyField.year,
   lens: carYearLens,
@@ -146,7 +147,7 @@ final carYearField = GeneratedEditField<Car, CarLocation, int, Lens<int>>(
 );
 
 final carWheelsField =
-    GeneratedEditField<Car, CarLocation, List<Wheel>, Lens<List<Wheel>>>(
+    GeneratedEditField<Car, CarLocation, List<Wheel>, Lens<Car, List<Wheel>>>(
       id: 'wheels',
       dirtyField: CarDirtyField.wheels,
       lens: carWheelsLens,
@@ -155,7 +156,7 @@ final carWheelsField =
     );
 
 final carSeatsField =
-    GeneratedEditField<Car, CarLocation, List<Seat>, Lens<List<Seat>>>(
+    GeneratedEditField<Car, CarLocation, List<Seat>, Lens<Car, List<Seat>>>(
       id: 'seats',
       dirtyField: CarDirtyField.seats,
       lens: carSeatsLens,
@@ -164,7 +165,7 @@ final carSeatsField =
     );
 
 final carColorField =
-    GeneratedEditField<Car, CarLocation, String, Lens<String>>(
+    GeneratedEditField<Car, CarLocation, String, Lens<Car, String>>(
       id: 'color',
       dirtyField: CarDirtyField.color,
       lens: carColorLens,
@@ -173,7 +174,7 @@ final carColorField =
     );
 
 final carTagsField =
-    GeneratedEditField<Car, CarLocation, List<String>, Lens<List<String>>>(
+    GeneratedEditField<Car, CarLocation, List<String>, Lens<Car, List<String>>>(
       id: 'tags',
       dirtyField: CarDirtyField.tags,
       lens: carTagsLens,
@@ -182,7 +183,7 @@ final carTagsField =
     );
 
 final carEngineNameField =
-    GeneratedEditField<Car, CarLocation, String, Lens<String>>(
+    GeneratedEditField<Car, CarLocation, String, Lens<Car, String>>(
       id: 'engineName',
       dirtyField: CarDirtyField.engineName,
       lens: carEngineNameLens,
@@ -193,18 +194,19 @@ final carEngineNameField =
       adapter: FieldAdapterSpec<String>.identity(),
     );
 
-final carHorsepowerField = GeneratedEditField<Car, CarLocation, int, Lens<int>>(
-  id: 'horsepower',
-  dirtyField: CarDirtyField.horsepower,
-  lens: carHorsepowerLens,
-  fallback: (value) => switch (value.engine) {
-    GasEngine() && final caseValue => caseValue.horsepower,
-    _ => throw StateError('Fallback unavailable for field horsepower'),
-  },
-  adapter: FieldAdapterSpec<int>.identity(),
-);
+final carHorsepowerField =
+    GeneratedEditField<Car, CarLocation, int, Lens<Car, int>>(
+      id: 'horsepower',
+      dirtyField: CarDirtyField.horsepower,
+      lens: carHorsepowerLens,
+      fallback: (value) => switch (value.engine) {
+        GasEngine() && final caseValue => caseValue.horsepower,
+        _ => throw StateError('Fallback unavailable for field horsepower'),
+      },
+      adapter: FieldAdapterSpec<int>.identity(),
+    );
 
-final carKwField = GeneratedEditField<Car, CarLocation, int, Lens<int>>(
+final carKwField = GeneratedEditField<Car, CarLocation, int, Lens<Car, int>>(
   id: 'kw',
   dirtyField: CarDirtyField.kw,
   lens: carKwLens,
@@ -215,16 +217,17 @@ final carKwField = GeneratedEditField<Car, CarLocation, int, Lens<int>>(
   adapter: FieldAdapterSpec<int>.identity(),
 );
 
-final carBatteryField = GeneratedEditField<Car, CarLocation, int, Lens<int>>(
-  id: 'battery',
-  dirtyField: CarDirtyField.battery,
-  lens: carBatteryLens,
-  fallback: (value) => switch (value.engine) {
-    ElectricEngine() && final caseValue => caseValue.battery,
-    _ => throw StateError('Fallback unavailable for field battery'),
-  },
-  adapter: FieldAdapterSpec<int>.identity(),
-);
+final carBatteryField =
+    GeneratedEditField<Car, CarLocation, int, Lens<Car, int>>(
+      id: 'battery',
+      dirtyField: CarDirtyField.battery,
+      lens: carBatteryLens,
+      fallback: (value) => switch (value.engine) {
+        ElectricEngine() && final caseValue => caseValue.battery,
+        _ => throw StateError('Fallback unavailable for field battery'),
+      },
+      adapter: FieldAdapterSpec<int>.identity(),
+    );
 
 Object? comparableCarFieldValue(Car? value, CarDirtyField field) =>
     switch (field) {

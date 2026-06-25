@@ -53,7 +53,7 @@ final class _SourceSchemaEmitter {
       buffer
         ..writeln(
           'final $name = GeneratedEditField<${root.rootType}, '
-          '${root.locationType}, ${field.type}, Lens<${field.type}>>(',
+          '${root.locationType}, ${field.type}, Lens<${root.rootType}, ${field.type}>>(',
         )
         ..writeln("  id: '${field.id}',")
         ..writeln('  dirtyField: $fieldEnum.${field.id},')
@@ -131,7 +131,7 @@ final class _SourceSchemaEmitter {
           ..writeln(');')
           ..writeln()
           ..writeln(
-            'Lens<${field.type}> ${root.id}${_pascal(field.id)}Lens('
+            'Lens<${root.rootType}, ${field.type}> ${root.id}${_pascal(field.id)}Lens('
             '${root.locationType} location) =>',
           )
           ..writeln('    ${root.rootLens}(location)')
@@ -153,7 +153,7 @@ final class _SourceSchemaEmitter {
           ..writeln(');')
           ..writeln()
           ..writeln(
-            'Lens<${field.type}> ${root.id}${_pascal(field.id)}Lens('
+            'Lens<${root.rootType}, ${field.type}> ${root.id}${_pascal(field.id)}Lens('
             '${root.locationType} location) =>',
           )
           ..writeln('    ${root.rootLens}(location).then($partName);')

@@ -1,3 +1,9 @@
+## 0.0.9
+
+* Make `Lens` root-typed as `Lens<TRoot, TValue>`, so hand-written and
+  generated lenses can use typed root getters, setters, and guards without
+  casting.
+
 ## 0.0.8
 
 * Tighten `Lens.canGet` to a non-null root, matching `Lens.get` and `Lens.set`.

@@ -1,11 +1,13 @@
-/// Reads a value of type [T] from an edit root.
-typedef LensGet<T> = T Function(Object root);
+/// Reads a value of type [TValue] from an edit root of type [TRoot].
+typedef LensGet<TRoot extends Object, TValue> = TValue Function(TRoot root);
 
-/// Writes a value of type [T] into an edit root and returns the updated root.
-typedef LensSet<T> = Object Function(Object root, T value);
+/// Writes a value of type [TValue] into an edit root of type [TRoot] and
+/// returns the updated root.
+typedef LensSet<TRoot extends Object, TValue> =
+    TRoot Function(TRoot root, TValue value);
 
 /// Reports whether a lens can be read for an edit root.
-typedef LensCanGet = bool Function(Object root);
+typedef LensCanGet<TRoot extends Object> = bool Function(TRoot root);
 
 /// Reads a target value of type [TTarget] from a source value of type [TSource].
 typedef LensPartGet<TSource, TTarget> = TTarget Function(TSource source);
@@ -33,37 +35,33 @@ typedef LensPartCanGet<TSource> = bool Function(TSource source);
 ///
 /// Equality is based on [name], so independently constructed lenses for the
 /// same generated path can be used as stable map/provider keys.
-final class Lens<T> {
+final class Lens<TRoot extends Object, TValue> {
   const Lens({
     required this.get,
-    required LensSet<T> set,
+    required LensSet<TRoot, TValue> set,
     required this.name,
-    LensCanGet? canGet,
+    LensCanGet<TRoot>? canGet,
   }) : _set = set,
        _canGet = canGet;
 
   /// Reads this lens value from an edit root.
-  final LensGet<T> get;
+  final LensGet<TRoot, TValue> get;
 
   /// Stable generated path name, used for display/debugging and equality.
   final String name;
 
-  final LensSet<T> _set;
-  final LensCanGet? _canGet;
+  final LensSet<TRoot, TValue> _set;
+  final LensCanGet<TRoot>? _canGet;
 
   /// Whether [get] is safe to call for [root].
-  bool canGet(Object root) => _canGet?.call(root) ?? true;
+  bool canGet(TRoot root) => _canGet?.call(root) ?? true;
 
   /// Returns a copy of [root] with this lens value replaced.
-  ///
-  /// The returned value is cast back to the static root type passed by the
-  /// caller. Generated lenses are responsible for preserving that root type.
-  TRoot set<TRoot extends Object>(TRoot root, T value) =>
-      _set(root, value) as TRoot;
+  TRoot set(TRoot root, TValue value) => _set(root, value);
 
   /// Composes this root lens with a typed subpart.
-  Lens<TNext> then<TNext>(LensPart<T, TNext> part) {
-    return Lens<TNext>(
+  Lens<TRoot, TNext> then<TNext>(LensPart<TValue, TNext> part) {
+    return Lens<TRoot, TNext>(
       get: (root) => part.get(get(root)),
       set: (root, value) {
         final source = get(root);

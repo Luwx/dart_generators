@@ -26,9 +26,10 @@ final _fixtureNodeTextPart = LensPart<TextVariant, String>(
   name: 'text',
 );
 
-Lens<String> fixtureNodeTextLens(FixtureLocation location) => fixtureNodeLens(
-  location,
-).then(_fixtureNodeAsTextVariantPart).then(_fixtureNodeTextPart);
+Lens<FixtureNode, String> fixtureNodeTextLens(FixtureLocation location) =>
+    fixtureNodeLens(
+      location,
+    ).then(_fixtureNodeAsTextVariantPart).then(_fixtureNodeTextPart);
 
 final _fixtureNodeFlagPart = LensPart<TextVariant, bool?>(
   get: (value) => value.flag,
@@ -36,9 +37,10 @@ final _fixtureNodeFlagPart = LensPart<TextVariant, bool?>(
   name: 'flag',
 );
 
-Lens<bool?> fixtureNodeFlagLens(FixtureLocation location) => fixtureNodeLens(
-  location,
-).then(_fixtureNodeAsTextVariantPart).then(_fixtureNodeFlagPart);
+Lens<FixtureNode, bool?> fixtureNodeFlagLens(FixtureLocation location) =>
+    fixtureNodeLens(
+      location,
+    ).then(_fixtureNodeAsTextVariantPart).then(_fixtureNodeFlagPart);
 
 final _fixtureNodeAsListVariantPart = LensPart<FixtureNode, ListVariant>(
   get: (value) => value.variant as ListVariant,
@@ -53,10 +55,11 @@ final _fixtureNodeItemsPart = LensPart<ListVariant, List<String>>(
   name: 'items',
 );
 
-Lens<List<String>> fixtureNodeItemsLens(FixtureLocation location) =>
-    fixtureNodeLens(
-      location,
-    ).then(_fixtureNodeAsListVariantPart).then(_fixtureNodeItemsPart);
+Lens<FixtureNode, List<String>> fixtureNodeItemsLens(
+  FixtureLocation location,
+) => fixtureNodeLens(
+  location,
+).then(_fixtureNodeAsListVariantPart).then(_fixtureNodeItemsPart);
 
 final _fixtureNodeModePart = LensPart<FixtureNode, String?>(
   get: (value) => value.mode,
@@ -64,7 +67,7 @@ final _fixtureNodeModePart = LensPart<FixtureNode, String?>(
   name: 'mode',
 );
 
-Lens<String?> fixtureNodeModeLens(FixtureLocation location) =>
+Lens<FixtureNode, String?> fixtureNodeModeLens(FixtureLocation location) =>
     fixtureNodeLens(location).then(_fixtureNodeModePart);
 
 final _fixtureNodeLabelsPart = LensPart<FixtureNode, List<String>>(
@@ -73,11 +76,17 @@ final _fixtureNodeLabelsPart = LensPart<FixtureNode, List<String>>(
   name: 'labels',
 );
 
-Lens<List<String>> fixtureNodeLabelsLens(FixtureLocation location) =>
-    fixtureNodeLens(location).then(_fixtureNodeLabelsPart);
+Lens<FixtureNode, List<String>> fixtureNodeLabelsLens(
+  FixtureLocation location,
+) => fixtureNodeLens(location).then(_fixtureNodeLabelsPart);
 
 final fixtureNodeTextField =
-    GeneratedEditField<FixtureNode, FixtureLocation, String, Lens<String>>(
+    GeneratedEditField<
+      FixtureNode,
+      FixtureLocation,
+      String,
+      Lens<FixtureNode, String>
+    >(
       id: 'text',
       dirtyField: FixtureNodeDirtyField.text,
       lens: fixtureNodeTextLens,
@@ -89,7 +98,12 @@ final fixtureNodeTextField =
     );
 
 final fixtureNodeFlagField =
-    GeneratedEditField<FixtureNode, FixtureLocation, bool?, Lens<bool?>>(
+    GeneratedEditField<
+      FixtureNode,
+      FixtureLocation,
+      bool?,
+      Lens<FixtureNode, bool?>
+    >(
       id: 'flag',
       dirtyField: FixtureNodeDirtyField.flag,
       lens: fixtureNodeFlagLens,
@@ -105,7 +119,7 @@ final fixtureNodeItemsField =
       FixtureNode,
       FixtureLocation,
       List<String>,
-      Lens<List<String>>
+      Lens<FixtureNode, List<String>>
     >(
       id: 'items',
       dirtyField: FixtureNodeDirtyField.items,
@@ -118,7 +132,12 @@ final fixtureNodeItemsField =
     );
 
 final fixtureNodeModeField =
-    GeneratedEditField<FixtureNode, FixtureLocation, String?, Lens<String?>>(
+    GeneratedEditField<
+      FixtureNode,
+      FixtureLocation,
+      String?,
+      Lens<FixtureNode, String?>
+    >(
       id: 'mode',
       dirtyField: FixtureNodeDirtyField.mode,
       lens: fixtureNodeModeLens,
@@ -131,7 +150,7 @@ final fixtureNodeLabelsField =
       FixtureNode,
       FixtureLocation,
       List<String>,
-      Lens<List<String>>
+      Lens<FixtureNode, List<String>>
     >(
       id: 'labels',
       dirtyField: FixtureNodeDirtyField.labels,

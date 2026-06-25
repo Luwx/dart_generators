@@ -327,7 +327,7 @@ TreeField sealed(
 
 /// Cross-cutting list discriminator: one [TLocation] addresses several lists,
 /// dispatched by a discriminator enum [TCategory]. The generated `[lens]`
-/// function returns `Lens<TElement>` (the lists' common supertype, e.g. the
+/// function returns `Lens<TRoot, TElement>` (the lists' common supertype, e.g. the
 /// app's `Item`), so [shared] fields declared once (reached through
 /// [TElement]) yield a single lens family, while each entry's per-case fields
 /// yield per-entry families.
@@ -386,7 +386,7 @@ ListKey listKey<TElement, TKey extends Object>({
 /// a single nullable value per category — e.g. `mouseSpeed`/`touchpadSpeed`/
 /// `touchscreenSpeed`, all of type `SpeedSettings`, dispatched by `DeviceType`.
 ///
-/// The generated [lens] function returns `Lens<TNode>(TCategory)` (the node's
+/// The generated [lens] function returns `Lens<TRoot, TNode>(TCategory)` (the node's
 /// type), reading `root.<branch> ?? const TNode()` and writing back through
 /// `copyWith`. If [node] declares `compactWhen`, an empty value writes `null`
 /// (the property is compacted away). Categories absent from [branches] read a

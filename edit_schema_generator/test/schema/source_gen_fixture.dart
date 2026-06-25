@@ -4,7 +4,7 @@ import 'edit_schema_test_models.dart';
 
 part 'source_gen_fixture.g.dart';
 
-Lens<FixtureNode> fixtureNodeLens(FixtureLocation location) {
+Lens<FixtureNode, FixtureNode> fixtureNodeLens(FixtureLocation location) {
   throw UnimplementedError('Only generated helper signatures use this lens.');
 }
 
