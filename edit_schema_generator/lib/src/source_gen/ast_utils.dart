@@ -53,6 +53,12 @@ String _singular(String value) {
   return value;
 }
 
+String _plural(String value) {
+  if (value.endsWith('y')) return '${value.substring(0, value.length - 1)}ies';
+  if (value.endsWith('s')) return value;
+  return '${value}s';
+}
+
 /// `comparable{Type}Value`, stripping nullability from [type].
 String _comparableValueName(String type) {
   final base = type.endsWith('?') ? type.substring(0, type.length - 1) : type;

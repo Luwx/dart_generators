@@ -71,6 +71,143 @@ Lens<Vehicle> garageVehicleLens(GarageLocation location) => Lens<Vehicle>(
   name: 'garageVehicle[${location.kind}/${location.slot}]',
 );
 
+List<Vehicle> garageVehiclesForKind(Fleet root, VehicleCategory kind) =>
+    switch (kind) {
+      VehicleCategory.car => root.cars.cast<Vehicle>(),
+      VehicleCategory.truck => root.trucks.cast<Vehicle>(),
+      VehicleCategory.bike => root.bikes.cast<Vehicle>(),
+      _ => const <Vehicle>[],
+    };
+
+Fleet withGarageVehiclesForKind(
+  Fleet root,
+  VehicleCategory kind,
+  List<Vehicle> values,
+) => switch (kind) {
+  VehicleCategory.car => root.copyWith(cars: values.cast<Car>()),
+  VehicleCategory.truck => root.copyWith(trucks: values.cast<Truck>()),
+  VehicleCategory.bike => root.copyWith(bikes: values.cast<Bike>()),
+  _ => root,
+};
+
+Vehicle? garageVehicleAt(Fleet? root, GarageLocation location) {
+  if (root == null) return null;
+  final lens = garageVehicleLens(location);
+  try {
+    if (!lens.canGet(root)) return null;
+    return lens.get(root);
+  } on Object catch (_) {
+    return null;
+  }
+}
+
+int? garageVehicleIndexOf(Fleet? root, GarageLocation location) {
+  if (root == null) return null;
+  final list = garageVehiclesForKind(root, location.kind);
+  final index = location.slot;
+  return index < 0 || index >= list.length ? null : index;
+}
+
+GarageLocation? garageVehicleLocationAt(
+  Fleet? root,
+  VehicleCategory kind,
+  int index,
+) {
+  if (root == null) return null;
+  final list = garageVehiclesForKind(root, kind);
+  if (index < 0 || index >= list.length) return null;
+  return GarageLocation(kind: kind, slot: index);
+}
+
+Fleet addGarageVehicle(Fleet root, VehicleCategory kind, Vehicle value) =>
+    switch (kind) {
+      VehicleCategory.car => root.copyWith(
+        cars: List<Car>.of(root.cars)..add(value as Car),
+      ),
+      VehicleCategory.truck => root.copyWith(
+        trucks: List<Truck>.of(root.trucks)..add(value as Truck),
+      ),
+      VehicleCategory.bike => root.copyWith(
+        bikes: List<Bike>.of(root.bikes)..add(value as Bike),
+      ),
+      _ => root,
+    };
+
+Fleet insertGarageVehicleAt(
+  Fleet root,
+  VehicleCategory kind,
+  int index,
+  Vehicle value,
+) {
+  final list = garageVehiclesForKind(root, kind);
+  if (index < 0 || index > list.length) return root;
+  return switch (kind) {
+    VehicleCategory.car => root.copyWith(
+      cars: List<Car>.of(root.cars)..insert(index, value as Car),
+    ),
+    VehicleCategory.truck => root.copyWith(
+      trucks: List<Truck>.of(root.trucks)..insert(index, value as Truck),
+    ),
+    VehicleCategory.bike => root.copyWith(
+      bikes: List<Bike>.of(root.bikes)..insert(index, value as Bike),
+    ),
+    _ => root,
+  };
+}
+
+Fleet replaceGarageVehicle(Fleet root, GarageLocation location, Vehicle value) {
+  final index = garageVehicleIndexOf(root, location);
+  if (index == null) return root;
+  return switch (location.kind) {
+    VehicleCategory.car => root.copyWith(
+      cars: List<Car>.of(root.cars)..[index] = value as Car,
+    ),
+    VehicleCategory.truck => root.copyWith(
+      trucks: List<Truck>.of(root.trucks)..[index] = value as Truck,
+    ),
+    VehicleCategory.bike => root.copyWith(
+      bikes: List<Bike>.of(root.bikes)..[index] = value as Bike,
+    ),
+    _ => root,
+  };
+}
+
+Fleet updateGarageVehicle(
+  Fleet root,
+  GarageLocation location,
+  Vehicle Function(Vehicle value) update,
+) {
+  final value = garageVehicleAt(root, location);
+  if (value == null) return root;
+  return replaceGarageVehicle(root, location, update(value));
+}
+
+Fleet removeGarageVehicle(Fleet root, GarageLocation location) {
+  final index = garageVehicleIndexOf(root, location);
+  if (index == null) return root;
+  return switch (location.kind) {
+    VehicleCategory.car => root.copyWith(
+      cars: List<Car>.of(root.cars)..removeAt(index),
+    ),
+    VehicleCategory.truck => root.copyWith(
+      trucks: List<Truck>.of(root.trucks)..removeAt(index),
+    ),
+    VehicleCategory.bike => root.copyWith(
+      bikes: List<Bike>.of(root.bikes)..removeAt(index),
+    ),
+    _ => root,
+  };
+}
+
+Fleet moveGarageVehicle(Fleet root, VehicleCategory kind, int from, int to) {
+  final list = garageVehiclesForKind(root, kind);
+  if (from < 0 || from >= list.length) return root;
+  final next = List<Vehicle>.of(list);
+  final item = next.removeAt(from);
+  next.insert(to.clamp(0, next.length), item);
+  return withGarageVehiclesForKind(root, kind, next);
+}
+
 final _garageGarageVehicleRegistrationPart = LensPart<Vehicle, Registration>(
   get: (value) => value.registration,
   set: (value, next) => value.copyWithRegistration(next),
@@ -232,6 +369,40 @@ final _garageBikecargoBasketsPart = LensPart<CargoBike, int?>(
   set: (value, next) => value.copyWith(baskets: next),
   name: 'baskets',
 );
+
+Lens<Registration> garageVehicleRegistrationLens(GarageLocation location) =>
+    garageVehicleLens(location).then(_garageGarageVehicleRegistrationPart);
+
+Registration? garageVehicleRegistrationAt(
+  Fleet? root,
+  GarageLocation location,
+) {
+  if (root == null) return null;
+  final lens = garageVehicleRegistrationLens(location);
+  try {
+    if (!lens.canGet(root)) return null;
+    return lens.get(root);
+  } on Object catch (_) {
+    return null;
+  }
+}
+
+Lens<Trim> carSedanTrimLens(GarageLocation location) =>
+    garageVehicleLens(location)
+        .then(_garageCarCastPart)
+        .then(_garageAsSedanPart)
+        .then(_garageCarsedanTrimPart);
+
+Trim? carSedanTrimAt(Fleet? root, GarageLocation location) {
+  if (root == null) return null;
+  final lens = carSedanTrimLens(location);
+  try {
+    if (!lens.canGet(root)) return null;
+    return lens.get(root);
+  } on Object catch (_) {
+    return null;
+  }
+}
 
 Lens<String?> garageVehicleRegistrationPlateLens(GarageLocation location) =>
     garageVehicleLens(location)

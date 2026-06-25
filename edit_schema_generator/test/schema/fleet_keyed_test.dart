@@ -65,6 +65,68 @@ void main() {
       expect(carColorLens(coupeLoc).get(reordered), 'blue');
     });
 
+    test('emits public intermediate lens and nullable read helper', () {
+      final registration = keyedVehicleRegistrationLens(sedanLoc).get(fleet);
+      expect(registration.plate, 'CAR-1');
+      expect(keyedVehicleRegistrationAt(fleet, sedanLoc)?.plate, 'CAR-1');
+      expect(keyedVehicleRegistrationAt(fleet, missingLoc), isNull);
+    });
+
+    test('emits keyed tagged-list address helpers', () {
+      expect(keyedVehiclesForKind(fleet, VehicleCategory.car), fleet.cars);
+      expect(keyedVehicleAt(reordered, sedanLoc), isA<Sedan>());
+      expect(keyedVehicleIndexOf(fleet, sedanLoc), 0);
+      expect(keyedVehicleIndexOf(reordered, sedanLoc), 1);
+      expect(
+        keyedVehicleLocationAt(fleet, VehicleCategory.car, 1),
+        coupeLoc,
+      );
+      expect(
+        keyedVehicleLocationOf(VehicleCategory.car, fleet.cars.first),
+        sedanLoc,
+      );
+      expect(keyedVehicleLocationAt(fleet, VehicleCategory.car, 99), isNull);
+      expect(
+        keyedVehicleLocationOf(
+          VehicleCategory.car,
+          const Sedan(registration: Registration(plate: 'NO-ID')),
+        ),
+        isNull,
+      );
+    });
+
+    test('emits keyed tagged-list mutation helpers', () {
+      final added = addKeyedVehicle(
+        fleet,
+        VehicleCategory.car,
+        const Convertible(
+          registration: Registration(plate: 'CAR-3', editId: 5),
+          color: 'green',
+        ),
+      );
+      expect(added.cars.map((car) => car.registration.plate), [
+        'CAR-1',
+        'CAR-2',
+        'CAR-3',
+      ]);
+
+      final updated = updateKeyedVehicle(
+        reordered,
+        sedanLoc,
+        (vehicle) => (vehicle as Sedan).copyWith(color: 'black'),
+      );
+      expect((updated.cars[1] as Sedan).color, 'black');
+
+      final removed = removeKeyedVehicle(fleet, sedanLoc);
+      expect(removed.cars.map((car) => car.registration.plate), ['CAR-2']);
+
+      final moved = moveKeyedVehicle(fleet, VehicleCategory.car, 0, 2);
+      expect(moved.cars.map((car) => car.registration.plate), [
+        'CAR-2',
+        'CAR-1',
+      ]);
+    });
+
     test('set dispatches to the keyed element wherever it sits', () {
       final updated =
           keyedVehicleRegistrationRegionLens(sedanLoc).set(

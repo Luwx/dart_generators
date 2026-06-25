@@ -31,6 +31,12 @@ final class TaskLocation {
   int get hashCode => taskIndex.hashCode;
 }
 
+final _boardTasksPart = LensPart<Board, List<Task>>(
+  get: (value) => value.tasks,
+  set: (value, next) => value.copyWith(tasks: next),
+  name: 'tasks',
+);
+
 LensPart<Board, Task> _boardTasksItemPart(int index) => LensPart<Board, Task>(
   get: (value) => value.tasks[index],
   set: (value, nextValue) {
@@ -111,6 +117,33 @@ final _boardTaskFlagPart = LensPart<Task, bool>(
   set: (value, next) => value.copyWith(flag: next == true ? null : next),
   name: 'flag',
 );
+
+Lens<List<Task>> tasksLens() => _boardRootLens().then(_boardTasksPart);
+
+List<Task>? tasksAt(Board? root) {
+  if (root == null) return null;
+  final lens = tasksLens();
+  try {
+    if (!lens.canGet(root)) return null;
+    return lens.get(root);
+  } on Object catch (_) {
+    return null;
+  }
+}
+
+Lens<Task> taskLens(TaskLocation location) =>
+    _boardRootLens().then(_boardTasksItemPart(location.taskIndex));
+
+Task? taskAt(Board? root, TaskLocation location) {
+  if (root == null) return null;
+  final lens = taskLens(location);
+  try {
+    if (!lens.canGet(root)) return null;
+    return lens.get(root);
+  } on Object catch (_) {
+    return null;
+  }
+}
 
 Lens<String> taskTitleLens(TaskLocation location) => _boardRootLens()
     .then(_boardTasksItemPart(location.taskIndex))

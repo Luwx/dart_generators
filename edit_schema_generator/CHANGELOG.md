@@ -1,3 +1,10 @@
+## 0.0.4
+
+* Emit public structural lenses and nullable read helpers for tree child/list
+  paths, including nested located list items.
+* Emit tagged-list facade helpers for branch access, key/index lookup, location
+  creation, and guarded structural mutations.
+
 ## 0.0.3
 
 * Add `prop(defaultsTo:)` for tree schemas. It collapses a nullable property

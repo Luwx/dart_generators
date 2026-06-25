@@ -828,6 +828,12 @@ final class _TreePath {
     if (usesLocation) return '$locationType location';
     return params.map((param) => '${param.type} ${param.name}').join(', ');
   }
+
+  String get lensArgs {
+    if (params.isEmpty) return '';
+    if (usesLocation) return 'location';
+    return params.map((param) => param.name).join(', ');
+  }
 }
 
 final class _TreeParam {
@@ -877,4 +883,16 @@ final class _TreeLens {
   final _TreePath path;
   final _TreePropSource prop;
   final String receiver;
+}
+
+final class _TreeStructuralLens {
+  const _TreeStructuralLens({
+    required this.name,
+    required this.type,
+    required this.path,
+  });
+
+  final String name;
+  final String type;
+  final _TreePath path;
 }

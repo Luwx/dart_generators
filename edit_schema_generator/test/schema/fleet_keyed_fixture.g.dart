@@ -115,6 +115,158 @@ Lens<Vehicle> keyedVehicleLens(KeyedGarageLocation location) => Lens<Vehicle>(
   name: 'keyedVehicle[${location.kind}/#${location.editId}]',
 );
 
+List<Vehicle> keyedVehiclesForKind(Fleet root, VehicleCategory kind) =>
+    switch (kind) {
+      VehicleCategory.car => root.cars.cast<Vehicle>(),
+      VehicleCategory.truck => root.trucks.cast<Vehicle>(),
+      VehicleCategory.bike => root.bikes.cast<Vehicle>(),
+      _ => const <Vehicle>[],
+    };
+
+Fleet withKeyedVehiclesForKind(
+  Fleet root,
+  VehicleCategory kind,
+  List<Vehicle> values,
+) => switch (kind) {
+  VehicleCategory.car => root.copyWith(cars: values.cast<Car>()),
+  VehicleCategory.truck => root.copyWith(trucks: values.cast<Truck>()),
+  VehicleCategory.bike => root.copyWith(bikes: values.cast<Bike>()),
+  _ => root,
+};
+
+Vehicle? keyedVehicleAt(Fleet? root, KeyedGarageLocation location) {
+  if (root == null) return null;
+  final lens = keyedVehicleLens(location);
+  try {
+    if (!lens.canGet(root)) return null;
+    return lens.get(root);
+  } on Object catch (_) {
+    return null;
+  }
+}
+
+int? keyedVehicleIndexOf(Fleet? root, KeyedGarageLocation location) {
+  if (root == null) return null;
+  final list = keyedVehiclesForKind(root, location.kind);
+  final index = _keyedVehicleLensIndexOf(list, location.editId);
+  return index < 0 || index >= list.length ? null : index;
+}
+
+KeyedGarageLocation? keyedVehicleLocationAt(
+  Fleet? root,
+  VehicleCategory kind,
+  int index,
+) {
+  if (root == null) return null;
+  final list = keyedVehiclesForKind(root, kind);
+  if (index < 0 || index >= list.length) return null;
+  final key = list[index].registration.editId;
+  if (key == null) return null;
+  return KeyedGarageLocation(kind: kind, editId: key);
+}
+
+KeyedGarageLocation? keyedVehicleLocationOf(
+  VehicleCategory kind,
+  Vehicle value,
+) {
+  final key = value.registration.editId;
+  if (key == null) return null;
+  return KeyedGarageLocation(kind: kind, editId: key);
+}
+
+Fleet addKeyedVehicle(Fleet root, VehicleCategory kind, Vehicle value) =>
+    switch (kind) {
+      VehicleCategory.car => root.copyWith(
+        cars: List<Car>.of(root.cars)..add(value as Car),
+      ),
+      VehicleCategory.truck => root.copyWith(
+        trucks: List<Truck>.of(root.trucks)..add(value as Truck),
+      ),
+      VehicleCategory.bike => root.copyWith(
+        bikes: List<Bike>.of(root.bikes)..add(value as Bike),
+      ),
+      _ => root,
+    };
+
+Fleet insertKeyedVehicleAt(
+  Fleet root,
+  VehicleCategory kind,
+  int index,
+  Vehicle value,
+) {
+  final list = keyedVehiclesForKind(root, kind);
+  if (index < 0 || index > list.length) return root;
+  return switch (kind) {
+    VehicleCategory.car => root.copyWith(
+      cars: List<Car>.of(root.cars)..insert(index, value as Car),
+    ),
+    VehicleCategory.truck => root.copyWith(
+      trucks: List<Truck>.of(root.trucks)..insert(index, value as Truck),
+    ),
+    VehicleCategory.bike => root.copyWith(
+      bikes: List<Bike>.of(root.bikes)..insert(index, value as Bike),
+    ),
+    _ => root,
+  };
+}
+
+Fleet replaceKeyedVehicle(
+  Fleet root,
+  KeyedGarageLocation location,
+  Vehicle value,
+) {
+  final index = keyedVehicleIndexOf(root, location);
+  if (index == null) return root;
+  return switch (location.kind) {
+    VehicleCategory.car => root.copyWith(
+      cars: List<Car>.of(root.cars)..[index] = value as Car,
+    ),
+    VehicleCategory.truck => root.copyWith(
+      trucks: List<Truck>.of(root.trucks)..[index] = value as Truck,
+    ),
+    VehicleCategory.bike => root.copyWith(
+      bikes: List<Bike>.of(root.bikes)..[index] = value as Bike,
+    ),
+    _ => root,
+  };
+}
+
+Fleet updateKeyedVehicle(
+  Fleet root,
+  KeyedGarageLocation location,
+  Vehicle Function(Vehicle value) update,
+) {
+  final value = keyedVehicleAt(root, location);
+  if (value == null) return root;
+  return replaceKeyedVehicle(root, location, update(value));
+}
+
+Fleet removeKeyedVehicle(Fleet root, KeyedGarageLocation location) {
+  final index = keyedVehicleIndexOf(root, location);
+  if (index == null) return root;
+  return switch (location.kind) {
+    VehicleCategory.car => root.copyWith(
+      cars: List<Car>.of(root.cars)..removeAt(index),
+    ),
+    VehicleCategory.truck => root.copyWith(
+      trucks: List<Truck>.of(root.trucks)..removeAt(index),
+    ),
+    VehicleCategory.bike => root.copyWith(
+      bikes: List<Bike>.of(root.bikes)..removeAt(index),
+    ),
+    _ => root,
+  };
+}
+
+Fleet moveKeyedVehicle(Fleet root, VehicleCategory kind, int from, int to) {
+  final list = keyedVehiclesForKind(root, kind);
+  if (from < 0 || from >= list.length) return root;
+  final next = List<Vehicle>.of(list);
+  final item = next.removeAt(from);
+  next.insert(to.clamp(0, next.length), item);
+  return withKeyedVehiclesForKind(root, kind, next);
+}
+
 final _keyedGarageKeyedVehicleRegistrationPart =
     LensPart<Vehicle, Registration>(
       get: (value) => value.registration,
@@ -229,6 +381,23 @@ final _keyedGarageAsCargoBikePart = LensPart<Bike, CargoBike>(
   set: (value, next) => next,
   name: 'CargoBike',
 );
+
+Lens<Registration> keyedVehicleRegistrationLens(KeyedGarageLocation location) =>
+    keyedVehicleLens(location).then(_keyedGarageKeyedVehicleRegistrationPart);
+
+Registration? keyedVehicleRegistrationAt(
+  Fleet? root,
+  KeyedGarageLocation location,
+) {
+  if (root == null) return null;
+  final lens = keyedVehicleRegistrationLens(location);
+  try {
+    if (!lens.canGet(root)) return null;
+    return lens.get(root);
+  } on Object catch (_) {
+    return null;
+  }
+}
 
 Lens<String?> keyedVehicleRegistrationPlateLens(KeyedGarageLocation location) =>
     keyedVehicleLens(location)

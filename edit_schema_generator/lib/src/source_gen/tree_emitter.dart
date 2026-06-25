@@ -20,6 +20,7 @@ final class _TreeSchemaEmitter {
     final rootName = _pascal(schema.id);
     final fieldEnum = '${rootName}DirtyField';
     final lenses = <_TreeLens>[];
+    final structuralLenses = <_TreeStructuralLens>[];
     final comparableNodes = <String, _TreeNodeSource>{};
     final rootPath = _TreePath(
       rootType: schema.rootType,
@@ -43,6 +44,7 @@ final class _TreeSchemaEmitter {
     _collectFields(
       parts,
       lenses,
+      structuralLenses,
       comparableNodes,
       schema.fields,
       schema.rootType,
@@ -61,6 +63,8 @@ final class _TreeSchemaEmitter {
     _writeTaggedLocationClasses(body, schema.fields);
 
     body.write(parts.toString());
+
+    _writeStructuralLenses(body, structuralLenses);
 
     for (final lens in lenses) {
       body
@@ -246,9 +250,41 @@ final class _TreeSchemaEmitter {
     }
   }
 
+  void _writeStructuralLenses(
+    StringBuffer buffer,
+    List<_TreeStructuralLens> lenses,
+  ) {
+    final seen = <String>{};
+    for (final lens in lenses) {
+      if (lens.name.isEmpty || !seen.add(lens.name)) continue;
+      final params = lens.path.lensParams;
+      buffer
+        ..writeln('Lens<${lens.type}> ${lens.name}Lens($params) =>')
+        ..writeln('    ${lens.path.lensBase};');
+      if (params.isEmpty) buffer.writeln();
+      buffer
+        ..writeln()
+        ..write('${lens.type}? ${lens.name}At(${lens.path.rootType}? root');
+      if (params.isNotEmpty) buffer.write(', $params');
+      buffer
+        ..writeln(') {')
+        ..writeln('  if (root == null) return null;')
+        ..writeln('  final lens = ${lens.name}Lens(${lens.path.lensArgs});')
+        ..writeln('  try {')
+        ..writeln('    if (!lens.canGet(root)) return null;')
+        ..writeln('    return lens.get(root);')
+        ..writeln('  } on Object catch (_) {')
+        ..writeln('    return null;')
+        ..writeln('  }')
+        ..writeln('}')
+        ..writeln();
+    }
+  }
+
   void _collectFields(
     StringBuffer parts,
     List<_TreeLens> lenses,
+    List<_TreeStructuralLens> structuralLenses,
     Map<String, _TreeNodeSource> comparableNodes,
     List<_TreeFieldSource> fields,
     String ownerType,
@@ -290,10 +326,18 @@ final class _TreeSchemaEmitter {
             name: field.name,
             scope: field.scope,
           );
+          structuralLenses.add(
+            _TreeStructuralLens(
+              name: nextPath.lensName,
+              type: field.type,
+              path: nextPath,
+            ),
+          );
           comparableNodes[field.node.type] = field.node;
           _collectFields(
             parts,
             lenses,
+            structuralLenses,
             comparableNodes,
             field.node.fields,
             field.type,
@@ -304,6 +348,7 @@ final class _TreeSchemaEmitter {
           _collectNodeCases(
             parts,
             lenses,
+            structuralLenses,
             comparableNodes,
             field.node,
             field.type,
@@ -313,7 +358,9 @@ final class _TreeSchemaEmitter {
         case _TreeListSource():
           final pathName = _pascal(path.nameParts.join());
           final part = '_$rootId$pathName${_pascal(field.name)}ItemPart';
+          final listPart = '_$rootId$pathName${_pascal(field.name)}Part';
           final indexName = field.indexField ?? '${_singular(field.name)}Index';
+          _writeListAggregatePart(parts, listPart, ownerType, field);
           _writeListPart(parts, part, ownerType, field);
           _writeTreeListHelpers(parts, ownerType, field);
 
@@ -373,10 +420,32 @@ final class _TreeSchemaEmitter {
             rootExpr: nextRootExpr,
             locationName: nextLocationName,
           );
+          final listPath = path.append(
+            part: listPart,
+            valueExpr:
+                '(${path.valueExpr}?.${field.property} ?? const <${field.elementType}>[])',
+            name: field.name,
+            scope: field.scope,
+          );
+          structuralLenses.add(
+            _TreeStructuralLens(
+              name: listPath.lensName,
+              type: 'List<${field.elementType}>',
+              path: listPath,
+            ),
+          );
+          structuralLenses.add(
+            _TreeStructuralLens(
+              name: nextPath.lensName,
+              type: field.elementType,
+              path: nextPath,
+            ),
+          );
           comparableNodes[field.node.type] = field.node;
           _collectFields(
             parts,
             lenses,
+            structuralLenses,
             comparableNodes,
             field.node.fields,
             field.elementType,
@@ -387,6 +456,7 @@ final class _TreeSchemaEmitter {
           _collectNodeCases(
             parts,
             lenses,
+            structuralLenses,
             comparableNodes,
             field.node,
             field.elementType,
@@ -480,6 +550,7 @@ final class _TreeSchemaEmitter {
             _collectFields(
               parts,
               lenses,
+              structuralLenses,
               comparableNodes,
               caseSource.fields,
               caseSource.caseType,
@@ -490,6 +561,7 @@ final class _TreeSchemaEmitter {
           }
         case _TreeTaggedListsSource():
           _writeTaggedLens(parts, rootId, ownerType, field);
+          _writeTaggedListHelpers(parts, ownerType, field);
           final dispatcher = '${field.lensName}(location)';
           final locationParam = _TreeParam(
             type: field.locationType,
@@ -508,6 +580,7 @@ final class _TreeSchemaEmitter {
           _collectFields(
             parts,
             lenses,
+            structuralLenses,
             comparableNodes,
             field.shared,
             field.elementType,
@@ -542,6 +615,7 @@ final class _TreeSchemaEmitter {
             _collectFields(
               parts,
               lenses,
+              structuralLenses,
               comparableNodes,
               entry.node.fields,
               entry.elementType,
@@ -567,6 +641,7 @@ final class _TreeSchemaEmitter {
               _collectFields(
                 parts,
                 lenses,
+                structuralLenses,
                 comparableNodes,
                 caseSource.fields,
                 caseSource.caseType,
@@ -597,6 +672,7 @@ final class _TreeSchemaEmitter {
           _collectFields(
             parts,
             lenses,
+            structuralLenses,
             comparableNodes,
             field.node.fields,
             field.elementType,
@@ -607,6 +683,7 @@ final class _TreeSchemaEmitter {
           _collectNodeCases(
             parts,
             lenses,
+            structuralLenses,
             comparableNodes,
             field.node,
             field.elementType,
@@ -620,6 +697,7 @@ final class _TreeSchemaEmitter {
   void _collectNodeCases(
     StringBuffer parts,
     List<_TreeLens> lenses,
+    List<_TreeStructuralLens> structuralLenses,
     Map<String, _TreeNodeSource> comparableNodes,
     _TreeNodeSource node,
     String ownerType,
@@ -672,6 +750,7 @@ final class _TreeSchemaEmitter {
       _collectFields(
         parts,
         lenses,
+        structuralLenses,
         comparableNodes,
         caseSource.fields,
         caseSource.caseType,
@@ -717,6 +796,26 @@ final class _TreeSchemaEmitter {
       ..writeln('final $name = LensPart<$ownerType, ${field.type}>(')
       ..writeln('  get: (value) => $read,')
       ..writeln('  set: (value, next) => $write,')
+      ..writeln("  name: '${field.name}',")
+      ..writeln(');')
+      ..writeln();
+  }
+
+  void _writeListAggregatePart(
+    StringBuffer buffer,
+    String name,
+    String ownerType,
+    _TreeListSource field,
+  ) {
+    if (buffer.toString().contains('final $name = ')) return;
+    buffer
+      ..writeln(
+        'final $name = LensPart<$ownerType, List<${field.elementType}>>(',
+      )
+      ..writeln('  get: (value) => value.${field.property},')
+      ..writeln(
+        '  set: (value, next) => value.copyWith(${field.property}: next),',
+      )
       ..writeln("  name: '${field.name}',")
       ..writeln(');')
       ..writeln();
@@ -1000,6 +1099,191 @@ final class _TreeSchemaEmitter {
         "[\${location.$disc}/#\${location.$keyField}]',",
       )
       ..writeln(');')
+      ..writeln();
+  }
+
+  void _writeTaggedListHelpers(
+    StringBuffer buffer,
+    String rootType,
+    _TreeTaggedListsSource source,
+  ) {
+    final element = source.elementType;
+    final singular = _singular(source.baseName);
+    final singularName = _pascal(singular);
+    final plural = _plural(singular);
+    final pluralName = _pascal(plural);
+    final disc = source.discriminator;
+    final discName = _pascal(disc);
+    final location = source.locationType;
+    final key = source.key;
+    final indexExpr = key == null
+        ? 'location.${source.indexField}'
+        : '_${source.lensName}IndexOf(list, location.${key.field})';
+    if (buffer.toString().contains('$element? ${singular}At(')) return;
+
+    buffer
+      ..writeln(
+        'List<$element> ${plural}For$discName($rootType root, ${source.categoryType} $disc) =>',
+      )
+      ..writeln('    switch ($disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '      ${entry.enumSource} => root.${entry.property}.cast<$element>(),',
+      );
+    }
+    buffer
+      ..writeln('      _ => const <$element>[],')
+      ..writeln('    };')
+      ..writeln()
+      ..writeln(
+        '$rootType with$pluralName'
+        'For$discName($rootType root, ${source.categoryType} $disc, List<$element> values) =>',
+      )
+      ..writeln('    switch ($disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '      ${entry.enumSource} => root.copyWith(${entry.property}: values.cast<${entry.elementType}>()),',
+      );
+    }
+    buffer
+      ..writeln('      _ => root,')
+      ..writeln('    };')
+      ..writeln()
+      ..writeln(
+        '$element? ${singular}At($rootType? root, $location location) {',
+      )
+      ..writeln('  if (root == null) return null;')
+      ..writeln('  final lens = ${source.lensName}(location);')
+      ..writeln('  try {')
+      ..writeln('    if (!lens.canGet(root)) return null;')
+      ..writeln('    return lens.get(root);')
+      ..writeln('  } on Object catch (_) {')
+      ..writeln('    return null;')
+      ..writeln('  }')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+        'int? ${singular}IndexOf($rootType? root, $location location) {',
+      )
+      ..writeln('  if (root == null) return null;')
+      ..writeln('  final list = ${plural}For$discName(root, location.$disc);')
+      ..writeln('  final index = $indexExpr;')
+      ..writeln('  return index < 0 || index >= list.length ? null : index;')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+        '$location? ${singular}LocationAt($rootType? root, ${source.categoryType} $disc, int index) {',
+      )
+      ..writeln('  if (root == null) return null;')
+      ..writeln('  final list = ${plural}For$discName(root, $disc);')
+      ..writeln('  if (index < 0 || index >= list.length) return null;');
+    if (key == null) {
+      buffer.writeln(
+        '  return $location($disc: $disc, ${source.indexField}: index);',
+      );
+    } else {
+      buffer
+        ..writeln('  final key = ${key.getter('list[index]')};')
+        ..writeln('  if (key == null) return null;')
+        ..writeln('  return $location($disc: $disc, ${key.field}: key);');
+    }
+    buffer
+      ..writeln('}')
+      ..writeln();
+    if (key != null) {
+      buffer
+        ..writeln(
+          '$location? ${singular}LocationOf(${source.categoryType} $disc, $element value) {',
+        )
+        ..writeln('  final key = ${key.getter('value')};')
+        ..writeln('  if (key == null) return null;')
+        ..writeln('  return $location($disc: $disc, ${key.field}: key);')
+        ..writeln('}')
+        ..writeln();
+    }
+    buffer
+      ..writeln(
+        '$rootType add$singularName($rootType root, ${source.categoryType} $disc, $element value) =>',
+      )
+      ..writeln('    switch ($disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '      ${entry.enumSource} => root.copyWith(${entry.property}: List<${entry.elementType}>.of(root.${entry.property})..add(value as ${entry.elementType})),',
+      );
+    }
+    buffer
+      ..writeln('      _ => root,')
+      ..writeln('    };')
+      ..writeln()
+      ..writeln(
+        '$rootType insert${singularName}At($rootType root, ${source.categoryType} $disc, int index, $element value) {',
+      )
+      ..writeln('  final list = ${plural}For$discName(root, $disc);')
+      ..writeln('  if (index < 0 || index > list.length) return root;')
+      ..writeln('  return switch ($disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '    ${entry.enumSource} => root.copyWith(${entry.property}: List<${entry.elementType}>.of(root.${entry.property})..insert(index, value as ${entry.elementType})),',
+      );
+    }
+    buffer
+      ..writeln('    _ => root,')
+      ..writeln('  };')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+        '$rootType replace$singularName($rootType root, $location location, $element value) {',
+      )
+      ..writeln('  final index = ${singular}IndexOf(root, location);')
+      ..writeln('  if (index == null) return root;')
+      ..writeln('  return switch (location.$disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '    ${entry.enumSource} => root.copyWith(${entry.property}: List<${entry.elementType}>.of(root.${entry.property})..[index] = value as ${entry.elementType}),',
+      );
+    }
+    buffer
+      ..writeln('    _ => root,')
+      ..writeln('  };')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+        '$rootType update$singularName($rootType root, $location location, $element Function($element value) update) {',
+      )
+      ..writeln('  final value = ${singular}At(root, location);')
+      ..writeln('  if (value == null) return root;')
+      ..writeln('  return replace$singularName(root, location, update(value));')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+        '$rootType remove$singularName($rootType root, $location location) {',
+      )
+      ..writeln('  final index = ${singular}IndexOf(root, location);')
+      ..writeln('  if (index == null) return root;')
+      ..writeln('  return switch (location.$disc) {');
+    for (final entry in source.entries) {
+      buffer.writeln(
+        '    ${entry.enumSource} => root.copyWith(${entry.property}: List<${entry.elementType}>.of(root.${entry.property})..removeAt(index)),',
+      );
+    }
+    buffer
+      ..writeln('    _ => root,')
+      ..writeln('  };')
+      ..writeln('}')
+      ..writeln()
+      ..writeln(
+        '$rootType move$singularName($rootType root, ${source.categoryType} $disc, int from, int to) {',
+      )
+      ..writeln('  final list = ${plural}For$discName(root, $disc);')
+      ..writeln('  if (from < 0 || from >= list.length) return root;')
+      ..writeln('  final next = List<$element>.of(list);')
+      ..writeln('  final item = next.removeAt(from);')
+      ..writeln('  next.insert(to.clamp(0, next.length), item);')
+      ..writeln(
+        '  return with$pluralName'
+        'For$discName(root, $disc, next);',
+      )
+      ..writeln('}')
       ..writeln();
   }
 
