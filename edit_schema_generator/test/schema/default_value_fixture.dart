@@ -10,6 +10,8 @@ final taskNode = subtree<Task>(
     prop('title'),
     // Collapses the nullable `mode` onto its default so the lens is Lens<Mode>.
     prop('mode', defaultsTo: Mode.end),
+    // Bool default exercises the `next == true` setter / generated-lint ignore.
+    prop('flag', defaultsTo: true),
   ],
 );
 

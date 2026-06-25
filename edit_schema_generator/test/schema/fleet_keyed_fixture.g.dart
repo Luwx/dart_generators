@@ -7,7 +7,7 @@ part of 'fleet_keyed_fixture.dart';
 // **************************************************************************
 
 // Generated code. Do not modify by hand.
-// ignore_for_file: dead_code, prefer_null_aware_operators, lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, unnecessary_parenthesis, unreachable_switch_case, unused_element, invalid_null_aware_operator, unused_local_variable, avoid_equals_and_hash_code_on_mutable_classes
+// ignore_for_file: dead_code, prefer_null_aware_operators, lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, unnecessary_parenthesis, unreachable_switch_case, unused_element, invalid_null_aware_operator, unused_local_variable, avoid_equals_and_hash_code_on_mutable_classes, no_literal_bool_comparisons
 
 Lens<Fleet> _keyedGarageRootLens() => Lens<Fleet>(
   get: (root) => root as Fleet,

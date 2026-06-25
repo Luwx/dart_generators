@@ -12,7 +12,8 @@ final class _TreeSchemaEmitter {
         'lines_longer_than_80_chars, unnecessary_cast, unnecessary_lambdas, '
         'unnecessary_parenthesis, unreachable_switch_case, unused_element, '
         'invalid_null_aware_operator, unused_local_variable, '
-        'avoid_equals_and_hash_code_on_mutable_classes',
+        'avoid_equals_and_hash_code_on_mutable_classes, '
+        'no_literal_bool_comparisons',
       )
       ..writeln();
 

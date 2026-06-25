@@ -29,6 +29,16 @@ void main() {
       expect(lens.get(cleared), Mode.end);
     });
 
+    test('bool default collapses and compacts the same way', () {
+      final Lens<bool> lens = taskFlagLens(location);
+      expect(lens.get(board), isTrue);
+      final off = lens.set(board, false) as Board;
+      expect(off.tasks.first.flag, isFalse);
+      final back = lens.set(off, true) as Board;
+      expect(back.tasks.first.flag, isNull);
+      expect(lens.get(back), isTrue);
+    });
+
     test('comparable treats absent and explicit default as equal', () {
       expect(
         comparableTaskValue(const Task(title: 'a')),

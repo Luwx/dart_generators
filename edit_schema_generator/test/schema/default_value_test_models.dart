@@ -8,14 +8,20 @@ enum Mode { begin, middle, end }
 const Object _unset = Object();
 
 final class Task {
-  const Task({required this.title, this.mode});
+  const Task({required this.title, this.mode, this.flag});
 
   final String title;
   final Mode? mode;
+  final bool? flag;
 
-  Task copyWith({String? title, Object? mode = _unset}) => Task(
+  Task copyWith({
+    String? title,
+    Object? mode = _unset,
+    Object? flag = _unset,
+  }) => Task(
     title: title ?? this.title,
     mode: mode == _unset ? this.mode : mode as Mode?,
+    flag: flag == _unset ? this.flag : flag as bool?,
   );
 }
 
