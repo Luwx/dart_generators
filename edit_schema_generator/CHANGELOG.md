@@ -1,3 +1,14 @@
+## 0.0.3
+
+* Add `prop(defaultsTo:)` for tree schemas. It collapses a nullable property
+  onto a non-null default: the generated lens is `Lens<T>` (not `Lens<T?>`)
+  reading `prop ?? default`, writes `null` when the new value equals the
+  default (compacting the key away), and the comparable projects through the
+  same default so an absent value and an explicit default compare equal.
+  Generalizes the hand-written `select:` + `compare: projected(... ?? default)`
+  pair. Rejected (with a clear error) on `valueSchema`/flat `editSchema` props
+  and when combined with `select`/`orElse`/`compare`/`adapter`/`readOnly`.
+
 ## 0.0.2
 
 * Positional list-item lens parts now carry a `canGet` bounds guard and a

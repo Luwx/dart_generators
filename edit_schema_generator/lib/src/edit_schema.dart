@@ -429,6 +429,16 @@ final class _PropField extends SchemaField {
 ///   `prop('mouseButtons', orElse: const <Object?>[])`). Replaces a
 ///   `projected((v) => v?.x ?? default)` wrapper. Ignored when [compare] is
 ///   [projected] or [composed].
+/// - [defaultsTo]: tree schemas only. Collapses a nullable property onto a
+///   non-null default so the field edits a non-nullable value. The lens reads
+///   `prop ?? default`, writes back `null` when the new value equals the
+///   default (so selecting it compacts the key away), and the comparable
+///   projects through the same default (so an absent value and an explicit
+///   default compare equal). The field type drops its trailing `?`. Mutually
+///   exclusive with [select], [orElse], [compare], [adapter], and [readOnly].
+///   Generalizes the hand-written `select:` +
+///   `compare: projected(... ?? default)` pair for absent-key/daemon-default
+///   fields. Use [orElse] for valueSchema comparables.
 /// - [readOnly]: a comparison-only field with no underlying property/lens. It
 ///   contributes an enum member, comparable projection, and saved-backing
 ///   branch, but no lens accessor and a no-op restore. Requires
@@ -443,6 +453,7 @@ SchemaField prop(
   SavedBackingSpec<Object?>? backing,
   FieldAccess? select,
   Object? orElse,
+  Object? defaultsTo,
   bool readOnly = false,
 }) => const _PropField._();
 

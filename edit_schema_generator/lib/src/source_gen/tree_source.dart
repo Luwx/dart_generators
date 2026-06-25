@@ -206,6 +206,7 @@ final class _TreePropSource extends _TreeFieldSource {
     required this.adapter,
     required this.readOnly,
     this.orElseSource,
+    this.defaultSource,
     this.getSource,
     this.setSource,
   });
@@ -225,11 +226,30 @@ final class _TreePropSource extends _TreeFieldSource {
       ]);
     }
     final readOnly = _boolArgument(node, 'readOnly', orElse: false);
-    final type = readOnly
+    final orElseSource = _namedArgument(node, 'orElse')?.expression.toSource();
+    final defaultSource = _namedArgument(
+      node,
+      'defaultsTo',
+    )?.expression.toSource();
+    if (defaultSource != null) {
+      void reject(String other) => throw _unsupported(
+        node,
+        'prop "$id": defaultsTo cannot be combined with $other.',
+      );
+      if (access != null) reject('select');
+      if (readOnly) reject('readOnly');
+      if (orElseSource != null) reject('orElse');
+      if (_namedArgument(node, 'compare') != null) reject('compare');
+      if (_namedArgument(node, 'adapter') != null) reject('adapter');
+    }
+    var type = readOnly
         ? 'Object?'
         : (_explicitPropFieldType(node) ??
               _lensGetReturnType(access) ??
               _fieldType(owner, property, node));
+    if (defaultSource != null && type.endsWith('?')) {
+      type = type.substring(0, type.length - 1);
+    }
     return _TreePropSource(
       id: id,
       name: _optionalStringArgument(node, 'name') ?? id,
@@ -240,7 +260,10 @@ final class _TreePropSource extends _TreeFieldSource {
         _namedArgument(node, 'adapter')?.expression,
       ),
       readOnly: readOnly,
-      orElseSource: _namedArgument(node, 'orElse')?.expression.toSource(),
+      // A `defaultsTo` default also feeds the comparable as `… ?? <default>`,
+      // so absent and explicit-default values compare equal.
+      orElseSource: defaultSource ?? orElseSource,
+      defaultSource: defaultSource,
       getSource: getSource,
       setSource: setSource,
     );
@@ -252,16 +275,30 @@ final class _TreePropSource extends _TreeFieldSource {
   final _AdapterSource adapter;
   final bool readOnly;
   final String? orElseSource;
+
+  /// Verbatim source of a `defaultsTo:` value, or null. Drives the non-null
+  /// lens get (`… ?? default`) and the write-side compaction (`default → null`).
+  final String? defaultSource;
   final String? getSource;
   final String? setSource;
 
-  String getter(String receiver) =>
-      (getSource ?? r'$root.' + property).replaceAll(r'$root', receiver);
+  String getter(String receiver) {
+    final base =
+        getSource ??
+        (defaultSource != null
+            ? '\$root.$property ?? $defaultSource'
+            : '\$root.$property');
+    return base.replaceAll(r'$root', receiver);
+  }
 
-  String setter(String receiver, String next) =>
-      (setSource ?? r'$root.copyWith(' + property + r': $next)')
-          .replaceAll(r'$root', receiver)
-          .replaceAll(r'$next', next);
+  String setter(String receiver, String next) {
+    final base =
+        setSource ??
+        (defaultSource != null
+            ? '\$root.copyWith($property: \$next == $defaultSource ? null : \$next)'
+            : '\$root.copyWith($property: \$next)');
+    return base.replaceAll(r'$root', receiver).replaceAll(r'$next', next);
+  }
 }
 
 final class _TreeChildSource extends _TreeFieldSource {

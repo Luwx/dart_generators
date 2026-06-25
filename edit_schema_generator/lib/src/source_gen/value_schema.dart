@@ -87,6 +87,13 @@ final class _ValueFieldSource {
   ) {
     final node = _asInvocation(expression, 'prop');
     final id = _stringLiteral(_firstPositionalArgument(node));
+    if (_namedArgument(node, 'defaultsTo') != null) {
+      throw _unsupported(
+        node,
+        'prop "$id": defaultsTo is only supported in tree schemas (it builds a '
+        'non-nullable lens); use orElse for valueSchema comparables.',
+      );
+    }
     final property = _optionalStringArgument(node, 'property') ?? id;
 
     final compareArg = _namedArgument(node, 'compare')?.expression;

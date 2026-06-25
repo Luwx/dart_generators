@@ -431,6 +431,14 @@ _EditFieldSource _parseLeafProp(
 ) {
   final id = _stringLiteral(_firstPositionalArgument(node));
 
+  if (_namedArgument(node, 'defaultsTo') != null) {
+    throw _unsupported(
+      node,
+      'prop "$id": defaultsTo is only supported in tree schemas (editTree); use '
+      'select: + compare: projected(...) in a flat editSchema.',
+    );
+  }
+
   // Comparison-only fields have no underlying property/lens, so they skip class
   // type resolution and must carry an explicit projected compare.
   if (_boolArgument(node, 'readOnly', orElse: false)) {
