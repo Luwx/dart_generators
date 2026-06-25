@@ -1,6 +1,6 @@
 name: edit_schema_generator
 description: "Edit lens schema DSL and source generator for lens boilerplate."
-version: 0.0.4
+version: 0.0.5
 publish_to: 'none'
 
 environment:

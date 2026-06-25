@@ -665,6 +665,7 @@ final class GeneratedEditField<TRoot, TLocation, TField, TLens> {
     required this.lens,
     required this.fallback,
     required this.adapter,
+    this.defaultValue,
   });
 
   final String id;
@@ -672,6 +673,11 @@ final class GeneratedEditField<TRoot, TLocation, TField, TLens> {
   final TLens Function(TLocation location) lens;
   final TField Function(TRoot root)? fallback;
   final FieldAdapterSpec<TField> adapter;
+
+  /// The field's `defaultsTo` value, or null when the field has no default.
+  /// Lets a consumer surface the schema default (e.g. as the value to show when
+  /// the lens is unreadable) without restating it at the call site.
+  final TField? defaultValue;
 }
 
 final class EditRoot<TRoot, TLocation> {

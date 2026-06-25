@@ -191,6 +191,7 @@ final taskModeField = GeneratedEditField<Board, TaskLocation, Mode, Lens<Mode>>(
   dirtyField: BoardDirtyField.taskMode,
   lens: taskModeLens,
   fallback: null,
+  defaultValue: Mode.end,
   adapter: FieldAdapterSpec<Mode>.identity(),
 );
 
@@ -209,6 +210,7 @@ final taskFlagField = GeneratedEditField<Board, TaskLocation, bool, Lens<bool>>(
   dirtyField: BoardDirtyField.taskFlag,
   lens: taskFlagLens,
   fallback: null,
+  defaultValue: true,
   adapter: FieldAdapterSpec<bool>.identity(),
 );
 

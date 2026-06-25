@@ -1,3 +1,9 @@
+## 0.0.5
+
+* `GeneratedEditField` now carries `defaultValue`, populated from a tree prop's
+  `defaultsTo`. Lets consumers read the schema default from the field ref (e.g.
+  as the value to show when the lens is unreadable) without restating it.
+
 ## 0.0.4
 
 * Emit public structural lenses and nullable read helpers for root child

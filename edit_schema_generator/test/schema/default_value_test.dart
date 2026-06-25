@@ -39,6 +39,12 @@ void main() {
       expect(lens.get(back), isTrue);
     });
 
+    test('the generated field ref exposes the schema default', () {
+      expect(taskModeField.defaultValue, Mode.end);
+      expect(taskFlagField.defaultValue, isTrue);
+      expect(taskTitleField.defaultValue, isNull);
+    });
+
     test('comparable treats absent and explicit default as equal', () {
       expect(
         comparableTaskValue(const Task(title: 'a')),

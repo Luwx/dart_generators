@@ -243,7 +243,11 @@ final class _TreeSchemaEmitter {
         ..writeln("      id: '${lens.name}',")
         ..writeln('      dirtyField: $fieldEnum.${lens.name},')
         ..writeln('      lens: $lensRef,')
-        ..writeln('      fallback: null,')
+        ..writeln('      fallback: null,');
+      if (lens.prop.defaultSource != null) {
+        body.writeln('      defaultValue: ${lens.prop.defaultSource},');
+      }
+      body
         ..writeln('      adapter: $adapterExpr,')
         ..writeln('    );')
         ..writeln();
