@@ -1,3 +1,8 @@
+## 0.0.8
+
+* Tighten `Lens.canGet` to a non-null root, matching `Lens.get` and `Lens.set`.
+  Nullable-root helpers should check null before calling the lens.
+
 ## 0.0.7
 
 * Tighten `Lens.get`/`Lens.set` roots to non-null `Object` while keeping

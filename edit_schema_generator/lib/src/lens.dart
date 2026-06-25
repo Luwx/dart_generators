@@ -5,7 +5,7 @@ typedef LensGet<T> = T Function(Object root);
 typedef LensSet<T> = Object Function(Object root, T value);
 
 /// Reports whether a lens can be read for an edit root.
-typedef LensCanGet = bool Function(Object? root);
+typedef LensCanGet = bool Function(Object root);
 
 /// Reads a target value of type [TTarget] from a source value of type [TSource].
 typedef LensPartGet<TSource, TTarget> = TTarget Function(TSource source);
@@ -52,7 +52,7 @@ final class Lens<T> {
   final LensCanGet? _canGet;
 
   /// Whether [get] is safe to call for [root].
-  bool canGet(Object? root) => root != null && (_canGet?.call(root) ?? true);
+  bool canGet(Object root) => _canGet?.call(root) ?? true;
 
   /// Returns a copy of [root] with this lens value replaced.
   ///
@@ -72,10 +72,9 @@ final class Lens<T> {
       },
       name: '$name.${part.name}',
       canGet: (root) {
-        final nonNullRoot = root;
-        if (nonNullRoot == null || !canGet(nonNullRoot)) return false;
+        if (!canGet(root)) return false;
         final partCanGet = part.canGet;
-        return partCanGet == null || partCanGet(get(nonNullRoot));
+        return partCanGet == null || partCanGet(get(root));
       },
     );
   }
